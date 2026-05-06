@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { fetchLivePrices, formatUsd, metalShortLabel, type Metal } from "@/lib/prices";
+import {
+  fetchLivePrices,
+  formatMetalPrice,
+  metalShortLabel,
+  type Metal,
+} from "@/lib/prices";
 import { CLUSTERS } from "@/lib/manifest";
 
 interface PriceBadgeProps {
@@ -25,7 +30,7 @@ export default async function PriceBadge({ metal }: PriceBadgeProps) {
         {metalShortLabel(metal)}
       </span>
       <span className="font-mono tabular-nums font-semibold text-navy-900">
-        {formatUsd(snapshot.usdPerLb)}
+        {formatMetalPrice(snapshot).value}
       </span>
       <span className={`font-mono text-xs tabular-nums ${trendColor}`}>
         {change > 0 ? "+" : ""}

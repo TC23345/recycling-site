@@ -3,7 +3,7 @@ import type { TimeseriesArray } from "@/lib/prices";
 
 interface PriceChartProps {
   data: TimeseriesArray;
-  metal: "copper" | "aluminum" | "brass";
+  metal: "copper" | "aluminum" | "brass" | "gold" | "silver";
   metalLabel: string;
   /** Visual height in px — width is fluid via viewBox. */
   height?: number;
@@ -178,9 +178,15 @@ export default function PriceChart({
         ))}
       </svg>
       <figcaption className="mt-2 text-xs text-steel-500">
-        {metalLabel} — last {series.length} days, scrap-discounted USD/lb.
-        Sourced from Metals.dev (industrial metals on paid plans) with Yahoo
-        Finance as fallback.
+        {metalLabel} — last {series.length} days,{" "}
+        {metal === "gold" || metal === "silver"
+          ? "spot USD/toz"
+          : "scrap-discounted USD/lb"}
+        . Sourced from Metals.dev{" "}
+        {metal === "gold" || metal === "silver"
+          ? "(precious-metal feed)"
+          : "(industrial metals on paid plans) with Yahoo Finance as fallback"}
+        .
       </figcaption>
     </figure>
   );

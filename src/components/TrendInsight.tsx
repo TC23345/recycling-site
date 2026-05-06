@@ -3,7 +3,7 @@ import { computeTrend } from "@/lib/prices";
 
 interface TrendInsightProps {
   data: TimeseriesArray;
-  metal: "copper" | "aluminum" | "brass";
+  metal: "copper" | "aluminum" | "brass" | "gold" | "silver";
   metalLabel: string;
   className?: string;
 }
@@ -77,6 +77,23 @@ export default function TrendInsight({
         ? "text-rust-700 dark:text-rust-500"
         : "text-steel-700";
 
+  // Precious metals quote in USD/toz with a different surface ("at refiners")
+  // than industrial metals ("at the yard"). Pick the right unit + venue.
+  const isPrecious = metal === "gold" || metal === "silver";
+  const unit = isPrecious ? "/toz" : "/lb";
+  const venue = isPrecious ? "at refiners" : "at the yard";
+  const currentDigits = isPrecious
+    ? metal === "gold"
+      ? 0
+      : 2
+    : current >= 1
+      ? 2
+      : 3;
+  const currentDisplay = `$${current.toLocaleString("en-US", {
+    minimumFractionDigits: currentDigits,
+    maximumFractionDigits: currentDigits,
+  })}${unit}`;
+
   return (
     <aside
       className={`rounded-card border border-steel-200 bg-steel-50 px-4 py-3 dark:bg-steel-100 ${className ?? ""}`}
@@ -86,8 +103,7 @@ export default function TrendInsight({
       </p>
       <p className="mt-1 text-sm leading-snug text-steel-700">
         <span className={`font-semibold ${accentClass}`}>{headline}</span>
-        {context}. Currently <span className="font-semibold">${current.toFixed(current >= 1 ? 2 : 3)}/lb</span> at
-        the yard.
+        {context}. Currently <span className="font-semibold">{currentDisplay}</span> {venue}.
       </p>
     </aside>
   );

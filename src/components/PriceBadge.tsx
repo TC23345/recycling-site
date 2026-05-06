@@ -19,7 +19,7 @@ export default async function PriceBadge({ metal }: PriceBadgeProps) {
   return (
     <Link
       href={cluster.href}
-      className="group inline-flex items-baseline gap-2 rounded-md border border-steel-200 bg-white px-3 py-1.5 text-sm shadow-sm transition hover:border-rust-300 hover:shadow-steel"
+      className="group inline-flex items-baseline gap-2 rounded-md border border-steel-200 bg-white px-3 py-1.5 text-sm shadow-sm transition hover:border-rust-300 hover:shadow-steel dark:bg-steel-100"
     >
       <span className="font-display text-xs font-semibold uppercase tracking-widest text-steel-500 group-hover:text-rust-600">
         {metalShortLabel(metal)}

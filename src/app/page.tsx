@@ -42,7 +42,7 @@ export default function HomePage() {
       />
 
       <div className="mx-auto max-w-5xl px-6 py-10">
-        <article className="prose prose-steel max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline">
+        <article className="prose prose-steel max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline dark:prose-invert">
           <HomeIntro />
         </article>
 
@@ -88,7 +88,7 @@ export default function HomePage() {
               <li key={c.slug}>
                 <Link
                   href={c.href}
-                  className="block h-full rounded-card border border-steel-200 bg-white p-6 shadow-steel transition hover:border-rust-300 hover:shadow-md"
+                  className="block h-full rounded-card border border-steel-200 bg-white p-6 shadow-steel transition hover:border-rust-300 hover:shadow-md dark:bg-steel-100"
                 >
                   <p className="font-display text-lg font-semibold text-navy-900">{c.title}</p>
                   <p className="mt-2 text-sm leading-relaxed text-steel-600">{c.description}</p>

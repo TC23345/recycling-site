@@ -18,7 +18,7 @@ export default async function MetalCardsGrid() {
           <li key={c.slug}>
             <Link
               href={c.href}
-              className="block h-full rounded-card border border-steel-200 bg-white p-5 shadow-steel transition hover:border-rust-300 hover:shadow-md"
+              className="block h-full rounded-card border border-steel-200 bg-white p-5 shadow-steel transition hover:border-rust-300 hover:shadow-md dark:bg-steel-100"
             >
               <p className="font-display text-xs font-semibold uppercase tracking-widest text-rust-600">
                 {metalShortLabel(c.metal)}

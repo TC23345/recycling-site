@@ -32,7 +32,7 @@ export default function PricingPage({ page, crumbs, clusterSlug, body }: Pricing
       <div className="mx-auto max-w-3xl px-6 py-10">
         <Breadcrumbs crumbs={crumbs} />
         <PriceTable />
-        <article className="prose prose-steel mt-8 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700">
+        <article className="prose prose-steel mt-8 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 dark:prose-invert">
           {body}
         </article>
         <RelatedLinks clusterSlug={clusterSlug} excludeSlug={page.slug} />

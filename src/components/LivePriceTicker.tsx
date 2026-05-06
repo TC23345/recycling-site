@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { formatUsd, type Metal, type PriceMap, type PriceSnapshot } from "@/lib/prices";
+import {
+  formatLastUpdated,
+  formatUsd,
+  type Metal,
+  type PriceMap,
+  type PriceSnapshot,
+} from "@/lib/prices";
 
 interface LivePriceTickerClientProps {
   initial: PriceSnapshot;
@@ -63,7 +69,7 @@ export default function LivePriceTickerClient({
 
   return (
     <div
-      className={`my-6 flex items-baseline justify-between gap-4 rounded-card border border-steel-200 bg-white p-5 shadow-steel transition-colors duration-300 ${flashClass}`}
+      className={`my-6 flex items-baseline justify-between gap-4 rounded-card border border-steel-200 bg-white p-5 shadow-steel transition-colors duration-300 dark:bg-steel-100 ${flashClass}`}
     >
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-rust-600">
@@ -79,7 +85,9 @@ export default function LivePriceTickerClient({
           {change > 0 ? "+" : ""}
           {change.toFixed(2)}%
         </p>
-        <p className="mt-1 text-xs uppercase tracking-widest text-steel-500">{snapshot.source}</p>
+        <p className="mt-1 font-mono text-xs tabular-nums text-steel-500">
+          Updated {formatLastUpdated(snapshot.asOf)}
+        </p>
       </div>
     </div>
   );

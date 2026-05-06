@@ -57,9 +57,21 @@ const orgJsonLd = {
   description: SITE.description,
 };
 
+// Runs synchronously in <head> before any CSS or JS — sets the `.dark` class
+// on <html> if the user has it stored or prefers it via OS, preventing a flash
+// of the wrong theme on initial paint.
+const themeBootScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
       <body className="flex min-h-screen flex-col">
         <Nav />
         <main className="flex-1">{children}</main>

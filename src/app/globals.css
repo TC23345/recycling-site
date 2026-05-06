@@ -38,6 +38,33 @@
   --shadow-steel: 0 2px 8px rgb(0 0 0 / 0.18);
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Class-based dark mode: invert the steel ramp around its midpoint and
+   lighten navy for headings. Existing utilities (`bg-steel-50`, `text-navy-900`,
+   etc.) automatically pick up the new values, so no `dark:` variant is needed
+   on most surfaces — only on hardcoded `bg-white` cards (see component overrides). */
+.dark {
+  --color-steel-50:  oklch(0.13 0.01 260);
+  --color-steel-100: oklch(0.18 0.012 260);
+  --color-steel-200: oklch(0.25 0.015 260);
+  --color-steel-300: oklch(0.36 0.02 258);
+  --color-steel-400: oklch(0.45 0.02 256);
+  /* steel-500 stays at the midpoint (0.55) — neutral muted on either bg */
+  --color-steel-600: oklch(0.66 0.015 254);
+  --color-steel-700: oklch(0.78 0.012 252);
+  --color-steel-800: oklch(0.88 0.01 250);
+  --color-steel-900: oklch(0.95 0.008 250);
+  --color-steel-950: oklch(0.98 0.005 250);
+
+  --color-navy-700: oklch(0.78 0.04 265);
+  --color-navy-800: oklch(0.85 0.03 265);
+  --color-navy-900: oklch(0.92 0.02 265);
+  --color-navy-950: oklch(0.97 0.015 265);
+
+  --shadow-steel: 0 2px 8px rgb(0 0 0 / 0.4);
+}
+
 @utility text-balance {
   text-wrap: balance;
 }

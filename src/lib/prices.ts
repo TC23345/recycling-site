@@ -223,3 +223,10 @@ export function metalShortLabel(metal: Metal): string {
 export function getStubPrice(metal: Metal): PriceSnapshot {
   return stubSnapshot(metal, new Date().toISOString());
 }
+
+// Extract HH:MM:SS (UTC) from an ISO 8601 timestamp. Deterministic across
+// server and client — avoids hydration mismatch from locale-dependent
+// `toLocaleTimeString()`.
+export function formatLastUpdated(iso: string): string {
+  return iso.length >= 19 ? iso.slice(11, 19) + " UTC" : iso;
+}

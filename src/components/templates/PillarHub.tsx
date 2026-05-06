@@ -49,7 +49,7 @@ export default function PillarHub({
           </div>
         )}
 
-        <article className="prose prose-steel max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline">
+        <article className="prose prose-steel max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline dark:prose-invert">
           {intro}
         </article>
 
@@ -61,7 +61,7 @@ export default function PillarHub({
                 <li key={c.slug}>
                   <Link
                     href={c.href}
-                    className="block rounded-card border border-steel-200 bg-white p-6 shadow-steel transition hover:border-rust-300 hover:shadow-md"
+                    className="block rounded-card border border-steel-200 bg-white p-6 shadow-steel transition hover:border-rust-300 hover:shadow-md dark:bg-steel-100"
                   >
                     <p className="font-display text-lg font-semibold text-navy-900">{c.title}</p>
                     <p className="mt-2 text-sm leading-relaxed text-steel-600">{c.description}</p>
@@ -83,7 +83,7 @@ export default function PillarHub({
                 <li key={p.slug}>
                   <Link
                     href={p.href}
-                    className="block rounded-card border border-steel-200 bg-white p-5 shadow-steel transition hover:border-rust-300 hover:shadow-md"
+                    className="block rounded-card border border-steel-200 bg-white p-5 shadow-steel transition hover:border-rust-300 hover:shadow-md dark:bg-steel-100"
                   >
                     <p className="font-display text-base font-semibold text-navy-900">{p.title}</p>
                     <p className="mt-1 text-sm leading-relaxed text-steel-600">{p.description}</p>

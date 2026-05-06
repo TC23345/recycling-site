@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { formatUsd, type Metal, type PriceMap, type PriceSnapshot } from "@/lib/prices";
+import {
+  formatLastUpdated,
+  formatUsd,
+  type Metal,
+  type PriceMap,
+  type PriceSnapshot,
+} from "@/lib/prices";
 
 interface LivePriceTableProps {
   initial: PriceMap;
@@ -39,14 +45,14 @@ export default function LivePriceTable({ initial, pollMs = 30_000 }: LivePriceTa
   }, [pollMs]);
 
   return (
-    <div className="my-8 overflow-hidden rounded-card border border-steel-200 bg-white shadow-steel">
+    <div className="my-8 overflow-hidden rounded-card border border-steel-200 bg-white shadow-steel dark:bg-steel-100">
       <table className="w-full text-left text-sm">
         <thead className="bg-steel-100 text-xs uppercase tracking-widest text-steel-700">
           <tr>
             <th className="px-5 py-3 font-semibold">Metal / Grade</th>
             <th className="px-5 py-3 text-right font-semibold">USD / lb</th>
             <th className="px-5 py-3 text-right font-semibold">24h</th>
-            <th className="px-5 py-3 text-right font-semibold">Source</th>
+            <th className="px-5 py-3 text-right font-semibold">Last Updated</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-steel-200">
@@ -85,8 +91,8 @@ function PriceRow({ snapshot }: { snapshot: PriceSnapshot }) {
         {change > 0 ? "+" : ""}
         {change.toFixed(2)}%
       </td>
-      <td className="px-5 py-3 text-right text-xs uppercase tracking-widest text-steel-500">
-        {snapshot.source}
+      <td className="px-5 py-3 text-right font-mono text-xs tabular-nums text-steel-500">
+        {formatLastUpdated(snapshot.asOf)}
       </td>
     </tr>
   );

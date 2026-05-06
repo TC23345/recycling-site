@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import PriceBadge from "@/components/PriceBadge";
+import ThemeToggle from "@/components/ThemeToggle";
 import { guideClusters, SITE } from "@/lib/manifest";
 
 function PriceBadgeSkeleton() {
@@ -37,7 +38,7 @@ export default function Nav() {
                 <path d="M2 4l4 4 4-4z" />
               </svg>
             </summary>
-            <ul className="absolute left-0 top-full z-50 mt-1 w-64 overflow-hidden rounded-card border border-steel-200 bg-white shadow-steel">
+            <ul className="absolute left-0 top-full z-50 mt-1 w-64 overflow-hidden rounded-card border border-steel-200 bg-white shadow-steel dark:bg-steel-100">
               {guides.map((c) => (
                 <li key={c.slug}>
                   <Link
@@ -57,6 +58,9 @@ export default function Nav() {
 
         <nav aria-label="Live prices" className="flex flex-wrap items-center gap-2">
           <Suspense fallback={<PriceBadgeSkeleton />}>
+            <PriceBadge metal="copper" />
+          </Suspense>
+          <Suspense fallback={<PriceBadgeSkeleton />}>
             <PriceBadge metal="aluminum" />
           </Suspense>
           <Suspense fallback={<PriceBadgeSkeleton />}>
@@ -65,6 +69,7 @@ export default function Nav() {
           <Suspense fallback={<PriceBadgeSkeleton />}>
             <PriceBadge metal="steel-stainless" />
           </Suspense>
+          <ThemeToggle />
         </nav>
       </div>
     </header>

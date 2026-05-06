@@ -1,11 +1,33 @@
 import { z } from "zod";
 
-export type Metal = "copper" | "aluminum" | "brass" | "steel-stainless" | "steel-prepared";
+export type Metal =
+  | "copper"
+  | "aluminum"
+  | "brass"
+  | "steel-stainless"
+  | "steel-prepared"
+  | "gold"
+  | "silver";
+
+/** Metals that are conventionally quoted in USD/troy-ounce, not USD/lb. */
+export const PRECIOUS_METALS: ReadonlySet<Metal> = new Set<Metal>([
+  "gold",
+  "silver",
+]);
+
+export function isPrecious(metal: Metal): boolean {
+  return PRECIOUS_METALS.has(metal);
+}
 
 export interface PriceSnapshot {
   metal: Metal;
   label: string;
+  /** Canonical price per pound. For precious metals, this is the toz price ÷ TOZ_PER_LB
+   *  — kept populated so legacy consumers don't break, but the display surfaces use
+   *  `usdPerToz` instead via `formatMetalPrice()`. */
   usdPerLb: number;
+  /** Populated for precious metals only (gold, silver). USD per troy ounce. */
+  usdPerToz?: number;
   asOf: string;
   source: "metals-dev" | "yahoo" | "derived" | "stub";
   changePct: number;
@@ -102,8 +124,13 @@ const MetalsDevResponseSchema = z.discriminatedUnion("status", [
 ]);
 
 interface MetalsDevFetchResult {
-  copper?: number; // already USD/lb (we passed unit=lb)
+  // Industrial metals (USD/lb because we passed unit=lb)
+  copper?: number;
   aluminum?: number;
+  // Precious metals (also returned in USD/lb when unit=lb is passed; we
+  // convert to USD/toz at storage time for display).
+  gold?: number;
+  silver?: number;
   asOf: string;
 }
 
@@ -131,11 +158,15 @@ async function fetchMetalsDev(): Promise<MetalsDevFetchResult | null> {
     const m = parsed.data.metals;
     const copperRaw = m.copper ?? m.lme_copper;
     const aluminumRaw = m.aluminum ?? m.lme_aluminum;
+    const goldRaw = m.gold ?? m.lbma_gold_pm ?? m.lbma_gold_am;
+    const silverRaw = m.silver ?? m.lbma_silver;
     const finite = (n: number | undefined): number | undefined =>
       typeof n === "number" && Number.isFinite(n) && n > 0 ? n : undefined;
     return {
       copper: finite(copperRaw),
       aluminum: finite(aluminumRaw),
+      gold: finite(goldRaw),
+      silver: finite(silverRaw),
       asOf: parsed.data.timestamps.metal,
     };
   } catch {
@@ -179,6 +210,8 @@ export interface TimeseriesPoint {
   copper?: number; // USD/lb after scrap discount
   aluminum?: number; // USD/lb after scrap discount
   brass?: number; // derived: copper × 0.62
+  gold?: number; // USD/toz (no scrap discount; refiners ≈ 95-99% of spot)
+  silver?: number; // USD/toz
 }
 
 export type TimeseriesArray = TimeseriesPoint[];
@@ -233,6 +266,10 @@ export async function fetchMetalsDevTimeseries(
       const m = day.metals;
       const copperRaw = m.copper ?? m.lme_copper;
       const aluminumRaw = m.aluminum ?? m.lme_aluminum;
+      // Precious: timeseries works on free tier for these. Pull gold from
+      // the LBMA PM fix when available, fall back to spot.
+      const goldRaw = m.gold ?? m.lbma_gold_pm ?? m.lbma_gold_am;
+      const silverRaw = m.silver ?? m.lbma_silver;
 
       const usable = (n: number | null | undefined): n is number =>
         typeof n === "number" && Number.isFinite(n) && n > 0;
@@ -244,12 +281,26 @@ export async function fetchMetalsDevTimeseries(
         ? toUsdPerLb(aluminumRaw, unit) * SCRAP_DISCOUNT.aluminum
         : undefined;
       const brassLb = copperLb !== undefined ? copperLb * 0.62 : undefined;
+      // Precious metals stored in USD/toz. The timeseries endpoint defaults
+      // to toz; if it ever returns lb, divide by TOZ_PER_LB to get back to toz.
+      const goldToz = usable(goldRaw)
+        ? unit === "lb"
+          ? goldRaw / TOZ_PER_LB
+          : goldRaw
+        : undefined;
+      const silverToz = usable(silverRaw)
+        ? unit === "lb"
+          ? silverRaw / TOZ_PER_LB
+          : silverRaw
+        : undefined;
 
       return {
         date,
         copper: copperLb !== undefined ? roundTo(copperLb, 4) : undefined,
         aluminum: aluminumLb !== undefined ? roundTo(aluminumLb, 4) : undefined,
         brass: brassLb !== undefined ? roundTo(brassLb, 4) : undefined,
+        gold: goldToz !== undefined ? roundTo(goldToz, 2) : undefined,
+        silver: silverToz !== undefined ? roundTo(silverToz, 3) : undefined,
       };
     });
 
@@ -418,7 +469,7 @@ export interface TrendStats {
 
 export function computeTrend(
   points: TimeseriesArray,
-  metal: "copper" | "aluminum" | "brass",
+  metal: "copper" | "aluminum" | "brass" | "gold" | "silver",
 ): TrendStats | null {
   // Most-recent value first non-null walking back from the end.
   const values = points
@@ -455,12 +506,19 @@ export function computeTrend(
 // makes prices appear "live" so the UI animation has something to react to;
 // it is *not* market data — clearly labeled `source: "stub"`.
 
+// usdPerLb is the canonical numeric storage. For precious metals (gold,
+// silver) the lb baseline is the toz baseline ÷ TOZ_PER_LB so display
+// surfaces can compute USD/toz on the fly via formatMetalPrice().
 const STUB_BASELINES: Record<Metal, { label: string; usdPerLb: number }> = {
   copper: { label: "Copper (bare bright)", usdPerLb: 4.12 },
   aluminum: { label: "Aluminum (sheet)", usdPerLb: 0.78 },
   brass: { label: "Brass (yellow)", usdPerLb: 2.65 },
   "steel-stainless": { label: "Stainless steel (304)", usdPerLb: 0.45 },
   "steel-prepared": { label: "Prepared steel (#1 HMS)", usdPerLb: 0.12 },
+  // 1 lb = 14.5833 toz, so usdPerLb = usdPerToz × TOZ_PER_LB.
+  // Gold ~$3,500/toz × 14.58 ≈ $51,000/lb. Silver ~$30/toz × 14.58 ≈ $437/lb.
+  gold: { label: "Gold (spot)", usdPerLb: 51042 },
+  silver: { label: "Silver (spot)", usdPerLb: 437.5 },
 };
 
 function deterministicJitter(seed: string, range = 0.03): number {
@@ -482,7 +540,7 @@ function stubSnapshot(metal: Metal, asOf: string): PriceSnapshot {
   const price = base.usdPerLb * (1 + jitter);
   const prev = base.usdPerLb * (1 + prevJitter);
   const changePct = prev > 0 ? ((price - prev) / prev) * 100 : 0;
-  return {
+  const snapshot: PriceSnapshot = {
     metal,
     label: base.label,
     usdPerLb: roundTo(price, 4),
@@ -490,6 +548,12 @@ function stubSnapshot(metal: Metal, asOf: string): PriceSnapshot {
     source: "stub",
     changePct: roundTo(changePct, 2),
   };
+  if (isPrecious(metal)) {
+    // usdPerToz = usdPerLb / TOZ_PER_LB (a troy ounce is smaller than a pound,
+    // so its dollar price is smaller than the per-pound price).
+    snapshot.usdPerToz = roundTo(price / TOZ_PER_LB, 2);
+  }
+  return snapshot;
 }
 
 function roundTo(n: number, digits: number): number {
@@ -526,6 +590,8 @@ export async function fetchLivePrices(): Promise<PriceMap> {
     brass: stubSnapshot("brass", asOf),
     "steel-stainless": stubSnapshot("steel-stainless", asOf),
     "steel-prepared": stubSnapshot("steel-prepared", asOf),
+    gold: stubSnapshot("gold", asOf),
+    silver: stubSnapshot("silver", asOf),
   };
 
   // Track final post-discount copper price + change so brass can mirror it.
@@ -604,6 +670,36 @@ export async function fetchLivePrices(): Promise<PriceMap> {
     };
   }
 
+  // ── Gold + silver (precious — quoted in USD/toz on display surfaces) ───
+  // Metals.dev /v1/latest with unit=lb returns precious metals in USD/lb;
+  // we convert to USD/toz for storage on the snapshot. No scrap discount —
+  // refiners typically pay 95-99% of spot for jewelry / coin sorts; the
+  // pillar MDX explains the per-grade payout context.
+  if (metalsDev?.gold !== undefined) {
+    const usdPerLb = metalsDev.gold;
+    map.gold = {
+      metal: "gold",
+      label: "Gold (spot)",
+      usdPerLb: roundTo(usdPerLb, 2),
+      usdPerToz: roundTo(usdPerLb / TOZ_PER_LB, 2),
+      asOf,
+      source: "metals-dev",
+      changePct: 0,
+    };
+  }
+  if (metalsDev?.silver !== undefined) {
+    const usdPerLb = metalsDev.silver;
+    map.silver = {
+      metal: "silver",
+      label: "Silver (spot)",
+      usdPerLb: roundTo(usdPerLb, 4),
+      usdPerToz: roundTo(usdPerLb / TOZ_PER_LB, 3),
+      asOf,
+      source: "metals-dev",
+      changePct: 0,
+    };
+  }
+
   return map;
 }
 
@@ -632,7 +728,30 @@ export function metalShortLabel(metal: Metal): string {
       return "Stainless";
     case "steel-prepared":
       return "Steel";
+    case "gold":
+      return "Gold";
+    case "silver":
+      return "Silver";
   }
+}
+
+/**
+ * Formats a snapshot's price using the metal's natural display unit:
+ * USD/troy-ounce for precious metals (gold, silver), USD/pound otherwise.
+ * Returned shape: { value: "$5.69", unit: "/lb" } so callers can style
+ * the number and the unit independently.
+ */
+export function formatMetalPrice(snapshot: PriceSnapshot): {
+  value: string;
+  unit: string;
+} {
+  if (isPrecious(snapshot.metal) && snapshot.usdPerToz !== undefined) {
+    // Gold rounds to 0 decimals (it's $2,500-ish; cents are noise),
+    // silver to 2 (it's $30-ish; dimes matter).
+    const digits = snapshot.metal === "gold" ? 0 : 2;
+    return { value: formatUsd(snapshot.usdPerToz, digits), unit: "/ toz" };
+  }
+  return { value: formatUsd(snapshot.usdPerLb), unit: "/ lb" };
 }
 
 // Synchronous accessor for places that can't await (kept for backward compat;

@@ -1,40 +1,141 @@
-import PriceTicker from "@/components/PriceTicker";
+If you came here looking for the **aluminum price** in a hurry, the live ticker and 30-day chart at the top of this page have you covered — that's the LME spot translated to US dollars per pound, scrap-discounted to roughly what a US yard would actually pay you. Everything below is for when you have ten more minutes and you want to know *why* the number is what it is, and what your bag of cans, stack of siding, or pile of extrusion offcuts is really worth before you drive to the scale.
 
-## Live aluminum scrap price
+This page is written for **scrap sellers, not traders**. You're not here to read futures curves — you're here because the can bag from a summer's barbecues, the old window frames you ripped out of the rental, or the wheels off the project car might be worth real money, and you want to walk into a yard knowing what fair looks like.
 
-<PriceTicker metal="aluminum" />
+## Today's aluminum price at a glance
 
-The price above is **clean sheet aluminum scrap** — a typical 70% discount off LME aluminum spot. Other grades fall below that reference depending on alloy mix, contamination, and how easy the material is for a secondary smelter to process.
+The ticker above shows the current per-pound price. If it reads roughly $1.20/lb, your **clean sheet aluminum** — mill-grade, no paint, no coating — is probably fetching $0.80 to $0.95 per pound at a typical US yard. **Used beverage cans (UBC)** in any reasonable volume usually land somewhere between $0.55 and $0.80 per pound, and **cast aluminum** (wheels, engine blocks, cookware) drops to $0.45 to $0.65 because the alloy mix forces the smelter to work harder.
 
-## Aluminum grade ladder
+The gap between what the screen says and what the yard pays is bigger for aluminum than it is for copper, and the gap between *grades* is also bigger. Most of the [aluminum price-per-pound snapshots](/aluminum-price/aluminum-price-per-pound) you'll find online quote the LME wholesale number — useful as a benchmark, useless as a quote for your driveway pile.
 
-| Grade | Description | Typical % of sheet |
-| --- | --- | --- |
-| Sheet (clean) | Mill-grade, no paint or coating | 100% (reference) |
-| Extrusion | Window frames, structural extrusion | 90–100% |
-| Cast | Wheels, engine blocks, cookware | 70–85% |
-| UBC (cans) | Used beverage cans, baled | 60–75% |
-| Painted / coated | Painted siding, anodized | 50–70% |
-| Mixed / unsorted | Anything that isn't separated | 40–60% |
+## Spot price vs. scrap price — why the discount is wider on aluminum
 
-## What moves aluminum prices day-to-day
+Spot price is the wholesale benchmark. For aluminum, it's set on the **LME** (the London Metal Exchange — the global reference for non-ferrous metals) and quoted in **USD per metric tonne**. The data on this page is converted to USD per pound using the standard `LB_PER_METRIC_TON ≈ 2204.62` conversion, so you don't have to do that math in your head. When a financial-news headline says "aluminum is up 3%," they mean the LME three-month contract.
 
-- **Energy prices** — primary aluminum production is extremely energy-intensive; secondary (recycled) production gains favor when energy is expensive
-- **Auto-sector demand** — aluminum is increasingly used in vehicle bodies and EV battery housings
-- **Beverage can demand** — UBC pricing tracks consumer beverage volumes
-- **Bauxite supply** — primary feedstock; supply disruptions push secondary up
-- **LME warehouse stocks** — the most-watched inventory signal
+Yard price is what you actually pocket. To get from one to the other, the yard applies a stack of discounts that's structurally wider for aluminum than for copper:
 
-## Selling tips
+- **Yard margin** — the cut that pays for labor, transport to a secondary smelter, and inventory risk between your visit and their next outbound shipment.
+- **Alloy and contamination discount** — aluminum scrap arrives in dozens of alloys mixed together. The smelter has to test, sort, and dilute. That cost flows back to you.
+- **Energy-cost exposure** — secondary aluminum production is electricity-intensive. When power prices spike, smelter margins get squeezed and yards get more conservative on what they'll pay.
+- **Volume tier** — a 500-lb load of clean sheet gets a friendlier rate than a kitchen trash bag of crushed cans.
 
-- **Clean sheet pays the most** — strip paint and labels where economic
-- **Don't mix cast with sheet** — entire load defaults to cast pricing
-- **Cans pay best in volume** — small UBC sales are barely worth the trip
-- **Aluminum is non-magnetic** — easy to separate from steel with a magnet pass before loading
+Stack those together and the typical clean-sheet load lands at **65–75% of LME spot**, not the 85–92% you'd see for bare-bright copper. There's nothing nefarious about it; aluminum is a structurally less-tight market than copper, and [the scrap-discount math at the yard](/scrap-guide/yards/scrap-metal-prices) reflects that. A worked example helps:
 
-## Related
+| Scenario | LME ($/lb) | Yard payout factor | Per-lb to seller | 100-lb load |
+|---|---:|---:|---:|---:|
+| Clean sheet aluminum | $1.20 | 0.65–0.75× | $0.78–$0.90 | $78–$90 |
+| Extrusion (clean) | $1.20 | 0.62–0.72× | $0.74–$0.86 | $74–$86 |
+| UBC (baled, to spec) | $1.20 | 0.50–0.65× | $0.60–$0.78 | $60–$78 |
+| Cast aluminum | $1.20 | 0.38–0.52× | $0.46–$0.62 | $46–$62 |
+| Painted / coated siding | $1.20 | 0.40–0.55× | $0.48–$0.66 | $48–$66 |
+| Mixed unsorted | $1.20 | 0.30–0.45× | $0.36–$0.54 | $36–$54 |
 
-- [Aluminum Price Per Pound](/copper-price/aluminum-price-per-pound)
-- [Aluminum Scrap Price](/copper-price/aluminum-scrap-price)
-- [Copper Price](/copper-price)
-- [Brass Price](/brass-price)
+Numbers above are typical industry ranges; your local market may run tighter or looser. A coastal high-volume metro yard buying for a regional secondary smelter will pay closer to the top of the range than a single-yard rural market handling mostly ferrous. For the deeper grade-by-grade breakdown — and what actually disqualifies a piece from the higher tier — keep reading, or jump to [scrap aluminum prices in detail](/aluminum-price/aluminum-scrap-price).
+
+## Aluminum grade ladder and payout ratios
+
+Almost every US yard quotes the same five-or-six aluminum tiers, and the difference between adjacent tiers is real money. Sorting before you drive is the highest-paying minute of work in scrap aluminum — wider in percentage terms than even copper's grade gaps.
+
+| Grade | What it is | How to identify | Typical payout (% of LME) |
+|---|---|---|---:|
+| Clean sheet | Mill-grade flat sheet, no paint or coating | Bare aluminum, stamped or rolled, no attachments | 65–75% |
+| Extrusion (clean) | Window frames, structural extrusion, no paint or steel | Long uniform profiles, often 6063 alloy | 62–72% |
+| Cast | Wheels, engine blocks, transmission cases, cookware | Heavier wall, sand-cast or die-cast surface texture | 38–52% |
+| UBC (baled, to spec) | Used beverage cans in a 1,000-lb-plus baled load | Cubed bale, mostly cans, minimal contamination | 50–65% |
+| UBC (loose) | Loose or bagged cans, small volume | Crushed or whole cans, no bale | 35–55% |
+| Painted / coated | Painted siding, anodized trim, painted extrusion | Color coating intact, often steel screws attached | 40–55% |
+| Mixed / unsorted | Anything not separated | Anything goes — yard defaults to the lowest grade present | 30–45% |
+
+The single biggest lever a scrapper has is the **clean sheet vs. cast vs. mixed** decision. Mixing one cast wheel into a load of clean sheet drops the entire load to cast-or-below pricing — because once it's tipped into the bin, the grader can't undo it. The [grading principles for non-ferrous metals like aluminum](/scrap-guide/grades/copper-and-wire) are the same ones used for copper: clean and separated pays, mixed defaults down. For a per-pound focus rather than a grade focus, see [aluminum price per pound by grade](/aluminum-price/aluminum-price-per-pound).
+
+### A note on UBC — used beverage cans deserve their own paragraph
+
+Cans are the only aluminum grade where the math gets weird, because **the redemption price beats the scrap price** in deposit-bottle states. If you live in California, Michigan, Oregon, New York, or any of the eleven states with bottle-bill programs, your cans are worth the deposit (often $0.05 or $0.10 each) at a redemption center — which translates to **roughly $1.50–$1.80 per pound** in California's CRV system, more than double what any scrap yard will pay you per pound for the same cans.
+
+If you don't live in a deposit state, baled UBC pays close to clean sheet — but only if you have volume. A few crushed cans in a grocery bag will get weighed against the loose-UBC tier. A 1,000-lb bale to mill specifications can clear the higher number. For most household scrappers, the question is whether you have somewhere to redeem (deposit state — go redeem) or whether you're piling cans for a once-a-year scrap run (non-deposit state — pile them, but expect $0.50/lb territory, not $1.00).
+
+## What moves aluminum prices
+
+You don't need to read the futures market to scrap aluminum, but understanding the macro forces helps you make sense of the chart at the top of this page and decide whether your pile is appreciating fast enough to wait or stable enough to unload now.
+
+**Energy prices** are the single biggest swing factor for aluminum, more than for any other base metal. Producing one tonne of primary aluminum from bauxite takes roughly 14 megawatt-hours of electricity — so when European power prices spiked in 2022 the global aluminum supply curve shifted overnight, with smelters in Germany, France, and the Netherlands curtailing capacity. Watch industrial-power prices in China, Europe, and Quebec; they all matter.
+
+**China demand and supply** sets the floor and the ceiling. China produces roughly 60% of global primary aluminum and is also the largest consumer. Its property-construction cycle, EV-production ramp, and domestic-stimulus signals all move the LME contract month-to-month. The [Aluminum Association](https://www.aluminum.org/) tracks US-side demand and is a good external reference for downstream consumption trends.
+
+**Automotive lightweighting** is the structural buyer underneath the cycle. Aluminum content per vehicle has roughly doubled in the last fifteen years and is still climbing as EV battery housings, body panels, and structural castings displace steel. That demand is durable and it's why aluminum's cyclical lows are higher than they were a decade ago.
+
+**Bauxite supply** is the persistent risk on the other side. Guinea, Australia, and Brazil produce most of the world's bauxite (the ore aluminum is refined from), and political or shipping disruptions in any of those origins ripple through to LME pricing in weeks. The [USGS aluminum statistics page](https://www.usgs.gov/centers/national-minerals-information-center/aluminum-statistics-and-information) publishes the per-country production numbers if you want to verify.
+
+**The US dollar** matters because aluminum is priced in dollars. A weaker dollar tends to lift commodity prices broadly; a stronger dollar tends to compress them. For deeper coverage of the macro drivers and the futures-market mechanics, see our [aluminum market trade and pricing context](/industry-guide/trade-and-pricing) page.
+
+When you see aluminum rip 8% in a month — that's why your yard's posted price moved. When it goes flat for six weeks, that's also why.
+
+## How to read a yard's aluminum price sheet
+
+Most US scrap yards post their per-pound aluminum prices on a chalkboard or LCD inside the office, updated daily or twice daily. A typical board reads:
+
+> Sheet **$0.85** / lb &nbsp;&nbsp; Extrusion **$0.78** / lb &nbsp;&nbsp; Cast **$0.55** / lb &nbsp;&nbsp; UBC **$0.65** / lb &nbsp;&nbsp; Mixed **$0.40** / lb
+
+Three things first-time aluminum sellers miss when they read these boards:
+
+1. **The board's "Sheet" line is the reference, but most household loads aren't sheet.** Window frames are extrusion. Siding is painted (a separate, lower line). Wheels are cast. Cookware is cast. The mistake is reading $0.85/lb on the board and assuming that's what your pile gets — when in reality the grader is going to call most of it cast or painted and pay accordingly.
+2. **"Delivered" and "picked up" are different prices.** A yard offering pickup will pay less per pound than they will to a seller who drove the load in — they're absorbing the truck and labor cost. If you're weighing whether to call for a [scrap metal pickup](/selling-guide/logistics/scrap-metal-removal) on a load of siding or extrusion, get both quotes before you commit. For small loads under 100 lb, the math almost never works for pickup.
+3. **Posted prices are the ceiling, not the floor.** What you actually get paid depends on the grader's call on inspection. A seller who shows up with what they think is clean sheet but turns out to have anodized coating gets bumped down to painted — and that 15–20 percentage-point drop is real money. Sort cleanly, ask if you're not sure, and don't argue with the grader; they've graded ten thousand more buckets than you have.
+
+For the broader pricing context — how scrap-metal pricing moves across grades — our [scrap metal prices reference page](/scrap-guide/yards/scrap-metal-prices) has the comparable view across non-ferrous and ferrous. To find a yard near you to compare boards, [start with our scrap-yards directory](/local-guide/near-me/scrap-yards-near-me) — calling two or three before driving is almost always worth it for aluminum, where the spread between yards on the same load can be 20%+.
+
+## Selling aluminum scrap: prep, weigh-in, and getting paid right
+
+A short checklist that captures what experienced aluminum scrappers do without thinking:
+
+- **Pre-sort by grade before you drive.** Sheet in one bin, extrusion in another, cast in a third, UBC separate. The yard isn't going to argue if you tell them which grade each bin is — they're going to verify. But if you show up with everything mixed in one barrel, the entire load defaults to the lowest grade present. That's a 30–50% haircut on what could have been clean-sheet money.
+- **Strip steel screws and inserts from extrusion.** Window frames often have steel reinforcements or screws. A magnet pass before you load tells you what's pure aluminum and what isn't — and a clean extrusion bin pays meaningfully more than one flagged for ferrous contamination. Thirty seconds with a magnet recovers real money.
+- **Don't strip paint unless the math works.** Removing paint from siding to reclassify it as clean sheet sounds like it should pay off, but the time cost rarely makes sense for household volumes. The 15-percentage-point bump from painted (40–55%) to sheet (65–75%) translates to maybe $0.20/lb — at 100 lb of siding, that's $20, and stripping paint on 100 lb of siding takes hours. See [aluminum scrap preparation guidance](/selling-guide/preparation) for the breakeven math.
+- **Bring photo ID.** Most US states require yards to record the seller's ID for non-ferrous transactions over a threshold (varies by state, often $25 or $50 — yes, that low). Aluminum counts. It's not a hassle; it's the law.
+- **Expect a check, not cash, over a threshold.** Many yards cap cash payouts at $100–$500 per visit, with anything over that cut as a check or ACH. If you need cash same-day for a larger load, call ahead.
+- **Watch the scale on small loads.** For a 30-lb bag of cans, a half-pound miscalibration matters; for a half-ton of siding on a truck scale, it doesn't. Ask which scale is being used and confirm gross/tare numbers if it's a truck scale. Reputable yards welcome the question.
+
+For seller-side pricing literacy — the rest of the cash-and-tax considerations — our [scrap pricing literacy guide](/selling-guide/pricing) covers what reputable yards expect from a first-time seller. If you're moving enough volume that you're considering a formal buyer relationship, our [OmniSource buyer profile](/industry-guide/vendors/omnisource) is a representative profile of one of the larger US-based industrial buyers; the same patterns apply at most major chains and many independents.
+
+## Per-unit conversions — pound, ounce, gram, kilo, ton, tonne
+
+US scrap is almost universally priced per pound, but aluminum is one of the few metals where you'll see all five units in active use depending on the audience. Traders quote LME in USD per metric tonne; US yards quote USD per pound; a few coastal export-focused buyers will quote in cents per pound (which is the same number as the LME tonne price divided by ~2,205, expressed as cents). For your sanity:
+
+| Unit | Conversion to pound | At a $1.20/lb LME reference |
+|---|---|---:|
+| 1 pound (lb) | 1.000 lb | $1.20 |
+| 1 ounce (avoirdupois, oz) | 0.0625 lb | $0.075 |
+| 1 gram (g) | 0.0022 lb | $0.0026 |
+| 1 kilogram (kg) | 2.2046 lb | $2.65 |
+| 1 short ton (US, 2,000 lb) | 2,000 lb | $2,400 |
+| 1 metric tonne (1,000 kg) | 2,204.6 lb | $2,646 |
+
+Substitute the live ticker number above for the example $1.20 to get current values. The LME quote you'll see on Trading Economics, Kitco, or Yahoo Finance is in USD per metric tonne — divide by 2,204.62 to get USD per pound. For the answer-page version of [how much aluminum is per pound today](/aluminum-price/aluminum-price-per-pound), we maintain a daily-updated leaf that focuses on the per-pound number alone with current cash-payout context.
+
+## Frequently asked questions
+
+**How much is a pound of aluminum worth right now?**
+
+Check the live ticker at the top of this page for spot. To translate to scrap: typical clean-sheet aluminum pays roughly 65–75% of LME spot at a US yard. So a $1.20 spot reads as roughly $0.80–$0.90 in cash per pound for clean sheet. Lower grades drop from there — cast aluminum at $0.45–$0.65, painted siding at $0.50–$0.70, UBC at $0.55–$0.80 baled. Regional and grade-specific variance is real; the only number that matters for your transaction is what your local yard quotes today.
+
+**How much is a pound of aluminum cans worth?**
+
+In a non-deposit state, expect $0.40–$0.70 per pound at a scrap yard, with the higher end requiring meaningful volume (a 50-lb-plus crushed bag, ideally bigger). In a deposit-bottle state — California, Michigan, Oregon, New York, and several others — the redemption value at a state-certified center is much higher, often $1.50–$1.80 per pound for California CRV cans. Always redeem if you can; only sell as scrap if redemption isn't an option.
+
+**Why is the yard's price so much lower than the LME spot price I see online?**
+
+LME spot is wholesale tonne-pricing for traders. The yard takes a margin to cover labor, transport to a secondary smelter, and the alloy-mix discount that aluminum carries because scrap arrives as dozens of different alloys mixed together. Add grade discounts and any contamination deductions on top. The 25–35% gap between LME spot and your clean-sheet payout isn't anyone cheating you — it's how the aluminum scrap supply chain actually pays for itself. The grade discount (clean sheet vs. cast vs. mixed) is usually a much larger factor than yard margin alone.
+
+**Is now a good time to sell aluminum scrap?**
+
+Look at the 30-day chart at the top of this page. If aluminum is up 6% or more over the past month, the macro tape is favorable — and if you've been sitting on a pile of siding or extrusion, that pile just appreciated meaningfully. Consider unloading. If the chart is flat or down, holding rarely costs much (aluminum doesn't spoil), but the floor space might be more valuable than the optionality. Don't try to time the bottom; aim for "good enough" and don't second-guess.
+
+**What's the difference between cast and sheet aluminum, and why does it matter so much?**
+
+Sheet is mill-rolled flat aluminum, typically a single alloy (often 3003 or 5052), low impurity, easy for a smelter to remelt and reuse. Cast aluminum was molten when it was formed — wheels, engine blocks, cookware — and almost always has higher silicon content and a wider alloy mix. The smelter has to either dilute cast scrap into a mixed-alloy stream or process it separately, which takes more energy and yields a less-valuable product. That's why cast pays 38–52% of LME and sheet pays 65–75%. Visually: sheet looks rolled or stamped; cast looks like it was poured into a mold (rough or pebbled surface texture, heavier wall thickness).
+
+## Related aluminum and metal pricing pages
+
+For a per-pound focus rather than a grade-by-grade view, the [aluminum price per pound leaf](/aluminum-price/aluminum-price-per-pound) is the same data with a tighter lens. The [aluminum scrap price page](/aluminum-price/aluminum-scrap-price) goes deeper on grade-level pricing and yard mechanics. If you're shopping multiple metals, our other pricing pillars cover [copper prices](/copper-price), [brass prices](/brass-price), [stainless steel prices](/stainless-steel-price), and the precious metals via [live gold pricing](/gold-price) and [silver pricing](/silver-price). For local-market context, [scrap metal prices near you](/local-guide/near-me/scrap-metal-prices-near-me) helps you sanity-check what your regional yards are quoting, and the broader [scrap metal recycling overview](/recycling-guide/metal-recycling/scrap-metal-recycling) frames where aluminum fits in the wider non-ferrous market.
+
+Live exchange data on the page above is sourced from Metals.dev (or Yahoo Finance as a fallback). The Yahoo `ALI=F` continuous contract is a useful US-market reference; for the official global benchmark, the [LME aluminium page](https://www.lme.com/Metals/Non-ferrous/LME-Aluminium) publishes daily official prices and stock levels.

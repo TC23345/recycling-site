@@ -8,12 +8,12 @@ It's built for **sellers, scrappers, yard operators, and recycling-center custom
 
 Live pricing on this site is fetched server-side and runs through a deterministic data chain so you can see exactly where every number comes from.
 
-- **Copper** — pulled from Yahoo Finance's public chart endpoint for the COMEX `HG=F` futures contract.
-- **Aluminum** — pulled from Yahoo Finance for the `ALI=F` futures contract, then converted from USD per metric ton to USD per pound.
-- **Brass** — derived from live copper × ~0.62, reflecting typical Cu/Zn alloy mass weighting.
-- **Stainless steel and prepared steel** — currently stub-priced. No free public ticker maps cleanly to scrap stainless; we'll wire a paid feed once one is justified.
+- **Copper** — primary source is [Metals.dev](https://metals.dev) when an API key is configured (LME-stamped spot, USD/lb directly). Falls back to Yahoo Finance's public chart endpoint for the COMEX `HG=F` futures contract.
+- **Aluminum** — primary source is Metals.dev (USD/lb directly). Falls back to Yahoo Finance's `ALI=F` contract, converted from USD/metric-ton to USD/lb.
+- **Brass** — derived from live copper × ~0.62, reflecting typical Cu/Zn alloy mass weighting. Inherits whichever provider was used for copper.
+- **Stainless steel and prepared steel** — currently stub-priced. No free public ticker maps cleanly to scrap stainless; we'll wire Metals.dev's nickel feed (or upgrade to a dedicated stainless source) once it's justified.
 
-Every payload is validated with [Zod](https://zod.dev). If the upstream shape ever changes, the affected metal silently falls through to a deterministic-jitter stub and the snapshot is tagged `source: "stub"` so the failure is visible in DevTools.
+Every payload is validated with [Zod](https://zod.dev). If the upstream shape ever changes — or Metals.dev hits a quota or auth error — the affected metal silently falls through to the next source in the chain (Metals.dev → Yahoo → deterministic-jitter stub). The active source is tagged on each snapshot (`source: "metals-dev" | "yahoo" | "derived" | "stub"`) so provenance is visible in DevTools and in the per-metal UI badges.
 
 ### Discount factors
 
@@ -39,7 +39,7 @@ We do not collect material, issue payouts, broker shipments, or accept consignme
 
 ## Sources & disclaimers
 
-- **Pricing data:** Yahoo Finance public chart endpoint (`HG=F`, `ALI=F`). No warranty of accuracy. Yahoo can change or remove its public endpoints at any time.
+- **Pricing data:** [Metals.dev](https://metals.dev) `/v1/latest` (primary, when API key is set) and Yahoo Finance public chart endpoint (`HG=F`, `ALI=F`) as fallback. No warranty of accuracy. Yahoo can change or remove its public endpoints at any time; Metals.dev's free tier is rate-limited so we cache aggressively.
 - **Editorial:** written and maintained in-house. We update pages as the underlying market or grading conventions change.
 - **Always confirm with your local yard.** Live numbers on this page are reference points. Before you load a truck, call ahead — yards quote net of grade, contamination, and current inventory.
 

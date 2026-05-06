@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import PriceBadge from "@/components/PriceBadge";
 import ThemeToggle from "@/components/ThemeToggle";
+import MobileMenu from "@/components/MobileMenu";
 import { guidesAll, SITE } from "@/lib/manifest";
 
 function PriceBadgeSkeleton() {
@@ -13,21 +14,43 @@ function PriceBadgeSkeleton() {
 export default function Nav() {
   const guides = guidesAll();
 
+  // Pre-render the price badges once on the server. We render them into both
+  // surfaces (desktop nav + mobile panel) so the async server components don't
+  // need to cross the client boundary inside <MobileMenu>.
+  const priceBadges = (
+    <>
+      <Suspense fallback={<PriceBadgeSkeleton />}>
+        <PriceBadge metal="copper" />
+      </Suspense>
+      <Suspense fallback={<PriceBadgeSkeleton />}>
+        <PriceBadge metal="aluminum" />
+      </Suspense>
+      <Suspense fallback={<PriceBadgeSkeleton />}>
+        <PriceBadge metal="brass" />
+      </Suspense>
+      <Suspense fallback={<PriceBadgeSkeleton />}>
+        <PriceBadge metal="steel-stainless" />
+      </Suspense>
+    </>
+  );
+
   return (
     <header className="sticky top-0 z-40 border-b border-steel-200 bg-steel-50/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-3">
-        <div className="flex items-center gap-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <div className="flex items-center gap-3 md:gap-6">
+          <MobileMenu guides={guides} priceBadges={priceBadges} />
+
           <Link
             href="/"
-            className="flex items-baseline gap-2 font-display text-lg font-semibold text-navy-900 hover:text-navy-700"
+            className="flex shrink-0 items-baseline gap-2 whitespace-nowrap rounded-md font-display text-lg font-semibold text-navy-900 hover:text-navy-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500"
           >
             <span className="inline-block h-3 w-3 rounded-sm bg-rust-500" aria-hidden />
             {SITE.shortName}
           </Link>
 
-          {/* Guides dropdown — uses native <details> for zero JS, keyboard accessible */}
-          <details className="group relative">
-            <summary className="flex cursor-pointer list-none items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium text-steel-700 hover:bg-steel-100 hover:text-navy-900 [&::-webkit-details-marker]:hidden">
+          {/* Desktop-only: Guides dropdown via native <details>, plus About link */}
+          <details className="group relative hidden md:block">
+            <summary className="flex cursor-pointer list-none items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium text-steel-700 hover:bg-steel-100 hover:text-navy-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 [&::-webkit-details-marker]:hidden">
               Guides
               <svg
                 className="h-3 w-3 transition-transform group-open:rotate-180"
@@ -43,7 +66,7 @@ export default function Nav() {
                 <li key={c.slug}>
                   <Link
                     href={c.href}
-                    className="block px-4 py-3 text-sm text-steel-700 hover:bg-steel-50 hover:text-navy-900"
+                    className="block px-4 py-3 text-sm text-steel-700 hover:bg-steel-50 hover:text-navy-900 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-rust-500"
                   >
                     <span className="block font-display font-semibold text-navy-900">
                       {c.shortTitle}
@@ -54,23 +77,28 @@ export default function Nav() {
               ))}
             </ul>
           </details>
+
+          <Link
+            href="/about"
+            className="hidden rounded-md px-3 py-1.5 text-sm font-medium text-steel-700 transition hover:bg-steel-100 hover:text-navy-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 md:inline-flex"
+          >
+            About
+          </Link>
         </div>
 
-        <nav aria-label="Live prices" className="flex flex-wrap items-center gap-2">
-          <Suspense fallback={<PriceBadgeSkeleton />}>
-            <PriceBadge metal="copper" />
-          </Suspense>
-          <Suspense fallback={<PriceBadgeSkeleton />}>
-            <PriceBadge metal="aluminum" />
-          </Suspense>
-          <Suspense fallback={<PriceBadgeSkeleton />}>
-            <PriceBadge metal="brass" />
-          </Suspense>
-          <Suspense fallback={<PriceBadgeSkeleton />}>
-            <PriceBadge metal="steel-stainless" />
-          </Suspense>
+        {/* Desktop-only price row */}
+        <nav
+          aria-label="Live prices"
+          className="hidden items-center gap-2 md:flex md:flex-wrap"
+        >
+          {priceBadges}
           <ThemeToggle />
         </nav>
+
+        {/* Mobile-only: theme toggle on the right (hamburger lives on the left) */}
+        <div className="md:hidden">
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

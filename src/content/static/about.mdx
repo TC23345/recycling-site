@@ -1,0 +1,48 @@
+## What this site is
+
+A content-first authority site for the scrap-metal and recycling niche. We track live commodity pricing for the metals most sellers actually move, profile the major buyers, walk through the practical mechanics of grading and prepping each metal, and help readers find reputable yards in their area.
+
+It's built for **sellers, scrappers, yard operators, and recycling-center customers** — anyone who wants to know what their material is worth before they hit the scale, and who buys from them after.
+
+## How the live pricing works
+
+Live pricing on this site is fetched server-side and runs through a deterministic data chain so you can see exactly where every number comes from.
+
+- **Copper** — pulled from Yahoo Finance's public chart endpoint for the COMEX `HG=F` futures contract.
+- **Aluminum** — pulled from Yahoo Finance for the `ALI=F` futures contract, then converted from USD per metric ton to USD per pound.
+- **Brass** — derived from live copper × ~0.62, reflecting typical Cu/Zn alloy mass weighting.
+- **Stainless steel and prepared steel** — currently stub-priced. No free public ticker maps cleanly to scrap stainless; we'll wire a paid feed once one is justified.
+
+Every payload is validated with [Zod](https://zod.dev). If the upstream shape ever changes, the affected metal silently falls through to a deterministic-jitter stub and the snapshot is tagged `source: "stub"` so the failure is visible in DevTools.
+
+### Discount factors
+
+The numbers shown on this site are **scrap payouts**, not exchange spot. We apply standard discount factors to map COMEX spot into what a typical yard would pay:
+
+- **Copper:** spot × 0.92
+- **Aluminum:** spot × 0.70
+
+Local yards quote tighter or wider depending on grade, region, and how full their inventory is. Treat our numbers as a baseline, not a quote.
+
+### Refresh cadence
+
+- Server-side fetches are edge-cached for ~60 seconds.
+- The browser polls the `/api/prices` route every ~30 seconds and flashes any value that changed.
+
+All prices are **indicative** — they are not buy or sell quotes, and we do not transact in metal.
+
+## What this site is NOT
+
+We are **not a buyer**. We are not a yard. We are not affiliated with OmniSource, Weissman's, Schnitzer, SA Recycling, Sims Metal, or any other recycler. Vendor profiles on this site are informational write-ups, not endorsements or partnerships.
+
+We do not collect material, issue payouts, broker shipments, or accept consignments. If a page on this site looks like a vendor we cover, that's a profile, not us.
+
+## Sources & disclaimers
+
+- **Pricing data:** Yahoo Finance public chart endpoint (`HG=F`, `ALI=F`). No warranty of accuracy. Yahoo can change or remove its public endpoints at any time.
+- **Editorial:** written and maintained in-house. We update pages as the underlying market or grading conventions change.
+- **Always confirm with your local yard.** Live numbers on this page are reference points. Before you load a truck, call ahead — yards quote net of grade, contamination, and current inventory.
+
+## Contact
+
+For corrections or feedback, contact [TBD]. We do not collect emails on this site, run a newsletter, or operate user accounts.

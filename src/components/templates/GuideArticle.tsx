@@ -30,7 +30,7 @@ export default function GuideArticle({ page, crumbs, clusterSlug, body }: GuideA
       <PageHero eyebrow="Guide" title={page.title} description={page.description} />
       <div className="mx-auto max-w-3xl px-6 py-10">
         <Breadcrumbs crumbs={crumbs} />
-        <article className="prose prose-steel mt-8 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 dark:prose-invert">
+        <article className="prose prose-steel mt-8 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 hover:prose-a:underline focus-visible:prose-a:outline-2 focus-visible:prose-a:outline-offset-2 focus-visible:prose-a:outline-rust-500 dark:prose-invert">
           {body}
         </article>
         <RelatedLinks clusterSlug={clusterSlug} excludeSlug={page.slug} />

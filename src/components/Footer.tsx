@@ -5,6 +5,9 @@ export default function Footer() {
   const guides = guidesAll();
   const pricing = pricingClusters();
 
+  const linkClass =
+    "inline-block py-1 text-steel-600 transition-colors hover:text-rust-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500";
+
   return (
     <footer className="mt-20 border-t border-steel-200 bg-steel-100">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -17,10 +20,10 @@ export default function Footer() {
           <h4 className="font-display text-sm font-semibold uppercase tracking-wide text-navy-900">
             Live prices
           </h4>
-          <ul className="mt-2 space-y-1.5 text-sm">
+          <ul className="mt-2 space-y-1 text-sm">
             {pricing.map((c) => (
               <li key={c.slug}>
-                <Link href={c.href} className="text-steel-600 hover:text-rust-700">
+                <Link href={c.href} className={linkClass}>
                   {c.shortTitle}
                 </Link>
               </li>
@@ -32,10 +35,10 @@ export default function Footer() {
           <h4 className="font-display text-sm font-semibold uppercase tracking-wide text-navy-900">
             Guides
           </h4>
-          <ul className="mt-2 space-y-1.5 text-sm">
+          <ul className="mt-2 space-y-1 text-sm">
             {guides.map((c) => (
               <li key={c.slug}>
-                <Link href={c.href} className="text-steel-600 hover:text-rust-700">
+                <Link href={c.href} className={linkClass}>
                   {c.shortTitle}
                 </Link>
               </li>
@@ -45,14 +48,28 @@ export default function Footer() {
 
         <div>
           <h4 className="font-display text-sm font-semibold uppercase tracking-wide text-navy-900">
-            About
+            Site
           </h4>
-          <p className="mt-2 text-sm leading-relaxed text-steel-600">
-            Pricing is indicative — sourced from public futures data with typical scrap
-            discounts applied. Not a buy or sell quote.
-          </p>
+          <ul className="mt-2 space-y-1 text-sm">
+            <li>
+              <Link href="/about" className={linkClass}>
+                About
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className={linkClass}>
+                Privacy
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
+
+      <div className="mx-auto max-w-6xl px-6 pb-6 text-sm leading-relaxed text-steel-600">
+        Pricing is indicative — sourced from public futures data with typical scrap discounts
+        applied. Not a buy or sell quote.
+      </div>
+
       <div className="border-t border-steel-200 px-6 py-5 text-center text-xs text-steel-500">
         © {new Date().getFullYear()} {SITE.name}. Confirm rates with your local yard before
         transacting.

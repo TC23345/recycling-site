@@ -71,10 +71,10 @@ export default function RelatedLinks({
           <li key={p.slug}>
             <Link
               href={p.href}
-              className="block rounded-card border border-steel-200 bg-white p-5 shadow-steel transition hover:border-rust-300 hover:shadow-md dark:bg-steel-100"
+              className="block h-full rounded-card border border-steel-200 bg-white p-5 shadow-steel transition-[colors,box-shadow] duration-200 hover:border-rust-300 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100"
             >
               <p className="font-display text-base font-semibold text-navy-900">{p.title}</p>
-              <p className="mt-1 text-sm leading-relaxed text-steel-600">{p.description}</p>
+              <p className="mt-1 text-pretty text-sm leading-relaxed text-steel-600">{p.description}</p>
             </Link>
           </li>
         ))}

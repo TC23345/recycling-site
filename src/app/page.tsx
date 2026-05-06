@@ -55,7 +55,14 @@ export default function HomePage() {
               Refreshes every 60 s
             </p>
           </div>
-          <Suspense fallback={<div className="my-8 h-48 animate-pulse rounded-card bg-steel-100" />}>
+          <Suspense
+            fallback={
+              <div
+                className="my-8 h-72 animate-pulse rounded-card border border-steel-200 bg-steel-100 sm:h-64"
+                aria-hidden
+              />
+            }
+          >
             <PriceTable />
           </Suspense>
         </section>
@@ -64,12 +71,23 @@ export default function HomePage() {
           <h2 className="font-display text-2xl font-semibold text-navy-900">
             Metal price pages
           </h2>
-          <p className="mt-2 max-w-2xl text-steel-600">
+          <p className="mt-2 max-w-2xl text-pretty text-steel-600">
             Dedicated live-price hubs for each metal, with grade ladders, market context, and
             seller tips.
           </p>
           <div className="mt-6">
-            <Suspense fallback={<div className="h-40 animate-pulse rounded-card bg-steel-100" />}>
+            <Suspense
+              fallback={
+                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-hidden>
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <li
+                      key={i}
+                      className="h-44 animate-pulse rounded-card border border-steel-200 bg-steel-100"
+                    />
+                  ))}
+                </ul>
+              }
+            >
               <MetalCardsGrid />
             </Suspense>
           </div>
@@ -79,19 +97,19 @@ export default function HomePage() {
           <h2 className="font-display text-2xl font-semibold text-navy-900">
             Guides & directories
           </h2>
-          <p className="mt-2 max-w-2xl text-steel-600">
+          <p className="mt-2 max-w-2xl text-pretty text-steel-600">
             Long-form reference: how scrap is graded, where to find a yard, how the recycling
             chain actually works.
           </p>
-          <ul className="mt-6 grid gap-5 sm:grid-cols-3">
+          <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {guides.map((c) => (
               <li key={c.slug}>
                 <Link
                   href={c.href}
-                  className="block h-full rounded-card border border-steel-200 bg-white p-6 shadow-steel transition hover:border-rust-300 hover:shadow-md dark:bg-steel-100"
+                  className="block h-full rounded-card border border-steel-200 bg-white p-6 shadow-steel transition-[colors,box-shadow] duration-200 hover:border-rust-300 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100"
                 >
                   <p className="font-display text-lg font-semibold text-navy-900">{c.title}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-steel-600">{c.description}</p>
+                  <p className="mt-2 text-pretty text-sm leading-relaxed text-steel-600">{c.description}</p>
                   <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-rust-600">
                     Explore →
                   </p>

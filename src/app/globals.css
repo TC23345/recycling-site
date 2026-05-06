@@ -105,9 +105,18 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  /* Scope smooth scroll to the opt-in attribute Next 16 looks for so route
+     transitions don't animate scroll restoration. See nextjs.org/docs/messages/missing-data-scroll-behavior */
+  html[data-scroll-behavior="smooth"] {
+    scroll-behavior: smooth;
+  }
   body {
     background: var(--color-steel-50);
     font-family: var(--font-sans);
+  }
+  /* Offset in-page anchor jumps so headings clear the sticky nav (~64px). */
+  :is(h1, h2, h3, h4)[id] {
+    scroll-margin-top: 5rem;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
@@ -119,5 +128,33 @@
   }
   a:hover {
     color: var(--color-rust-900);
+  }
+}
+
+/* Make MDX-rendered tables (via remark-gfm + Tailwind Typography) scroll
+   horizontally on narrow viewports instead of overflowing the page. */
+@layer components {
+  .prose .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .prose .table-wrap > table {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* Reduced-motion: silence the flash, smooth-scroll, and our card transitions
+   for users who prefer less movement. Keeps content readable, drops kinetic flair. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

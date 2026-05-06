@@ -47,6 +47,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
+    {
+      url: `${SITE.baseUrl}/about`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    },
+    {
+      url: `${SITE.baseUrl}/privacy`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    },
   ];
   return entries;
 }

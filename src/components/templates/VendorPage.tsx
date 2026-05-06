@@ -35,7 +35,7 @@ export default function VendorPage({ page, crumbs, clusterSlug, body }: VendorPa
           profile compiled from public sources. We are not affiliated with this vendor and do not
           endorse them. Prices, services, and locations may have changed since publication.
         </p>
-        <article className="prose prose-steel mt-6 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 dark:prose-invert">
+        <article className="prose prose-steel mt-6 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 hover:prose-a:underline focus-visible:prose-a:outline-2 focus-visible:prose-a:outline-offset-2 focus-visible:prose-a:outline-rust-500 dark:prose-invert">
           {body}
         </article>
         <RelatedLinks clusterSlug={clusterSlug} excludeSlug={page.slug} />

@@ -46,6 +46,32 @@
   text-wrap: pretty;
 }
 
+@keyframes price-flash-up {
+  0% {
+    background-color: oklch(0.92 0.13 150 / 0.35);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes price-flash-down {
+  0% {
+    background-color: oklch(0.86 0.08 35 / 0.35);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@utility animate-price-flash-up {
+  animation: price-flash-up 1.2s ease-out;
+}
+
+@utility animate-price-flash-down {
+  animation: price-flash-down 1.2s ease-out;
+}
+
 @layer base {
   html {
     color: var(--color-steel-700);

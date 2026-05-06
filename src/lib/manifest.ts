@@ -7,11 +7,18 @@ export type Template =
 
 export type Cluster = "core" | "local" | "on-page" | "roi";
 
+export type ClusterCategory = "guide" | "pricing";
+
 export type ClusterSlug =
   | "scrap"
   | "scrap-yard-near-me"
   | "scrap-metal"
-  | "copper-price";
+  | "copper-price"
+  | "aluminum-price"
+  | "brass-price"
+  | "stainless-steel-price";
+
+import type { Metal } from "./prices";
 
 export interface PageEntry {
   slug: string;
@@ -31,6 +38,8 @@ export interface PageEntry {
 export interface ClusterDefinition {
   slug: ClusterSlug;
   cluster: Cluster;
+  category: ClusterCategory;
+  metal?: Metal;
   title: string;
   shortTitle: string;
   description: string;
@@ -67,6 +76,7 @@ export const CLUSTERS: ClusterDefinition[] = [
   {
     slug: "scrap",
     cluster: "core",
+    category: "guide",
     title: "Scrap",
     shortTitle: "Scrap",
     description:
@@ -79,6 +89,7 @@ export const CLUSTERS: ClusterDefinition[] = [
   {
     slug: "scrap-yard-near-me",
     cluster: "local",
+    category: "guide",
     title: "Scrap Yards Near You",
     shortTitle: "Scrap Yard Near Me",
     description:
@@ -91,6 +102,7 @@ export const CLUSTERS: ClusterDefinition[] = [
   {
     slug: "scrap-metal",
     cluster: "on-page",
+    category: "guide",
     title: "Scrap Metal",
     shortTitle: "Scrap Metal",
     description:
@@ -103,16 +115,72 @@ export const CLUSTERS: ClusterDefinition[] = [
   {
     slug: "copper-price",
     cluster: "roi",
-    title: "Copper & Metals Pricing",
+    category: "pricing",
+    metal: "copper",
+    title: "Copper Price",
     shortTitle: "Copper Price",
     description:
-      "Live and recent prices for copper, aluminum, brass, and stainless — plus the factors that move them and how to time a sale.",
+      "Live copper spot, scrap copper grades, and the macro signals that move per-pound payouts.",
     template: "pillar-hub",
     href: "/copper-price",
     targetKeyword: "copper price",
     searchVolume: 135000,
   },
+  {
+    slug: "aluminum-price",
+    cluster: "roi",
+    category: "pricing",
+    metal: "aluminum",
+    title: "Aluminum Price",
+    shortTitle: "Aluminum Price",
+    description:
+      "Live aluminum spot and scrap pricing across sheet, extrusion, cast, and UBC grades.",
+    template: "pillar-hub",
+    href: "/aluminum-price",
+    targetKeyword: "aluminum price",
+    searchVolume: 12100,
+  },
+  {
+    slug: "brass-price",
+    cluster: "roi",
+    category: "pricing",
+    metal: "brass",
+    title: "Brass Price",
+    shortTitle: "Brass Price",
+    description:
+      "Live brass scrap pricing — yellow, red, and plumbing brass — derived from copper and zinc.",
+    template: "pillar-hub",
+    href: "/brass-price",
+    targetKeyword: "brass price",
+    searchVolume: 4400,
+  },
+  {
+    slug: "stainless-steel-price",
+    cluster: "roi",
+    category: "pricing",
+    metal: "steel-stainless",
+    title: "Stainless Steel Price",
+    shortTitle: "Stainless Price",
+    description:
+      "Live stainless 304 and 316 scrap pricing, plus the nickel cycle that drives the spread.",
+    template: "pillar-hub",
+    href: "/stainless-steel-price",
+    targetKeyword: "stainless steel price",
+    searchVolume: 3600,
+  },
 ];
+
+export function clustersByCategory(category: ClusterCategory): ClusterDefinition[] {
+  return CLUSTERS.filter((c) => c.category === category);
+}
+
+export function pricingClusters(): ClusterDefinition[] {
+  return clustersByCategory("pricing");
+}
+
+export function guideClusters(): ClusterDefinition[] {
+  return clustersByCategory("guide");
+}
 
 export const LEAVES: PageEntry[] = [
   // ── Cluster: scrap (core) ──────────────────────────────────────────

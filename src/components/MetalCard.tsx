@@ -1,9 +1,36 @@
 import Link from "next/link";
-import { fetchLivePrices, formatUsd, metalShortLabel } from "@/lib/prices";
+import {
+  fetchLivePrices,
+  fetchTimeseries,
+  formatUsd,
+  metalShortLabel,
+} from "@/lib/prices";
+import type { Metal } from "@/lib/prices";
 import { pricingClusters } from "@/lib/manifest";
+import Sparkline from "@/components/Sparkline";
+
+// Pull a per-metal numeric series out of the timeseries response, dropping
+// null gaps. Returns undefined when the metal isn't in the response (e.g.
+// stainless / prepared steel).
+function seriesFor(
+  data: Awaited<ReturnType<typeof fetchTimeseries>>,
+  metal: Metal,
+): number[] | undefined {
+  if (!data) return undefined;
+  if (metal === "copper" || metal === "aluminum" || metal === "brass") {
+    const values = data
+      .map((p) => p[metal])
+      .filter((n): n is number => typeof n === "number");
+    return values.length >= 2 ? values : undefined;
+  }
+  return undefined;
+}
 
 export default async function MetalCardsGrid() {
-  const all = await fetchLivePrices();
+  const [all, timeseries] = await Promise.all([
+    fetchLivePrices(),
+    fetchTimeseries(30),
+  ]);
   const clusters = pricingClusters();
 
   return (
@@ -32,6 +59,18 @@ export default async function MetalCardsGrid() {
                 {change.toFixed(2)}%{" "}
                 <span className="text-steel-400">· {snapshot.source}</span>
               </p>
+              {(() => {
+                const series = seriesFor(timeseries, c.metal);
+                return series ? (
+                  <Sparkline
+                    data={series}
+                    className="mt-3 block w-full"
+                    width={220}
+                    height={32}
+                    ariaLabel={`${metalShortLabel(c.metal)} price, last 30 days`}
+                  />
+                ) : null;
+              })()}
               <p className="mt-3 text-sm leading-relaxed text-steel-600">{c.description}</p>
               <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-rust-600">
                 Open price page →

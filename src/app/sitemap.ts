@@ -1,0 +1,26 @@
+import type { MetadataRoute } from "next";
+import { CLUSTERS, HOME, LEAVES, SITE } from "@/lib/manifest";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE.baseUrl}${HOME.href}`,
+      lastModified: HOME.updatedAt ?? HOME.publishedAt,
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    ...CLUSTERS.map((c) => ({
+      url: `${SITE.baseUrl}${c.href}`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    })),
+    ...LEAVES.map((p) => ({
+      url: `${SITE.baseUrl}${p.href}`,
+      lastModified: p.updatedAt ?? p.publishedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  ];
+  return entries;
+}

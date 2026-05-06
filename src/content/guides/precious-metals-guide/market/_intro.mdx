@@ -1,93 +1,92 @@
-## Market & Spot
+import FaqItem from "@/components/FaqItem";
 
-> **Page brief.** Target keyword: `gold spot price` / `what moves silver price`. Audience: people who want context behind the number on the live price page. Funnel stage: consideration. The page should answer: *what determines today's spot, and how does that translate to my payout?*
+Spot moves continuously when LBMA and COMEX are open — roughly 23 hours a day, Monday through Friday — and the number on your phone at 9 AM is rarely the number a refiner quotes at 3 PM. You're not here to trade futures. You're here because a 5% spot move on the 14k chain in your safe deposit box is real money, and you want to know whether it's worth waiting two weeks to sell.
 
-Spot is one number on a page; the forces behind it are a tangle of rates, currency, inventory, ETF flows, and physical demand. This page covers what actually moves the market.
+This page is the *why* behind the chart. We cover what moves precious-metal prices, how the LBMA fixing translates that into the headline refiners reference, and why published spot almost never matches what you'll get paid. The [precious-metals basics page](/precious-metals-guide/basics) covers karat math and troy-ounce conventions, and the [grades and assays guide](/precious-metals-guide/grades) covers how a refiner values a mixed lot.
 
-## Where "spot" comes from
+## What moves precious-metal prices
 
-There's no single global spot price for gold or silver — there's a network of contributing markets that converge to within a few cents:
+Gold and silver don't move because of one thing — half a dozen forces push on them at different horizons. You don't need to model it; you need to recognize when one has dominated the last few weeks so you can decide whether to sell now or wait. Six drivers do most of the work:
 
-- **LBMA fixings** (London) — twice-daily auctions for gold (10:30 AM, 3 PM London) and once for silver (12 PM London). The most-cited reference price.
-- **COMEX futures** (New York) — front-month futures contracts (`GC=F` for gold, `SI=F` for silver) trade nearly 24/5. The continuous spot reference for US time zones.
-- **Shanghai Gold Exchange** — primary Asia-time price discovery for physical gold; can diverge from LBMA during stress events.
-- **Over-the-counter (OTC)** — bullion bank desks quote real-time bid/ask continuously.
+- **Real interest rates** are the dominant gold driver. Real rates = nominal rates minus expected inflation, and gold pays no yield — when real rates fall, gold's opportunity cost drops and price rises. The 10-year TIPS yield published by [the St. Louis Fed (FRED)](https://fred.stlouisfed.org/series/DFII10) is the cleanest single proxy; gold moves inversely to it on a multi-month horizon.
+- **Central bank buying** has structurally lifted gold demand since 2022. China, India, Russia, Turkey, and Poland have been net buyers, adding 600–1,000 tonnes a year. The [World Gold Council](https://www.gold.org/goldhub/data/monthly-central-bank-statistics) publishes monthly reserve changes.
+- **US dollar strength** matters because gold is priced in dollars. A weaker DXY tends to lift gold; a stronger DXY compresses it as non-US buyers see effective price increases in local currency.
+- **Geopolitical risk and safe-haven demand** spike during crises — war, banking stress, sovereign debt scares. Spikes are episodic and often retraced.
+- **Industrial demand for silver** makes silver more cyclical. Roughly 50% of silver demand is industrial — solar, electronics, electrification — versus ~10% for gold. When manufacturing PMIs roll over, silver takes it harder.
+- **Mining supply constraints** are slow-moving but real. Peruvian and Chilean output drives global silver mine production; deeper-shaft costs lift gold's all-in sustaining cost every year. The [USGS Mineral Commodity Summaries](https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries) track per-country production.
 
-When this site shows "spot," it's pulled from Metals.dev's aggregated feed which uses LBMA + COMEX + LME inputs.
+For most scrap sellers, this analysis rarely earns its keep on a small lot. If you're sitting on $2,000 of scrap gold, modeling the TIPS yield is not where your time should go. Watch the [live gold price](/gold-price) and [live silver price](/silver-price) for trend context, recognize when something unusual is happening (a 5%+ weekly move in either direction), and otherwise transact when convenient. Macro matters at $10k+ lots, where a 3% timing edge is meaningful money.
 
-## What moves spot
+## LBMA fixings — what they are and why they matter
 
-### Real interest rates (the dominant driver)
+The **London Bullion Market Association** runs the auctions that produce the headline reference prices for gold and silver. Gold has two fixings per day — 10:30 AM and 3:00 PM London time. Silver has one daily fix at noon London. These used to be phone calls among five member banks; today they're electronic, run on an [ICE-administered platform](https://www.lbma.org.uk/prices-and-data/lbma-precious-metal-prices), and broadcast in seconds.
 
-When **real** rates (nominal rates minus inflation expectations) fall, gold rises. When they rise, gold falls. The mechanism: gold pays no yield, so its opportunity cost is whatever you'd otherwise earn risk-free. Negative or low real rates make zero-yield gold relatively more attractive.
+The fixings matter because a meaningful chunk of physical-market commerce references them rather than continuous spot. Refiner contracts for industrial gold often settle at "LBMA PM fix on the day of receipt." If your refiner's quote sheet says "PM fix minus 2%," that's the number you'll get — not whatever Kitco shows when you happen to look.
 
-This is why gold rallies during easing cycles and corrects when central banks hike aggressively.
+US scrap buyers, by contrast, mostly quote off **continuous COMEX spot** (front-month gold and silver futures, `GC=F` and `SI=F`), which trades nearly around the clock and is what most live tickers display — including the ones on this site. Practical upshot: if a refiner says "fix" they mean LBMA; if a coin shop or yard says "spot" they almost always mean COMEX. The gap is usually small but can hit 0.5–1% on volatile days.
 
-### USD strength
+## Spot vs. physical premium
 
-Gold is priced in dollars worldwide. A stronger dollar makes gold more expensive in other currencies, suppressing demand outside the US. The DXY (dollar index) usually moves inversely to gold over weeks-to-months.
+Spot is wholesale — the number an institutional bullion dealer pays another in 400-oz Good Delivery bars for next-day London settlement. The chart price is not a price *you* can transact at, in either direction.
 
-### Central bank purchases
+When you BUY assayed product, you pay **spot plus a premium**. Typical: a 1 oz American Gold Eagle runs spot + $50–100; a generic gold round runs spot + $25–40; a Silver Eagle runs spot + $5–8. The premium pays for fabrication, brand, dealer margin, and the certainty the product is what it claims to be.
 
-Central banks (notably China, India, Russia, Turkey, Poland) have been net gold buyers for over a decade, adding ~600–1,000 tonnes/year to demand. Disclosed reserve changes lag by a quarter; total flows are often inferred.
+When you SELL, the math inverts. You get **spot minus dealer margin**. For recognized bullion the gap is small (Eagles buy back at or near spot). For scrap jewelry, dental gold, or unassayed bars the discount widens: a typical refiner pays 90–95% of spot on the gold content of clean melt material; a coin shop reselling to a refiner pays 80–90%. Worked example at $2,400 spot, 1 oz gold equivalent: an Eagle buys back around $2,395; a clean 14k chain at a refiner nets $2,184–$2,280; the same chain at a pawn shop nets $1,800. Same metal, three very different payouts. The [refining and dealer-types page](/precious-metals-guide/refining) breaks down which buyer fits which lot.
 
-### ETF flows
+## How to read a precious-metals chart
 
-Gold ETFs (GLD, IAU) hold thousands of tonnes of physical gold backing their shares. Net inflows or outflows shift physical supply/demand by hundreds of tonnes per year. Watch the [World Gold Council](https://www.gold.org) data.
+You don't need TradingView fluency. Open Kitco, BullionVault, or the [live gold-price chart on this site](/gold-price), set the window to **30 days**, and look at three things: the trend (up, down, sideways), the range (high vs. low), and any single-day spikes that look out of pattern.
 
-### Geopolitical risk
+Gold normally runs 1–3% per week; in a crisis week — banking stress, war, an unexpected Fed move — you'll see 5–8% range. Silver runs roughly 1.5–2x that. Don't sell into the bottom of a panic unless cash flow forces it, and don't chase a top — tops are only obvious in retrospect, and the seller waiting "just one more week" for a higher print frequently watches the rally fade. The [silver price page](/silver-price) carries the same 30-day window for the other major metal.
 
-Flight-to-safety flows materialize during equity drawdowns, banking stress, and conflict escalation. These are episodic and overlay the secular drivers above.
+## When (not) to time the market
 
-### For silver specifically
+Most scrap sellers should not try to time spot. The price you'd capture waiting six months is usually less than the friction cost — storage, theft risk, opportunity cost, and the fact that life competes with patience. If you have $1,500 of scrap gold and 5% upside is worth $75, and waiting introduces any risk at all, just sell.
 
-Silver has all the gold drivers PLUS:
+Two real exceptions. One: **large lots — $10,000+** — where 5% timing matters more than urgency and waiting four to six weeks isn't disruptive. At that scale, watching the [10-year TIPS yield](https://fred.stlouisfed.org/series/DFII10) and the LBMA fix history is reasonable due diligence. Two: **panic crashes** — rare, once or twice a decade — where a clearly mispriced flush sets up a 3–6-week mean reversion. March 2020 was an example; gold dropped 12% in a week before recovering.
 
-- **Industrial demand** — solar panels (~10% of demand), electronics (~25%), auto electrification, medical
-- **Gold/silver ratio** — when the ratio compresses (typically 50–60), silver outperforms gold; when it expands (90–110), silver lags
-- **Photographic demand** — declining but still ~5% of usage; no longer a major driver
+What you should *not* do: try to call tops. Selling at the peak is luck, not skill, even for desk traders. Selling into strength when you're already happy is a fine outcome. Holding for three more percent and watching ten evaporate is a bad one. Anchoring on "but it was higher last month" is the most expensive cognitive bias in the [selling guide](/selling-guide).
 
-## Spot vs physical premium
+## Gold vs. silver — different mood, different math
 
-The "spot" you see on this page is wholesale. **Physical premium** is what retail buyers pay over spot for actual coins or bars:
+Gold is a **monetary metal** — driven by real rates, currency moves, central-bank flows, and risk-off demand. It's what central banks hold as a reserve asset and what investors flee to during stress. Less than 10% of gold demand is industrial; the rest is investment, jewelry (which is partially investment in much of Asia), and central-bank reserves.
 
-| Product | Typical premium over spot |
-| --- | --- |
-| Generic 1 oz silver round | 5–15% |
-| 1 oz Silver Eagle | 15–35% |
-| 1 oz generic gold round / bar | 1–4% |
-| 1 oz Gold Eagle / Maple | 3–8% |
-| Krugerrand | 2–5% |
-| 90% junk silver (per face value) | 5–15% over melt |
-
-When you SELL, the spread compresses — but rarely closes completely. Coin shops buy back at melt (or slightly under) for generics; recognized bullion (Eagles) gets a small bid premium.
-
-## Why the price on this page may differ from "Kitco" or "Apmex"
-
-Three reasons:
-
-1. **Update cadence.** This site pulls Metals.dev once every 30 min; major bullion sites update every few seconds. During fast moves, we lag.
-2. **Ask vs bid.** Some sites quote ask (what you pay to buy) by default; some quote bid; some show both. We quote spot, which is between bid and ask.
-3. **Time zone.** "Today's spot" depends on what venue's clock you're using — LBMA AM fix, NY close, Asia open, etc.
-
-For high-precision moves, treat this page as a reference, not a quote. Confirm with the venue you're transacting at.
+Silver is **monetary AND industrial**. Roughly half of silver demand goes into solar, electronics, EV wiring, and brazing alloys. That makes silver higher-beta — it amplifies whatever gold is doing in both directions. The **gold-to-silver ratio** (gold price ÷ silver price) telegraphs relative valuation: long-run average is ~50:1, recent decade range is 70–100:1. When the ratio is wide (90+), silver has historically outperformed on the next leg up; narrow (40s), gold has outperformed. Not a trading signal — a context check. If you're holding both, a wide ratio is a reason to lean toward selling the gold first. Check the [gold price](/gold-price) and [silver price](/silver-price) and divide.
 
 ## Frequently asked questions
 
-**Why doesn't the change percentage on the gold/silver pages show movement?**
+<FaqItem q="What's the spot price right now?">
 
-Today's integration uses Metals.dev `/v1/latest`, which doesn't include 24h change data. We're tracking adding the `/v1/metal/spot` endpoint that includes change to fix this — for now, see the 30-day chart for trend context.
+See the live ticker at [/gold-price](/gold-price) and [/silver-price](/silver-price) for current spot in USD/troy ounce. Both update every 30 seconds during market hours via Metals.dev's aggregated feed.
 
-**What's the gold/silver ratio?**
+</FaqItem>
 
-Gold price ÷ silver price. Historically averages ~50–80; recent ranges have been 80–100. Silver "outperforms" gold when the ratio falls (silver rises faster); silver "lags" when it rises (gold rises faster).
+<FaqItem q="Why does the gold price change every day?">
 
-**Why is gold cheaper in some places than others?**
+Spot moves continuously when LBMA and COMEX are open — roughly 23 hours a day, Monday through Friday. Drivers are real rates, USD strength, central-bank flows, and geopolitical risk. Daily moves of 0.5–1.5% are routine; 3%+ requires a real catalyst. The [precious-metals basics page](/precious-metals-guide/basics) covers the units if you want the foundation first.
 
-Local taxes, import tariffs, and dealer markup. India and the UAE have notably different effective gold prices than the US due to import duty structures. The wholesale spot is global; the retail price is local.
+</FaqItem>
 
-## Related
+<FaqItem q="Should I wait for gold to go higher before selling?">
 
-- [Live gold price](/gold-price) — today's spot, refresh every 30 min
-- [Live silver price](/silver-price) — today's spot, refresh every 30 min
-- [Industry guide / trade and pricing](/industry-guide/trade-and-pricing) — broader trade-and-pricing context for industrial scrap
+Almost never worth timing on normal scrap lots. Friction cost (storage, theft risk, opportunity cost) typically outweighs upside. Lots over $10k may justify a one-to-two-month window if you have secure storage. Trying to call tops is a losing game even for pros — sell when you're happy with the price.
+
+</FaqItem>
+
+<FaqItem q="Why is silver more volatile than gold?">
+
+Roughly 50% of silver demand is industrial (solar, electronics, EV wiring) versus ~10% for gold. Industrial demand swings with manufacturing cycles, so silver picks up cyclical volatility on top of its monetary moves. Smaller market cap amplifies every flow. Track the [live silver price](/silver-price) for the running picture.
+
+</FaqItem>
+
+<FaqItem q="What is the LBMA fixing and why does it matter?">
+
+The London Bullion Market Association runs twice-daily gold auctions (10:30 AM and 3:00 PM London) and a noon silver auction that produce the reference prices used in many physical-market contracts and refiner quotes. Different from continuous COMEX spot, which is what most US scrap buyers reference. If your [refiner's quote sheet](/precious-metals-guide/refining) says "PM fix minus 2%" — that's the LBMA fix.
+
+</FaqItem>
+
+<FaqItem q="How does the spot I see online relate to what a buyer pays me?">
+
+Spot is wholesale. You get spot minus a margin that depends on buyer type and form. Recognized bullion buys back near spot; clean refinable scrap nets 90–95% from a primary refiner; pawn shops and coin shops pay 70–85% as middlemen. The [refining and buyer-types guide](/precious-metals-guide/refining) covers which buyer fits which lot.
+
+</FaqItem>

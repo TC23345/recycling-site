@@ -157,11 +157,14 @@ const TimeseriesSuccessSchema = z.object({
   unit: z.string(),
   start_date: z.string(),
   end_date: z.string(),
+  // Industrial metals are null on the Metals.dev free plan — only precious
+  // metals return numeric values for /timeseries. Allow null per metal so the
+  // schema parses; we filter nulls when extracting points below.
   rates: z.record(
     z.string(),
     z.object({
-      metals: z.record(z.string(), z.number()),
-      currencies: z.record(z.string(), z.number()).optional(),
+      metals: z.record(z.string(), z.number().nullable()),
+      currencies: z.record(z.string(), z.number().nullable()).optional(),
     }),
   ),
 });
@@ -231,16 +234,15 @@ export async function fetchMetalsDevTimeseries(
       const copperRaw = m.copper ?? m.lme_copper;
       const aluminumRaw = m.aluminum ?? m.lme_aluminum;
 
-      const copperLb =
-        typeof copperRaw === "number" && Number.isFinite(copperRaw) && copperRaw > 0
-          ? toUsdPerLb(copperRaw, unit) * SCRAP_DISCOUNT.copper
-          : undefined;
-      const aluminumLb =
-        typeof aluminumRaw === "number" &&
-        Number.isFinite(aluminumRaw) &&
-        aluminumRaw > 0
-          ? toUsdPerLb(aluminumRaw, unit) * SCRAP_DISCOUNT.aluminum
-          : undefined;
+      const usable = (n: number | null | undefined): n is number =>
+        typeof n === "number" && Number.isFinite(n) && n > 0;
+
+      const copperLb = usable(copperRaw)
+        ? toUsdPerLb(copperRaw, unit) * SCRAP_DISCOUNT.copper
+        : undefined;
+      const aluminumLb = usable(aluminumRaw)
+        ? toUsdPerLb(aluminumRaw, unit) * SCRAP_DISCOUNT.aluminum
+        : undefined;
       const brassLb = copperLb !== undefined ? copperLb * 0.62 : undefined;
 
       return {
@@ -255,6 +257,144 @@ export async function fetchMetalsDevTimeseries(
   } catch {
     return null;
   }
+}
+
+// ── Yahoo historical fallback ────────────────────────────────────────────
+// The Metals.dev free plan returns null for industrial metals on /timeseries
+// (precious metals only). Yahoo's chart endpoint already has 30 days of daily
+// closes for HG=F (copper, USD/lb) and ALI=F (aluminum, USD/MT) — same
+// endpoint we already poll for live spot, just with a wider `range` param.
+// One call per metal per day, edge-cached 24h.
+
+const YahooHistoricalSchema = z.object({
+  chart: z.object({
+    result: z
+      .array(
+        z.object({
+          timestamp: z.array(z.number()),
+          indicators: z.object({
+            quote: z
+              .array(
+                z.object({
+                  close: z.array(z.number().nullable()),
+                }),
+              )
+              .min(1),
+          }),
+        }),
+      )
+      .min(1),
+    error: z.unknown().nullable(),
+  }),
+});
+
+async function fetchYahooHistorical(
+  symbol: string,
+): Promise<{ date: string; close: number }[] | null> {
+  try {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+      symbol,
+    )}?interval=1d&range=1mo`;
+    const res = await fetch(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (compatible; recycling-site/1.0; +https://recycling-site.example)",
+        Accept: "application/json",
+      },
+      next: { revalidate: 86_400 },
+    });
+    if (!res.ok) return null;
+    const json: unknown = await res.json();
+    const parsed = YahooHistoricalSchema.safeParse(json);
+    if (!parsed.success) return null;
+
+    const result = parsed.data.chart.result[0];
+    const closes = result.indicators.quote[0].close;
+    const out: { date: string; close: number }[] = [];
+    for (let i = 0; i < result.timestamp.length; i++) {
+      const close = closes[i];
+      if (typeof close !== "number" || !Number.isFinite(close) || close <= 0) continue;
+      const date = new Date(result.timestamp[i] * 1000).toISOString().slice(0, 10);
+      out.push({ date, close });
+    }
+    return out.length > 0 ? out : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Top-level historical fetch that tries Metals.dev first, then per-metal Yahoo
+ * fallback. Returns a unified TimeseriesArray with copper / aluminum / brass
+ * post-discount USD/lb. Brass is always derived (Metals.dev or Yahoo path).
+ *
+ * The free Metals.dev plan returns null for industrial metals, so this almost
+ * always falls through to Yahoo for copper + aluminum on free plans. When the
+ * plan upgrades to one that includes industrial metal history, Metals.dev is
+ * preferred (more authoritative LME-stamped data).
+ */
+export async function fetchTimeseries(
+  days = 30,
+): Promise<TimeseriesArray | null> {
+  const [metalsDev, copperYahoo, aluminumYahoo] = await Promise.all([
+    fetchMetalsDevTimeseries(days),
+    fetchYahooHistorical("HG=F"),
+    fetchYahooHistorical("ALI=F"),
+  ]);
+
+  const hasMetalsDevCopper =
+    metalsDev?.some((p) => typeof p.copper === "number") ?? false;
+  const hasMetalsDevAluminum =
+    metalsDev?.some((p) => typeof p.aluminum === "number") ?? false;
+
+  // Build a date-keyed map so we can merge multiple sources cleanly.
+  const byDate = new Map<string, TimeseriesPoint>();
+
+  if (metalsDev) {
+    for (const p of metalsDev) byDate.set(p.date, { ...p });
+  }
+
+  // Helper to upsert a metal value at a given date
+  const upsert = (
+    date: string,
+    metal: "copper" | "aluminum",
+    value: number,
+  ) => {
+    const existing = byDate.get(date) ?? { date };
+    existing[metal] = roundTo(value, 4);
+    byDate.set(date, existing);
+  };
+
+  // Yahoo HG=F is already USD/lb. Apply the same scrap discount the live path
+  // does so chart values match what users see on the live ticker.
+  if (!hasMetalsDevCopper && copperYahoo) {
+    for (const { date, close } of copperYahoo) {
+      upsert(date, "copper", close * SCRAP_DISCOUNT.copper);
+    }
+  }
+
+  // Yahoo ALI=F is USD/metric-ton. Convert before applying discount.
+  if (!hasMetalsDevAluminum && aluminumYahoo) {
+    for (const { date, close } of aluminumYahoo) {
+      upsert(
+        date,
+        "aluminum",
+        (close / LB_PER_METRIC_TON) * SCRAP_DISCOUNT.aluminum,
+      );
+    }
+  }
+
+  // Brass: derive from whatever copper value we landed on for each date.
+  for (const point of byDate.values()) {
+    if (typeof point.copper === "number") {
+      point.brass = roundTo(point.copper * 0.62, 4);
+    }
+  }
+
+  const all = Array.from(byDate.values()).sort((a, b) =>
+    a.date.localeCompare(b.date),
+  );
+  return all.length >= 2 ? all : null;
 }
 
 // ── Trend insight — editorial string from a timeseries window ────────────

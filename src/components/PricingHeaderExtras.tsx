@@ -1,6 +1,6 @@
 import PriceChart from "@/components/PriceChart";
 import TrendInsight from "@/components/TrendInsight";
-import { fetchMetalsDevTimeseries } from "@/lib/prices";
+import { fetchTimeseries } from "@/lib/prices";
 
 interface PricingHeaderExtrasProps {
   /** Which series to render. Brass is supported (derived from copper). */
@@ -21,7 +21,7 @@ export default async function PricingHeaderExtras({
   metal,
   metalLabel,
 }: PricingHeaderExtrasProps) {
-  const data = await fetchMetalsDevTimeseries(30);
+  const data = await fetchTimeseries(30);
   if (!data) return null;
 
   return (

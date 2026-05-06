@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   fetchLivePrices,
-  fetchMetalsDevTimeseries,
+  fetchTimeseries,
   formatUsd,
   metalShortLabel,
 } from "@/lib/prices";
@@ -13,7 +13,7 @@ import Sparkline from "@/components/Sparkline";
 // null gaps. Returns undefined when the metal isn't in the response (e.g.
 // stainless / prepared steel).
 function seriesFor(
-  data: Awaited<ReturnType<typeof fetchMetalsDevTimeseries>>,
+  data: Awaited<ReturnType<typeof fetchTimeseries>>,
   metal: Metal,
 ): number[] | undefined {
   if (!data) return undefined;
@@ -29,7 +29,7 @@ function seriesFor(
 export default async function MetalCardsGrid() {
   const [all, timeseries] = await Promise.all([
     fetchLivePrices(),
-    fetchMetalsDevTimeseries(30),
+    fetchTimeseries(30),
   ]);
   const clusters = pricingClusters();
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PillarHub from "@/components/templates/PillarHub";
+import PricingHeaderExtras from "@/components/PricingHeaderExtras";
 import Intro from "@/content/pillars/brass-price.mdx";
 import { CLUSTERS, SITE } from "@/lib/manifest";
 
@@ -26,6 +27,7 @@ export default function BrassPriceHub() {
       description={cluster.description}
       href={cluster.href}
       crumbs={[{ href: cluster.href, label: cluster.shortTitle }]}
+      headerExtras={<PricingHeaderExtras metal="brass" metalLabel="Brass" />}
       intro={<Intro />}
     />
   );

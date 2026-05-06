@@ -33,6 +33,9 @@ interface PillarHubProps {
   childGuideLeaves?: GuideLeaf[];
   intro: ReactNode;
   crumbs?: Crumb[];
+  /** Optional content rendered between breadcrumbs and the intro article.
+   *  Pricing pillars use this for the trend-insight bar + 30-day chart. */
+  headerExtras?: ReactNode;
 }
 
 export default function PillarHub({
@@ -48,6 +51,7 @@ export default function PillarHub({
   childGuideLeaves,
   intro,
   crumbs,
+  headerExtras,
 }: PillarHubProps) {
   const childPages: PageEntry[] = clusterSlug ? leavesByCluster(clusterSlug) : [];
   const clusterCards: ClusterDefinition[] =
@@ -75,6 +79,8 @@ export default function PillarHub({
             <Breadcrumbs crumbs={crumbs} />
           </div>
         )}
+
+        {headerExtras && <div className="mb-8 space-y-4">{headerExtras}</div>}
 
         <article className="prose prose-steel max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline dark:prose-invert">
           {intro}

@@ -7,7 +7,7 @@ export interface PriceSnapshot {
   label: string;
   usdPerLb: number;
   asOf: string;
-  source: "yahoo" | "derived" | "stub";
+  source: "metals-dev" | "yahoo" | "derived" | "stub";
   changePct: number;
 }
 
@@ -67,6 +67,77 @@ async function fetchYahoo(symbol: string): Promise<YahooFetchResult | null> {
     const prevClose = meta.previousClose ?? meta.chartPreviousClose ?? price;
     if (!Number.isFinite(price) || price <= 0) return null;
     return { price, prevClose };
+  } catch {
+    return null;
+  }
+}
+
+// ── Metals.dev — paid provider, primary source when METALS_DEV_API_KEY is set
+// API ref: .claude/research/metals-dev-api.md. We hit /v1/latest with
+// `unit=lb` so industrial metals come back in USD/lb directly (no MT→lb
+// conversion). The free plan is ~100 req/month, so revalidate is set high
+// (1800s) and the response is request-deduped within a render pass by Next.
+
+const MetalsDevSuccessSchema = z.object({
+  status: z.literal("success"),
+  currency: z.string(),
+  unit: z.string(),
+  metals: z.record(z.string(), z.number()),
+  currencies: z.record(z.string(), z.number()),
+  timestamps: z.object({
+    metal: z.string(),
+    currency: z.string(),
+  }),
+});
+
+const MetalsDevFailureSchema = z.object({
+  status: z.literal("failure"),
+  error_code: z.number().int(),
+  error_message: z.string(),
+});
+
+const MetalsDevResponseSchema = z.discriminatedUnion("status", [
+  MetalsDevSuccessSchema,
+  MetalsDevFailureSchema,
+]);
+
+interface MetalsDevFetchResult {
+  copper?: number; // already USD/lb (we passed unit=lb)
+  aluminum?: number;
+  asOf: string;
+}
+
+async function fetchMetalsDev(): Promise<MetalsDevFetchResult | null> {
+  const apiKey = process.env.METALS_DEV_API_KEY;
+  if (!apiKey) return null;
+
+  try {
+    const url = `https://api.metals.dev/v1/latest?api_key=${encodeURIComponent(apiKey)}&currency=USD&unit=lb`;
+    const res = await fetch(url, {
+      headers: { Accept: "application/json" },
+      // Free tier ≈ 100 req/month; 30-min revalidate keeps the budget safe
+      // for low/moderate traffic. Revisit if we upgrade the plan.
+      next: { revalidate: 1800 },
+    });
+    if (!res.ok) return null;
+    const json: unknown = await res.json();
+    const parsed = MetalsDevResponseSchema.safeParse(json);
+    if (!parsed.success) return null;
+    if (parsed.data.status === "failure") {
+      // Quota exceeded (1203), invalid key (1101), etc. — fall through to
+      // the Yahoo path silently. Errors are visible via PriceSnapshot.source.
+      return null;
+    }
+    const m = parsed.data.metals;
+    const copperRaw = m.copper ?? m.lme_copper;
+    const aluminumRaw = m.aluminum ?? m.lme_aluminum;
+    const finite = (n: number | undefined): number | undefined =>
+      typeof n === "number" && Number.isFinite(n) && n > 0 ? n : undefined;
+    return {
+      copper: finite(copperRaw),
+      aluminum: finite(aluminumRaw),
+      asOf: parsed.data.timestamps.metal,
+    };
   } catch {
     return null;
   }
@@ -134,7 +205,10 @@ const SCRAP_DISCOUNT = {
 export async function fetchLivePrices(): Promise<PriceMap> {
   const asOf = new Date().toISOString();
 
-  const [copperRaw, aluminumRaw] = await Promise.all([
+  // Source chain per metal: Metals.dev (when key set) → Yahoo → stub.
+  // All upstream fetches run in parallel; per-metal fallback is decided below.
+  const [metalsDev, copperRaw, aluminumRaw] = await Promise.all([
+    fetchMetalsDev(),
     fetchYahoo("HG=F"),
     fetchYahoo("ALI=F"),
   ]);
@@ -147,31 +221,55 @@ export async function fetchLivePrices(): Promise<PriceMap> {
     "steel-prepared": stubSnapshot("steel-prepared", asOf),
   };
 
-  if (copperRaw) {
+  // Track final post-discount copper price + change so brass can mirror it.
+  let copperUsdPerLb: number | null = null;
+  let copperChangePct = 0;
+
+  // ── Copper ──────────────────────────────────────────────────────────────
+  if (metalsDev?.copper !== undefined) {
+    // /v1/latest doesn't include change info; mark 0 until we wire /spot or
+    // a previous-fetch cache. PriceSnapshot.source = "metals-dev" makes the
+    // provenance visible in the UI badges.
+    const price = metalsDev.copper * SCRAP_DISCOUNT.copper;
+    map.copper = {
+      metal: "copper",
+      label: "Copper (bare bright)",
+      usdPerLb: roundTo(price, 4),
+      asOf,
+      source: "metals-dev",
+      changePct: 0,
+    };
+    copperUsdPerLb = price;
+    copperChangePct = 0;
+  } else if (copperRaw) {
     const price = copperRaw.price * SCRAP_DISCOUNT.copper;
     const prev = copperRaw.prevClose * SCRAP_DISCOUNT.copper;
+    const changePct = prev > 0 ? roundTo(((price - prev) / prev) * 100, 2) : 0;
     map.copper = {
       metal: "copper",
       label: "Copper (bare bright)",
       usdPerLb: roundTo(price, 4),
       asOf,
       source: "yahoo",
-      changePct: prev > 0 ? roundTo(((price - prev) / prev) * 100, 2) : 0,
+      changePct,
     };
-    // Brass is ~62% of copper price by mass-blend with zinc; derive.
-    const brassPrice = price * 0.62;
-    const brassPrev = prev * 0.62;
-    map.brass = {
-      metal: "brass",
-      label: "Brass (yellow)",
-      usdPerLb: roundTo(brassPrice, 4),
-      asOf,
-      source: "derived",
-      changePct: brassPrev > 0 ? roundTo(((brassPrice - brassPrev) / brassPrev) * 100, 2) : 0,
-    };
+    copperUsdPerLb = price;
+    copperChangePct = changePct;
   }
 
-  if (aluminumRaw) {
+  // ── Aluminum ────────────────────────────────────────────────────────────
+  if (metalsDev?.aluminum !== undefined) {
+    // unit=lb means no MT→lb conversion needed.
+    const price = metalsDev.aluminum * SCRAP_DISCOUNT.aluminum;
+    map.aluminum = {
+      metal: "aluminum",
+      label: "Aluminum (sheet)",
+      usdPerLb: roundTo(price, 4),
+      asOf,
+      source: "metals-dev",
+      changePct: 0,
+    };
+  } else if (aluminumRaw) {
     // ALI=F is USD per metric ton — convert to USD/lb before applying discount.
     const lmePerLb = aluminumRaw.price / LB_PER_METRIC_TON;
     const lmePrevPerLb = aluminumRaw.prevClose / LB_PER_METRIC_TON;
@@ -184,6 +282,18 @@ export async function fetchLivePrices(): Promise<PriceMap> {
       asOf,
       source: "yahoo",
       changePct: prev > 0 ? roundTo(((price - prev) / prev) * 100, 2) : 0,
+    };
+  }
+
+  // ── Brass — derived from copper × 0.62 (alloy mass weighting) ──────────
+  if (copperUsdPerLb !== null) {
+    map.brass = {
+      metal: "brass",
+      label: "Brass (yellow)",
+      usdPerLb: roundTo(copperUsdPerLb * 0.62, 4),
+      asOf,
+      source: "derived",
+      changePct: copperChangePct,
     };
   }
 

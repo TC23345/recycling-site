@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHero from "@/components/PageHero";
 import JsonLd from "@/components/JsonLd";
 import PrivacyBody from "@/content/static/privacy.mdx";
@@ -41,7 +42,8 @@ export default function PrivacyPage() {
       />
 
       <div className="mx-auto max-w-3xl px-6 py-10">
-        <article className="prose prose-steel max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline dark:prose-invert">
+        <Breadcrumbs crumbs={[{ href: "/privacy", label: "Privacy" }]} />
+        <article className="prose prose-steel mt-8 max-w-none prose-headings:font-display prose-headings:text-navy-900 prose-a:text-rust-700 prose-a:no-underline hover:prose-a:underline dark:prose-invert">
           <PrivacyBody />
         </article>
       </div>

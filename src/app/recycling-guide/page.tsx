@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PillarHub from "@/components/templates/PillarHub";
 import Intro from "@/content/guides/recycling-guide/_intro.mdx";
-import { categoriesByGuide, getGuide } from "@/lib/manifest";
+import { categoriesByGuide, getGuide, SITE } from "@/lib/manifest";
 
 const guide = getGuide("recycling-guide");
 
@@ -9,6 +9,12 @@ export const metadata: Metadata = {
   title: guide.title,
   description: guide.description,
   alternates: { canonical: guide.href },
+  openGraph: {
+    title: guide.title,
+    description: guide.description,
+    url: `${SITE.baseUrl}${guide.href}`,
+    type: "website",
+  },
 };
 
 export default function RecyclingGuideHub() {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PillarHub from "@/components/templates/PillarHub";
 import Intro from "@/content/pillars/copper-price.mdx";
-import { getCluster } from "@/lib/manifest";
+import { getCluster, SITE } from "@/lib/manifest";
 
 const cluster = getCluster("copper-price");
 
@@ -9,6 +9,12 @@ export const metadata: Metadata = {
   title: cluster.title,
   description: cluster.description,
   alternates: { canonical: cluster.href },
+  openGraph: {
+    title: cluster.title,
+    description: cluster.description,
+    url: `${SITE.baseUrl}${cluster.href}`,
+    type: "website",
+  },
 };
 
 export default function CopperPriceHub() {

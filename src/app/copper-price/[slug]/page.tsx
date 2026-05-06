@@ -4,7 +4,7 @@ import PricingPage from "@/components/templates/PricingPage";
 import GuideArticle from "@/components/templates/GuideArticle";
 import VendorPage from "@/components/templates/VendorPage";
 import LocalDirectory from "@/components/templates/LocalDirectory";
-import { allLeafSlugs, findLeaf, getCluster } from "@/lib/manifest";
+import { allLeafSlugs, findLeaf, getCluster, SITE } from "@/lib/manifest";
 
 const CLUSTER_SLUG = "copper-price" as const;
 const cluster = getCluster(CLUSTER_SLUG);
@@ -25,6 +25,12 @@ export async function generateMetadata(
     title: page.title,
     description: page.description,
     alternates: { canonical: page.href },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url: `${SITE.baseUrl}${page.href}`,
+      type: "article",
+    },
   };
 }
 

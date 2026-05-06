@@ -6,6 +6,7 @@ import {
   findGuideLeaf,
   getCategory,
   getGuide,
+  SITE,
 } from "@/lib/manifest";
 
 const GUIDE_SLUG = "industry-guide" as const;
@@ -29,6 +30,12 @@ export async function generateMetadata(
     title: page.title,
     description: page.description,
     alternates: { canonical: page.href },
+    openGraph: {
+      title: page.title,
+      description: page.description,
+      url: `${SITE.baseUrl}${page.href}`,
+      type: "article",
+    },
   };
 }
 

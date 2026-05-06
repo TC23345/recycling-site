@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PillarHub from "@/components/templates/PillarHub";
 import Intro from "@/content/guides/industry-guide/vendors/_intro.mdx";
-import { getCategory, getGuide, leavesByCategory } from "@/lib/manifest";
+import { getCategory, getGuide, leavesByCategory, SITE } from "@/lib/manifest";
 
 const guide = getGuide("industry-guide");
 const category = getCategory("industry-guide", "vendors");
@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   title: category.title,
   description: category.description,
   alternates: { canonical: category.href },
+  openGraph: {
+    title: category.title,
+    description: category.description,
+    url: `${SITE.baseUrl}${category.href}`,
+    type: "website",
+  },
 };
 
 export default function IndustryGuideVendorsHub() {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import PriceBadge from "@/components/PriceBadge";
 import ThemeToggle from "@/components/ThemeToggle";
-import { guideClusters, SITE } from "@/lib/manifest";
+import { guidesAll, SITE } from "@/lib/manifest";
 
 function PriceBadgeSkeleton() {
   return (
@@ -11,7 +11,7 @@ function PriceBadgeSkeleton() {
 }
 
 export default function Nav() {
-  const guides = guideClusters();
+  const guides = guidesAll();
 
   return (
     <header className="sticky top-0 z-40 border-b border-steel-200 bg-steel-50/85 backdrop-blur-md">

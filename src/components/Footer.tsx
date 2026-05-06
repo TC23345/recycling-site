@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { guideClusters, pricingClusters, SITE } from "@/lib/manifest";
+import { guidesAll, pricingClusters, SITE } from "@/lib/manifest";
 
 export default function Footer() {
-  const guides = guideClusters();
+  const guides = guidesAll();
   const pricing = pricingClusters();
 
   return (

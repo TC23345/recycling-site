@@ -6,7 +6,7 @@ import PriceTable from "@/components/PriceTable";
 import MetalCardsGrid from "@/components/MetalCard";
 import JsonLd from "@/components/JsonLd";
 import HomeIntro from "@/content/pillars/home.mdx";
-import { guideClusters, HOME, SITE } from "@/lib/manifest";
+import { guidesAll, HOME, SITE } from "@/lib/manifest";
 
 export const metadata: Metadata = {
   title: { absolute: HOME.title },
@@ -31,7 +31,7 @@ const homeJsonLd = {
 };
 
 export default function HomePage() {
-  const guides = guideClusters();
+  const guides = guidesAll();
 
   return (
     <>

@@ -1,5 +1,13 @@
 import type { MetadataRoute } from "next";
-import { CLUSTERS, HOME, LEAVES, SITE } from "@/lib/manifest";
+import {
+  CATEGORIES,
+  CLUSTERS,
+  GUIDES,
+  GUIDE_LEAVES,
+  HOME,
+  LEAVES,
+  SITE,
+} from "@/lib/manifest";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [
@@ -15,7 +23,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.9,
     })),
+    ...GUIDES.map((g) => ({
+      url: `${SITE.baseUrl}${g.href}`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
+    })),
+    ...CATEGORIES.map((c) => ({
+      url: `${SITE.baseUrl}${c.href}`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
     ...LEAVES.map((p) => ({
+      url: `${SITE.baseUrl}${p.href}`,
+      lastModified: p.updatedAt ?? p.publishedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...GUIDE_LEAVES.map((p) => ({
       url: `${SITE.baseUrl}${p.href}`,
       lastModified: p.updatedAt ?? p.publishedAt,
       changeFrequency: "monthly" as const,

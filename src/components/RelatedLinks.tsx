@@ -1,22 +1,60 @@
 import Link from "next/link";
-import { leavesByCluster, type ClusterSlug, type PageEntry } from "@/lib/manifest";
+import {
+  leavesByCategory,
+  leavesByCluster,
+  type ClusterSlug,
+  type GuideSlug,
+} from "@/lib/manifest";
 
 interface RelatedLinksProps {
-  clusterSlug: ClusterSlug;
+  /** Pricing-cluster context — pulls leaves from `LEAVES`. */
+  clusterSlug?: ClusterSlug;
+  /** Guide/category context — pulls leaves from `GUIDE_LEAVES`. Provide both. */
+  guide?: GuideSlug;
+  category?: string;
   excludeSlug?: string;
   max?: number;
   heading?: string;
 }
 
+interface RelatedItem {
+  slug: string;
+  href: string;
+  title: string;
+  description: string;
+}
+
 export default function RelatedLinks({
   clusterSlug,
+  guide,
+  category,
   excludeSlug,
   max = 6,
   heading = "Related guides",
 }: RelatedLinksProps) {
-  const related = leavesByCluster(clusterSlug)
-    .filter((p) => p.slug !== excludeSlug)
-    .slice(0, max);
+  let related: RelatedItem[] = [];
+
+  if (clusterSlug) {
+    related = leavesByCluster(clusterSlug)
+      .filter((p) => p.slug !== excludeSlug)
+      .slice(0, max)
+      .map((p) => ({
+        slug: p.slug,
+        href: p.href,
+        title: p.title,
+        description: p.description,
+      }));
+  } else if (guide && category) {
+    related = leavesByCategory(guide, category)
+      .filter((l) => l.slug !== excludeSlug)
+      .slice(0, max)
+      .map((l) => ({
+        slug: l.slug,
+        href: l.href,
+        title: l.title,
+        description: l.description,
+      }));
+  }
 
   if (related.length === 0) return null;
 
@@ -29,7 +67,7 @@ export default function RelatedLinks({
         {heading}
       </h2>
       <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-        {related.map((p: PageEntry) => (
+        {related.map((p) => (
           <li key={p.slug}>
             <Link
               href={p.href}

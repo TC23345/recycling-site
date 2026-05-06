@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import type { GuideDefinition } from "@/lib/manifest";
 
 interface MobileMenuProps {
@@ -19,6 +20,7 @@ interface MobileMenuProps {
  */
 export default function MobileMenu({ guides, priceBadges }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const headingId = useId();
   const panelId = useId();
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -26,6 +28,9 @@ export default function MobileMenu({ guides, priceBadges }: MobileMenuProps) {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const close = useCallback(() => setOpen(false), []);
+
+  // Portal target requires document.body, which is only available client-side.
+  useEffect(() => setMounted(true), []);
 
   // Escape closes; body scroll lock; focus management
   useEffect(() => {
@@ -79,34 +84,12 @@ export default function MobileMenu({ guides, priceBadges }: MobileMenuProps) {
     }
   }, [open]);
 
-  return (
-    <div className="md:hidden">
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-expanded={open}
-        aria-controls={panelId}
-        aria-label="Open menu"
-        className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-steel-200 bg-white text-steel-700 transition hover:border-rust-300 hover:text-rust-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-5 w-5"
-          aria-hidden
-        >
-          <path d="M3 6h18" />
-          <path d="M3 12h18" />
-          <path d="M3 18h18" />
-        </svg>
-      </button>
-
+  // The backdrop and panel must escape the <header>'s containing block:
+  // header has `backdrop-blur-md`, which creates a new containing block and
+  // would otherwise scope `position: fixed` to the header (~64px tall) instead
+  // of the viewport. Portal to document.body to fix the dialog to the viewport.
+  const overlay = (
+    <>
       {/* Backdrop */}
       <div
         onClick={close}
@@ -218,6 +201,37 @@ export default function MobileMenu({ guides, priceBadges }: MobileMenuProps) {
           </section>
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <div className="md:hidden">
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        aria-label="Open menu"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-steel-200 bg-white text-steel-700 transition hover:border-rust-300 hover:text-rust-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-5 w-5"
+          aria-hidden
+        >
+          <path d="M3 6h18" />
+          <path d="M3 12h18" />
+          <path d="M3 18h18" />
+        </svg>
+      </button>
+      {mounted ? createPortal(overlay, document.body) : null}
     </div>
   );
 }

@@ -62,8 +62,14 @@ const nextConfig: NextConfig = {
   },
 };
 
+// Pass plugin names as strings, NOT as imported functions — Turbopack can't
+// pass JS function references to its Rust core. See bundled docs at
+// node_modules/next/dist/docs/01-app/02-guides/mdx.md → "Using Plugins with Turbopack".
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: ["remark-gfm"],
+  },
 });
 
 export default withMDX(nextConfig);

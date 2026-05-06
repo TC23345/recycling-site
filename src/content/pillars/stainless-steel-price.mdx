@@ -1,3 +1,5 @@
+import FaqItem from "@/components/FaqItem";
+
 If you came here looking for the **stainless steel scrap price** in a hurry, the ticker and chart above will give you a baseline number — but stainless is the one metal on this site where you should treat that number with more skepticism than usual. Unlike copper or aluminum, stainless has **no clean futures market**, no single global ticker that maps cleanly to what your local yard will pay. Everything below explains what's actually setting the price on the chalkboard at your yard, and how to walk in with realistic expectations.
 
 This page is for **scrap sellers** — restaurant operators clearing out a kitchen renovation, plumbers with a pile of pipe, scrappers trying to figure out whether the sink and the keg shells are worth the trip. You're not trading futures. You're trying to know what fair looks like before the grader's eyes hit your load.
@@ -52,15 +54,12 @@ The 316 premium is real. If you're scrapping a brewery, a marine workshop, or a 
 
 ## What moves stainless prices
 
-You don't need to follow the futures tape to scrap stainless, but knowing the macro forces helps you decide whether the half-ton of brewery tank in your shop is appreciating fast enough to hold or stable enough to unload now.
+You don't need to follow the futures tape to scrap stainless, but knowing the macro forces helps you decide whether the half-ton of brewery tank in your shop is appreciating fast enough to hold or stable enough to unload now. Four drivers do most of the work:
 
-**Indonesian nickel supply** is the dominant force. Indonesia produces roughly half of the world's mined nickel today, and Jakarta's export-policy decisions — bans on raw ore exports, smelter quotas, royalty changes — move LME nickel within hours and stainless yard prices within days. The [USGS nickel statistics page](https://www.usgs.gov/centers/national-minerals-information-center/nickel-statistics-and-information) tracks per-country production if you want to verify the concentration.
-
-**Chinese stainless mill demand** is the other side. China produces roughly 60% of the world's stainless steel, mostly using Indonesian nickel pig iron as feedstock. When Chinese property and infrastructure demand softens, mill output dips, scrap demand softens, and your yard's bid follows. The [Specialty Steel Industry of North America](https://www.ssina.com/) tracks the US mill side; the [Nickel Institute](https://nickelinstitute.org/) covers the upstream raw-material picture.
-
-**EV battery demand** is the new structural buyer of nickel. High-nickel battery chemistries (NMC, NCA) compete with stainless mills for nickel sulfate and Class 1 nickel. When EV sales accelerate, nickel tightens, and stainless feedstock costs rise. When EV demand cools, the opposite. This is a relatively new dynamic — pre-2018, nickel was almost entirely a stainless story.
-
-**The US foodservice equipment cycle** matters on the demand side at home. Restaurants, breweries, and commercial kitchens generate a huge share of US 304 scrap. When restaurants close en masse (2020 was the obvious case), a wave of 304 hits scrap markets and yards get picky about what they'll pay. When restaurants are expanding, the inverse.
+- **Indonesian nickel supply** is the dominant force. Indonesia produces roughly half of the world's mined nickel today, and Jakarta's export-policy decisions — bans on raw ore exports, smelter quotas, royalty changes — move LME nickel within hours and stainless yard prices within days. The [USGS nickel statistics page](https://www.usgs.gov/centers/national-minerals-information-center/nickel-statistics-and-information) tracks per-country production if you want to verify the concentration.
+- **Chinese stainless mill demand** is the other side. China produces roughly 60% of the world's stainless steel, mostly using Indonesian nickel pig iron as feedstock. When Chinese property and infrastructure demand softens, mill output dips, scrap demand softens, and your yard's bid follows. The [Specialty Steel Industry of North America](https://www.ssina.com/) tracks the US mill side; the [Nickel Institute](https://nickelinstitute.org/) covers the upstream raw-material picture.
+- **EV battery demand** is the new structural buyer of nickel. High-nickel battery chemistries (NMC, NCA) compete with stainless mills for nickel sulfate and Class 1 nickel. When EV sales accelerate, nickel tightens, and stainless feedstock costs rise. When EV demand cools, the opposite. This is a relatively new dynamic — pre-2018, nickel was almost entirely a stainless story.
+- **The US foodservice equipment cycle** matters on the demand side at home. Restaurants, breweries, and commercial kitchens generate a huge share of US 304 scrap. When restaurants close en masse (2020 was the obvious case), a wave of 304 hits scrap markets and yards get picky about what they'll pay. When restaurants are expanding, the inverse.
 
 ## How to read a yard's stainless price sheet
 
@@ -105,25 +104,35 @@ Substitute the going clean-304 price at your local yard for the example $0.40 to
 
 ## Frequently asked questions
 
-**How much is stainless steel scrap worth per pound?**
+<FaqItem q="How much is stainless steel scrap worth per pound?">
 
 Clean, non-magnetic 304 stainless typically pays **$0.30 to $0.55 per pound** at US scrap yards, depending on the LME nickel price and your local market. 316 (marine grade, more nickel + molybdenum) pays roughly **1.5× to 2× the 304 number** — often $0.55 to $1.00/lb. Magnetic stainless (400-series, 410, 430) pays a quarter to a third of the 304 price. Always call two or three yards; stainless pricing is less standardized than copper or aluminum.
 
-**Is 304 or 316 stainless worth more?**
+</FaqItem>
+
+<FaqItem q="Is 304 or 316 stainless worth more?">
 
 316 is worth more. It contains roughly 10–14% nickel plus 2–3% molybdenum (an additional expensive alloying element), versus 8% nickel in 304. Yards typically pay 50–100% more per pound for clean, sorted 316 than for 304 — but only if you can prove it. Unmarked stainless defaults to 304 pricing. A PMI gun or a $20 stainless test kit is worth bringing to any 316-suspected load.
 
-**How can I tell stainless steel from regular steel?**
+</FaqItem>
+
+<FaqItem q="How can I tell stainless steel from regular steel?">
 
 Use a magnet. **304 and 316 stainless are non-magnetic** — a magnet won't stick. Carbon steel is strongly magnetic. **400-series stainless (430, 410) IS magnetic** but it's still stainless — just lower-value. The magnet test alone won't separate 304 from 316; for that you need a chemical test kit or a PMI gun. A stainless test kit costs about $20 and indicates molybdenum content (the 316 marker) via color change.
 
-**Why does my yard pay so much less than the LME nickel price suggests?**
+</FaqItem>
+
+<FaqItem q="Why does my yard pay so much less than the LME nickel price suggests?">
 
 The yard takes the nickel-content value of the stainless (LME nickel × ~8% for 304), then subtracts roughly 30–45% for yard margin, transport to a stainless mill, melting losses, and the discount that scrap (vs. fresh feedstock) carries with mills. They also factor in chromium credit, but chromium is much cheaper than nickel. The math typically lands a clean-304 payout at **35–55% of the implied nickel-equivalent value**. None of this is unreasonable; it's how the stainless supply chain actually pays for itself. For broader macro context, our [trade and pricing reference](/industry-guide/trade-and-pricing) walks through the discount-stack patterns across metals.
 
-**Should I sell stainless now or wait for nickel to recover?**
+</FaqItem>
+
+<FaqItem q="Should I sell stainless now or wait for nickel to recover?">
 
 Look at LME nickel and the chart above for direction. If nickel is in a clear uptrend over the past 30 days, stainless yard prices will follow — holding may be worth it. If nickel is collapsing (as in mid-2022 post-squeeze, or any future supply glut), yards may stop quoting firm prices for a few days and lowball when they resume. Stainless doesn't spoil and doesn't take much floor space per dollar of value, so holding for a recovery is rarely costly. Don't try to time the bottom; aim for "good enough" and unload when nickel is roughly fair to its 90-day average.
+
+</FaqItem>
 
 ## Related stainless and metal pricing pages
 

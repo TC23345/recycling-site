@@ -1,3 +1,5 @@
+import FaqItem from "@/components/FaqItem";
+
 If you came here looking for the **brass price** in a hurry, the live ticker and 30-day chart at the top of this page have the number — derived from copper futures with a brass-to-copper ratio applied, then scrap-discounted to roughly what a US yard would pay for yellow brass. Everything below is for when you have a few more minutes and want to know *why* the number is what it is, and what your bucket of fittings, faucets, or shell casings is actually worth before you load the truck.
 
 This page is written for **scrap sellers, not commodity traders**. There's no futures contract for brass — you can't short it, you can't hedge it, and that's actually the first interesting thing about it. You're here because the box of plumbing tear-outs, the bin of decorative hardware, or the bucket of spent shells is worth real money, and you want to walk into a yard knowing what fair looks like.
@@ -48,15 +50,12 @@ A few things worth calling out that the typical yard board glosses over:
 
 ## What moves brass prices
 
-The honest answer: copper moves brass prices, and almost nothing else does meaningfully on a week-to-week basis. Brass isn't traded as a standalone commodity, so there's no "brass demand" reading on a Bloomberg terminal — only the underlying inputs.
+The honest answer: copper moves brass prices, and almost nothing else does meaningfully on a week-to-week basis. Brass isn't traded as a standalone commodity, so there's no "brass demand" reading on a Bloomberg terminal — only the underlying inputs. Four drivers do most of the work:
 
-**Copper** is roughly two-thirds of the alloy by mass and four-fifths by value. When copper rips on China stimulus or Chilean supply disruptions, brass follows within a few days. Watch the [LME copper page](https://www.lme.com/Metals/Non-ferrous/LME-Copper) and the COMEX continuous front-month — that's your leading indicator.
-
-**Zinc** is the secondary input. Zinc prices are far more volatile than copper but matter less to the brass price because zinc is the smaller share of the alloy and trades at roughly one-fifth of copper per pound. The [LME zinc page](https://www.lme.com/Metals/Non-ferrous/LME-Zinc) tracks the global benchmark; in a normal year, zinc moves the brass price by 1–3 percentage points and gets ignored by sellers entirely. In a year where zinc has its own supply crisis (rare), it matters more.
-
-**Plumbing and construction demand** sets the structural floor. A construction slowdown reduces demand for new brass valves and fittings, and the secondary scrap market reflects that within a quarter. A construction boom does the opposite. This is slower than the copper-price linkage but more enduring.
-
-**No financialization buffer.** Because brass isn't traded on a futures exchange, there's no speculative-positioning effect cushioning or amplifying scrap moves. What you see on the yard board is closer to fundamental supply and demand than what you see for copper, where ETF flows and futures positioning routinely add or subtract a few percent. For broader context on how scrap-metal prices propagate through the supply chain, our [trade-and-pricing market context](/industry-guide/trade-and-pricing) walks through the macro structure.
+- **Copper** is roughly two-thirds of the alloy by mass and four-fifths by value. When copper rips on China stimulus or Chilean supply disruptions, brass follows within a few days. Watch the [LME copper page](https://www.lme.com/Metals/Non-ferrous/LME-Copper) and the COMEX continuous front-month — that's your leading indicator.
+- **Zinc** is the secondary input. Zinc prices are far more volatile than copper but matter less to the brass price because zinc is the smaller share of the alloy and trades at roughly one-fifth of copper per pound. The [LME zinc page](https://www.lme.com/Metals/Non-ferrous/LME-Zinc) tracks the global benchmark; in a normal year, zinc moves the brass price by 1–3 percentage points and gets ignored by sellers entirely. In a year where zinc has its own supply crisis (rare), it matters more.
+- **Plumbing and construction demand** sets the structural floor. A construction slowdown reduces demand for new brass valves and fittings, and the secondary scrap market reflects that within a quarter. A construction boom does the opposite. This is slower than the copper-price linkage but more enduring.
+- **No financialization buffer.** Because brass isn't traded on a futures exchange, there's no speculative-positioning effect cushioning or amplifying scrap moves. What you see on the yard board is closer to fundamental supply and demand than what you see for copper, where ETF flows and futures positioning routinely add or subtract a few percent. For broader context on how scrap-metal prices propagate through the supply chain, our [trade-and-pricing market context](/industry-guide/trade-and-pricing) walks through the macro structure.
 
 ## How to read a yard's brass price sheet
 
@@ -102,25 +101,35 @@ Substitute the live ticker number above for the example $2.60 to get current val
 
 ## Frequently asked questions
 
-**Is brass scrap worth much?**
+<FaqItem q="Is brass scrap worth much?">
 
 Yes, brass is one of the better-paying common scrap metals. Clean yellow brass typically pays $1.90–$2.70 per pound at a US yard, depending on the underlying copper price and your region. Red brass pays roughly 20–30% more because of its higher copper content. Compared to aluminum (often $0.30–$0.80/lb) or steel (pennies per pound), brass is meaningfully cash-positive even in modest volumes.
 
-**Why is brass priced lower than copper if it contains copper?**
+</FaqItem>
+
+<FaqItem q="Why is brass priced lower than copper if it contains copper?">
 
 Brass is roughly two-thirds copper and one-third zinc by mass, and zinc trades at about one-fifth the price of copper on the LME. The blended raw-material value of yellow brass lands around 70–75% of copper spot, and yards then haircut another 10–15 percentage points for processing — leaving real-world yellow-brass payouts near 62% of copper. Red brass with 85% copper content runs closer to 80% of copper. Brass is never going to match copper because it isn't copper, but it tracks copper closely.
 
-**What's the difference between yellow brass and red brass?**
+</FaqItem>
+
+<FaqItem q="What's the difference between yellow brass and red brass?">
 
 Composition. Yellow brass is roughly 67% copper and 33% zinc, used in faucets, decorative hardware, and most modern plumbing fittings. Red brass is roughly 85% copper and 15% zinc (plus small amounts of tin and lead), used in valves, marine fittings, and older plumbing. Red brass has a distinctly pinker tint and feels heavier in the hand for the same volume because copper is denser than zinc. At the yard, red brass pays meaningfully more — sort it separately if you have it.
 
-**Is now a good time to sell brass scrap?**
+</FaqItem>
+
+<FaqItem q="Is now a good time to sell brass scrap?">
 
 Look at the 30-day chart at the top of this page, and look at copper's 30-day chart on our [copper-price page](/copper-price). If copper is up 8% or more over the past month, the macro tape is favorable for brass too — and your pile just appreciated. If copper is flat or down, holding rarely costs much (brass doesn't spoil). Don't try to time the bottom; aim for "good enough" and move the load.
 
-**Can I sell brass shell casings at a regular scrap yard?**
+</FaqItem>
+
+<FaqItem q="Can I sell brass shell casings at a regular scrap yard?">
 
 Sometimes yes, sometimes no. Many yards accept spent shells but require primers to be removed (a safety requirement at the shred line). Some require photo ID and paperwork above a volume threshold. Larger metro yards often have a dedicated shell-buying counter that pays better than the yellow-brass tier. Smaller rural yards may simply refuse them. Call ahead before driving in with a bulk load.
+
+</FaqItem>
 
 ## Related brass and metal pricing pages
 

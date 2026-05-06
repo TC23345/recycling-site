@@ -3,8 +3,10 @@ import TrendInsight from "@/components/TrendInsight";
 import { fetchTimeseries } from "@/lib/prices";
 
 interface PricingHeaderExtrasProps {
-  /** Which series to render. Brass is supported (derived from copper). */
-  metal: "copper" | "aluminum" | "brass";
+  /** Which series to render. Brass is supported (derived from copper).
+   *  Gold and silver are supported via Metals.dev /v1/timeseries (which works
+   *  on free tier for precious metals, unlike industrial metals). */
+  metal: "copper" | "aluminum" | "brass" | "gold" | "silver";
   metalLabel: string;
 }
 

@@ -13,7 +13,9 @@ export type ClusterSlug =
   | "copper-price"
   | "aluminum-price"
   | "brass-price"
-  | "stainless-steel-price";
+  | "stainless-steel-price"
+  | "gold-price"
+  | "silver-price";
 
 import type { Metal } from "./prices";
 
@@ -56,7 +58,8 @@ export type GuideSlug =
   | "recycling-guide"
   | "selling-guide"
   | "industry-guide"
-  | "local-guide";
+  | "local-guide"
+  | "precious-metals-guide";
 
 export interface GuideDefinition {
   slug: GuideSlug;
@@ -169,6 +172,34 @@ export const CLUSTERS: ClusterDefinition[] = [
     targetKeyword: "stainless steel price",
     searchVolume: 3600,
   },
+  {
+    slug: "gold-price",
+    cluster: "roi",
+    category: "pricing",
+    metal: "gold",
+    title: "Gold Price",
+    shortTitle: "Gold Price",
+    description:
+      "Live gold spot pricing in USD per troy ounce, plus karat-by-karat refiner payouts for jewelry, dental, and coin sorts.",
+    template: "pillar-hub",
+    href: "/gold-price",
+    targetKeyword: "gold price",
+    searchVolume: 246000,
+  },
+  {
+    slug: "silver-price",
+    cluster: "roi",
+    category: "pricing",
+    metal: "silver",
+    title: "Silver Price",
+    shortTitle: "Silver Price",
+    description:
+      "Live silver spot pricing in USD per troy ounce — sterling vs fine silver, coin scrap, and what refiners actually pay.",
+    template: "pillar-hub",
+    href: "/silver-price",
+    targetKeyword: "silver price",
+    searchVolume: 110000,
+  },
 ];
 
 export function clustersByCategory(category: ClusterCategory): ClusterDefinition[] {
@@ -228,6 +259,14 @@ export const GUIDES: GuideDefinition[] = [
     description:
       "Find scrap yards, metal recyclers, and aluminum buyers near you — plus state, metro, and regional quirks.",
     href: "/local-guide",
+  },
+  {
+    slug: "precious-metals-guide",
+    title: "Precious Metals Guide",
+    shortTitle: "Precious",
+    description:
+      "Gold, silver, platinum, palladium — purity, weight units, refiner economics, and what to expect when selling jewelry, coins, or bullion.",
+    href: "/precious-metals-guide",
   },
 ];
 
@@ -400,6 +439,44 @@ export const CATEGORIES: CategoryDefinition[] = [
     shortTitle: "Regional Quirks",
     description: "How geography, freight, and local mills shift payouts from one region to the next.",
     href: "/local-guide/regional-quirks",
+  },
+
+  // ── precious-metals-guide ─────────────────────────────────────────────────
+  {
+    guide: "precious-metals-guide",
+    slug: "basics",
+    title: "Precious Basics",
+    shortTitle: "Basics",
+    description:
+      "Troy ounce vs avoirdupois, fineness vs karat, what makes a metal 'precious', and why these markets behave differently from scrap.",
+    href: "/precious-metals-guide/basics",
+  },
+  {
+    guide: "precious-metals-guide",
+    slug: "grades",
+    title: "Grades & Purity",
+    shortTitle: "Grades",
+    description:
+      "Karat marks (10K, 14K, 18K, 22K, 24K), sterling vs fine silver, .925 vs .999, hallmarks, and how purity shapes payout.",
+    href: "/precious-metals-guide/grades",
+  },
+  {
+    guide: "precious-metals-guide",
+    slug: "refining",
+    title: "Refining & Selling",
+    shortTitle: "Refining",
+    description:
+      "Coin sorts, jewelry, dental scrap — who buys what, what refiners actually pay (95–99% of spot), and how to vet a buyer.",
+    href: "/precious-metals-guide/refining",
+  },
+  {
+    guide: "precious-metals-guide",
+    slug: "market",
+    title: "Market & Spot",
+    shortTitle: "Market",
+    description:
+      "What moves spot — central banks, ETF flows, futures — plus LBMA fixings and the gap between spot and physical premium.",
+    href: "/precious-metals-guide/market",
   },
 ];
 

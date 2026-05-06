@@ -1,0 +1,93 @@
+## Market & Spot
+
+> **Page brief.** Target keyword: `gold spot price` / `what moves silver price`. Audience: people who want context behind the number on the live price page. Funnel stage: consideration. The page should answer: *what determines today's spot, and how does that translate to my payout?*
+
+Spot is one number on a page; the forces behind it are a tangle of rates, currency, inventory, ETF flows, and physical demand. This page covers what actually moves the market.
+
+## Where "spot" comes from
+
+There's no single global spot price for gold or silver — there's a network of contributing markets that converge to within a few cents:
+
+- **LBMA fixings** (London) — twice-daily auctions for gold (10:30 AM, 3 PM London) and once for silver (12 PM London). The most-cited reference price.
+- **COMEX futures** (New York) — front-month futures contracts (`GC=F` for gold, `SI=F` for silver) trade nearly 24/5. The continuous spot reference for US time zones.
+- **Shanghai Gold Exchange** — primary Asia-time price discovery for physical gold; can diverge from LBMA during stress events.
+- **Over-the-counter (OTC)** — bullion bank desks quote real-time bid/ask continuously.
+
+When this site shows "spot," it's pulled from Metals.dev's aggregated feed which uses LBMA + COMEX + LME inputs.
+
+## What moves spot
+
+### Real interest rates (the dominant driver)
+
+When **real** rates (nominal rates minus inflation expectations) fall, gold rises. When they rise, gold falls. The mechanism: gold pays no yield, so its opportunity cost is whatever you'd otherwise earn risk-free. Negative or low real rates make zero-yield gold relatively more attractive.
+
+This is why gold rallies during easing cycles and corrects when central banks hike aggressively.
+
+### USD strength
+
+Gold is priced in dollars worldwide. A stronger dollar makes gold more expensive in other currencies, suppressing demand outside the US. The DXY (dollar index) usually moves inversely to gold over weeks-to-months.
+
+### Central bank purchases
+
+Central banks (notably China, India, Russia, Turkey, Poland) have been net gold buyers for over a decade, adding ~600–1,000 tonnes/year to demand. Disclosed reserve changes lag by a quarter; total flows are often inferred.
+
+### ETF flows
+
+Gold ETFs (GLD, IAU) hold thousands of tonnes of physical gold backing their shares. Net inflows or outflows shift physical supply/demand by hundreds of tonnes per year. Watch the [World Gold Council](https://www.gold.org) data.
+
+### Geopolitical risk
+
+Flight-to-safety flows materialize during equity drawdowns, banking stress, and conflict escalation. These are episodic and overlay the secular drivers above.
+
+### For silver specifically
+
+Silver has all the gold drivers PLUS:
+
+- **Industrial demand** — solar panels (~10% of demand), electronics (~25%), auto electrification, medical
+- **Gold/silver ratio** — when the ratio compresses (typically 50–60), silver outperforms gold; when it expands (90–110), silver lags
+- **Photographic demand** — declining but still ~5% of usage; no longer a major driver
+
+## Spot vs physical premium
+
+The "spot" you see on this page is wholesale. **Physical premium** is what retail buyers pay over spot for actual coins or bars:
+
+| Product | Typical premium over spot |
+| --- | --- |
+| Generic 1 oz silver round | 5–15% |
+| 1 oz Silver Eagle | 15–35% |
+| 1 oz generic gold round / bar | 1–4% |
+| 1 oz Gold Eagle / Maple | 3–8% |
+| Krugerrand | 2–5% |
+| 90% junk silver (per face value) | 5–15% over melt |
+
+When you SELL, the spread compresses — but rarely closes completely. Coin shops buy back at melt (or slightly under) for generics; recognized bullion (Eagles) gets a small bid premium.
+
+## Why the price on this page may differ from "Kitco" or "Apmex"
+
+Three reasons:
+
+1. **Update cadence.** This site pulls Metals.dev once every 30 min; major bullion sites update every few seconds. During fast moves, we lag.
+2. **Ask vs bid.** Some sites quote ask (what you pay to buy) by default; some quote bid; some show both. We quote spot, which is between bid and ask.
+3. **Time zone.** "Today's spot" depends on what venue's clock you're using — LBMA AM fix, NY close, Asia open, etc.
+
+For high-precision moves, treat this page as a reference, not a quote. Confirm with the venue you're transacting at.
+
+## Frequently asked questions
+
+**Why doesn't the change percentage on the gold/silver pages show movement?**
+
+Today's integration uses Metals.dev `/v1/latest`, which doesn't include 24h change data. We're tracking adding the `/v1/metal/spot` endpoint that includes change to fix this — for now, see the 30-day chart for trend context.
+
+**What's the gold/silver ratio?**
+
+Gold price ÷ silver price. Historically averages ~50–80; recent ranges have been 80–100. Silver "outperforms" gold when the ratio falls (silver rises faster); silver "lags" when it rises (gold rises faster).
+
+**Why is gold cheaper in some places than others?**
+
+Local taxes, import tariffs, and dealer markup. India and the UAE have notably different effective gold prices than the US due to import duty structures. The wholesale spot is global; the retail price is local.
+
+## Related
+
+- [Live gold price](/gold-price) — today's spot, refresh every 30 min
+- [Live silver price](/silver-price) — today's spot, refresh every 30 min
+- [Industry guide / trade and pricing](/industry-guide/trade-and-pricing) — broader trade-and-pricing context for industrial scrap

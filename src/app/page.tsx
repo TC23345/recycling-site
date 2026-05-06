@@ -78,14 +78,14 @@ export default function HomePage() {
           <div className="mt-6">
             <Suspense
               fallback={
-                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-hidden>
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <li
+                <div className="-mx-6 flex gap-4 overflow-x-auto px-6 pb-4" aria-hidden>
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
                       key={i}
-                      className="h-44 animate-pulse rounded-card border border-steel-200 bg-steel-100"
+                      className="h-56 w-[18rem] shrink-0 animate-pulse rounded-card border border-steel-200 bg-steel-100 sm:w-[20rem]"
                     />
                   ))}
-                </ul>
+                </div>
               }
             >
               <MetalCardsGrid />
@@ -102,7 +102,7 @@ export default function HomePage() {
             chain actually works.
           </p>
           <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {guides.map((c) => (
+            {guides.slice(0, 6).map((c) => (
               <li key={c.slug}>
                 <Link
                   href={c.href}

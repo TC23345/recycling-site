@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   formatLastUpdated,
-  formatUsd,
+  formatMetalPrice,
   type Metal,
   type PriceMap,
   type PriceSnapshot,
@@ -20,6 +20,8 @@ const METAL_ORDER: Metal[] = [
   "brass",
   "steel-stainless",
   "steel-prepared",
+  "gold",
+  "silver",
 ];
 
 export default function LivePriceTable({ initial, pollMs = 30_000 }: LivePriceTableProps) {
@@ -62,7 +64,7 @@ export default function LivePriceTable({ initial, pollMs = 30_000 }: LivePriceTa
         <thead className="bg-steel-100 text-xs uppercase tracking-widest text-steel-700">
           <tr>
             <th scope="col" className="px-5 py-3 font-semibold">Metal / Grade</th>
-            <th scope="col" className="px-5 py-3 text-right font-semibold">USD / lb</th>
+            <th scope="col" className="px-5 py-3 text-right font-semibold">Price</th>
             <th scope="col" className="px-5 py-3 text-right font-semibold">24h</th>
             <th scope="col" className="px-5 py-3 text-right font-semibold">Last Updated</th>
           </tr>
@@ -103,12 +105,14 @@ function PriceRow({ snapshot }: { snapshot: PriceSnapshot }) {
   const change = snapshot.changePct;
   const trendColor = trendColorFor(change);
   const flashClass = flashClassFor(direction);
+  const { value, unit } = formatMetalPrice(snapshot);
 
   return (
     <tr className={`transition-colors duration-300 hover:bg-steel-50 ${flashClass}`}>
       <td className="px-5 py-3 font-medium text-navy-900">{snapshot.label}</td>
       <td className="px-5 py-3 text-right font-mono tabular-nums text-navy-900">
-        {formatUsd(snapshot.usdPerLb)}
+        {value}
+        <span className="ml-1 text-xs font-normal text-steel-500">{unit}</span>
       </td>
       <td className={`px-5 py-3 text-right font-mono tabular-nums ${trendColor}`}>
         {change > 0 ? "+" : ""}
@@ -131,12 +135,16 @@ function PriceCardRow({ snapshot }: { snapshot: PriceSnapshot }) {
   const change = snapshot.changePct;
   const trendColor = trendColorFor(change);
   const flashClass = flashClassFor(direction);
+  const { value, unit } = formatMetalPrice(snapshot);
 
   return (
     <li className={`block px-5 py-4 transition-colors duration-300 ${flashClass}`}>
       <div className="flex items-baseline justify-between gap-3">
         <p className="font-medium text-navy-900">{snapshot.label}</p>
-        <p className="font-mono tabular-nums text-navy-900">{formatUsd(snapshot.usdPerLb)}</p>
+        <p className="font-mono tabular-nums text-navy-900">
+          {value}
+          <span className="ml-1 text-xs text-steel-500">{unit}</span>
+        </p>
       </div>
       <div className="mt-1 flex items-baseline justify-between gap-3 text-xs">
         <p className="font-mono tabular-nums text-steel-500">

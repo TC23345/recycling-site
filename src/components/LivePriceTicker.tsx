@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   formatLastUpdated,
-  formatUsd,
+  formatMetalPrice,
   type Metal,
   type PriceMap,
   type PriceSnapshot,
@@ -76,8 +76,15 @@ export default function LivePriceTickerClient({
           {snapshot.label}
         </p>
         <p className="mt-1 font-display text-3xl font-bold tabular-nums text-navy-900">
-          {formatUsd(snapshot.usdPerLb)}
-          <span className="ml-1 text-sm font-normal text-steel-500">/ lb</span>
+          {(() => {
+            const { value, unit } = formatMetalPrice(snapshot);
+            return (
+              <>
+                {value}
+                <span className="ml-1 text-sm font-normal text-steel-500">{unit}</span>
+              </>
+            );
+          })()}
         </p>
       </div>
       <div className="text-right">

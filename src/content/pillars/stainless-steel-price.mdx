@@ -1,35 +1,141 @@
-import PriceTicker from "@/components/PriceTicker";
+import FaqItem from "@/components/FaqItem";
 
-## Live stainless steel scrap price
+If you came here looking for the **stainless steel scrap price** in a hurry, the ticker and chart above will give you a baseline number — but stainless is the one metal on this site where you should treat that number with more skepticism than usual. Unlike copper or aluminum, stainless has **no clean futures market**, no single global ticker that maps cleanly to what your local yard will pay. Everything below explains what's actually setting the price on the chalkboard at your yard, and how to walk in with realistic expectations.
 
-<PriceTicker metal="steel-stainless" />
+This page is for **scrap sellers** — restaurant operators clearing out a kitchen renovation, plumbers with a pile of pipe, scrappers trying to figure out whether the sink and the keg shells are worth the trip. You're not trading futures. You're trying to know what fair looks like before the grader's eyes hit your load.
 
-Stainless steel scrap pricing is **driven by nickel** — 304 stainless contains roughly 8% nickel, and 316 stainless about 10%. When nickel rallies, stainless scrap follows; when nickel collapses, stainless can briefly trade close to carbon-steel prices.
+## A note on today's stainless steel price
 
-## Stainless grade ladder
+The ticker above is a **stub baseline**, not a live exchange feed. We're being upfront about that because no public ticker maps cleanly to scrap stainless the way `HG=F` maps to copper or `ALI=F` maps to aluminum. Stainless isn't traded on COMEX or LME as a finished product — it's priced **derivatively, off the alloy content**, primarily nickel.
 
-| Grade | Composition | Typical use | Pricing notes |
-| --- | --- | --- | --- |
-| 304 | ~18% Cr / 8% Ni | Cookware, sinks, food equipment | Most common scrap; reference grade |
-| 316 | ~16% Cr / 10% Ni / 2% Mo | Marine, chemical, medical | Pays premium over 304 |
-| 430 | ~17% Cr / minimal Ni | Auto trim, decorative | Magnetic; pays much less than 304 |
-| Mixed | Unknown alloy | — | Defaults to lowest grade in the load |
+What that means in practice: when LME nickel rallies 15%, your local yard's posted 304 price will eventually rally too, but with a lag and a discount stack we'll walk through below. The number on the page above is a useful reference for "is stainless cheap or expensive right now relative to the last few months." For a real transaction, the only number that matters is what your nearest yard quotes today — and we'll show you how to translate that.
+
+## Why stainless has no clean ticker (and why that matters)
+
+Copper trades as a primary commodity on the [LME](https://www.lme.com/Metals/Non-ferrous/LME-Nickel) and COMEX. Aluminum trades on the LME. Gold and silver have a five-century-old global spot market. **Stainless steel doesn't have any of that.** It's an alloy — typically iron + 16-18% chromium + 8-12% nickel + sometimes molybdenum — and the finished product trades commercially between mills and distributors, not on a public exchange you can pull a price from.
+
+What does trade on the LME? **Nickel.** And because nickel is by far the most expensive ingredient in food-grade stainless (304 and 316), nickel is the proxy that yards use to price your scrap. Watch the [LME nickel reference page](https://www.lme.com/Metals/Non-ferrous/LME-Nickel) and you're watching, indirectly, the dominant force on your stainless payout.
+
+This matters for sellers in two concrete ways. **First**, when nickel goes haywire — like the [March 2022 short squeeze](https://www.usgs.gov/centers/national-minerals-information-center/nickel-statistics-and-information) when nickel briefly tripled in 48 hours — stainless yard pricing gets weird, lags, or freezes for a few days while yards figure out their cost basis. **Second**, payouts are less standardized than copper. A yard 30 miles away might quote 304 stainless at $0.10/lb more than your local yard for reasons that have nothing to do with you. **Always call two or three.**
+
+## Spot, nickel proxy, and yard payout — the math that matters
+
+Here's how a stainless yard actually arrives at the per-pound number on its board, roughly:
+
+1. Take the LME nickel cash price (let's say $8.00/lb in the current market).
+2. Multiply by the nickel content of the alloy. 304 is ~8% nickel, so the **nickel-equivalent value** of a pound of 304 is roughly $8.00 × 0.08 = $0.64/lb.
+3. Add a small chromium credit. Chrome trades much cheaper than nickel; call it $0.05–$0.10/lb of stainless.
+4. Subtract yard margin, transport-to-mill cost, melting losses, and the discount for "scrap" vs. fresh feedstock. That's roughly **30–45%** off the alloy-content value.
+
+| Scenario | LME nickel ($/lb) | Implied 304 nickel value | Yard discount | Per-lb payout | 100-lb load |
+|---|---:|---:|---:|---:|---:|
+| Soft nickel market | $7.00 | ~$0.56 | 35% | $0.36 | $36 |
+| Average market | $8.50 | ~$0.68 | 40% | $0.41 | $41 |
+| Hot nickel market | $11.00 | ~$0.88 | 35% | $0.57 | $57 |
+| Crashed market | $5.50 | ~$0.44 | 45% | $0.24 | $24 |
+
+The above are rough industry-typical ranges; your local market will run tighter or looser. SERP data on actual posted prices in late 2024 / early 2025 showed clean 304 trading at **$0.30–$0.55/lb** at most US yards, with 316 (more nickel + molybdenum) running roughly **2× the 304 number**. For more on how the spot-to-yard discount stack works in general, the [scrap metal prices reference page](/scrap-guide/yards/scrap-metal-prices) has the comparable view across grades.
+
+## Stainless grade ladder — what your yard actually quotes
+
+Almost every US yard sorts stainless into the same four-or-five buckets, and the gap between adjacent buckets is brutal — much wider than the copper grade gap. Magnet-sort first; grade-sort second.
+
+| Grade | Composition | Magnet test | What it is | Typical payout (% of clean 304) |
+|---|---|---|---|---:|
+| **316 / 316L** | ~16% Cr / 10-14% Ni / 2-3% Mo | Non-magnetic | Marine fittings, chemical plant, medical, brewery | 150–220% |
+| **304 / 304L** | ~18% Cr / 8% Ni | Non-magnetic | Sinks, food equipment, cookware, restaurant kitchens | 100% (reference) |
+| **400 series (430, 409)** | ~17% Cr / minimal Ni | **Magnetic** | Auto trim, decorative panels, exhaust | 25–40% |
+| **410 / 410S** | ~12% Cr / minimal Ni | **Magnetic** | Cutlery, fasteners, low-corrosion industrial | 20–35% |
+| **Irony / dirty stainless** | Mixed with carbon steel, attachments, paint | Mixed | Tanks with steel legs, sinks with iron brackets | 10–25% |
+
+The single biggest decision a stainless scrapper makes is the **magnet test**. 304 and 316 are the only food-grade alloys; both are non-magnetic. If a magnet sticks to your piece, you're looking at 400-series — which pays roughly **a third of what 304 pays**, sometimes less. Don't sell 304 mixed with 430. The yard will reclassify the entire load to 400-series and you'll lose more than half your payout. For a comparable grade-sorting exercise on a different metal, the [copper grade-by-grade walkthrough](/scrap-guide/grades/copper-and-wire) shows the same pattern in action.
+
+The 316 premium is real. If you're scrapping a brewery, a marine workshop, or a chemical plant and you have tags or knowledge that confirms 316, **separate it before you drive**. The yard won't pay 316 rates on an unmarked load — they'll default to 304. A PMI (positive material identification) gun or a $20 stainless test kit pays for itself on the first 50-lb 316 separation.
 
 ## What moves stainless prices
 
-- **Nickel cycle** — the biggest single factor; LME nickel is the watch metric
-- **Stainless mill demand** — auto, appliances, construction
-- **Indonesian nickel supply** — Indonesia dominates global supply; policy changes ripple immediately
-- **EV battery demand** — nickel sulfate competes with stainless feedstock
+You don't need to follow the futures tape to scrap stainless, but knowing the macro forces helps you decide whether the half-ton of brewery tank in your shop is appreciating fast enough to hold or stable enough to unload now. Four drivers do most of the work:
 
-## Selling tips
+- **Indonesian nickel supply** is the dominant force. Indonesia produces roughly half of the world's mined nickel today, and Jakarta's export-policy decisions — bans on raw ore exports, smelter quotas, royalty changes — move LME nickel within hours and stainless yard prices within days. The [USGS nickel statistics page](https://www.usgs.gov/centers/national-minerals-information-center/nickel-statistics-and-information) tracks per-country production if you want to verify the concentration.
+- **Chinese stainless mill demand** is the other side. China produces roughly 60% of the world's stainless steel, mostly using Indonesian nickel pig iron as feedstock. When Chinese property and infrastructure demand softens, mill output dips, scrap demand softens, and your yard's bid follows. The [Specialty Steel Industry of North America](https://www.ssina.com/) tracks the US mill side; the [Nickel Institute](https://nickelinstitute.org/) covers the upstream raw-material picture.
+- **EV battery demand** is the new structural buyer of nickel. High-nickel battery chemistries (NMC, NCA) compete with stainless mills for nickel sulfate and Class 1 nickel. When EV sales accelerate, nickel tightens, and stainless feedstock costs rise. When EV demand cools, the opposite. This is a relatively new dynamic — pre-2018, nickel was almost entirely a stainless story.
+- **The US foodservice equipment cycle** matters on the demand side at home. Restaurants, breweries, and commercial kitchens generate a huge share of US 304 scrap. When restaurants close en masse (2020 was the obvious case), a wave of 304 hits scrap markets and yards get picky about what they'll pay. When restaurants are expanding, the inverse.
 
-- **Magnet test first** — magnetic stainless (430-series) pays a fraction of non-magnetic (304/316)
-- **Separate by grade** if you have meaningful 316 — it pays a premium
-- **Avoid mixed loads** — yards default to the lowest grade in the pile
+## How to read a yard's stainless price sheet
 
-## Related
+Most US scrap yards post stainless on the same chalkboard as ferrous and non-ferrous, usually toward the bottom. A typical board reads something like:
 
-- [Copper Price](/copper-price)
-- [Aluminum Price](/aluminum-price)
-- [Brass Price](/brass-price)
+> 304 Stainless **$0.34** / lb &nbsp;&nbsp; 316 Stainless **$0.72** / lb &nbsp;&nbsp; 410 Stainless **$0.10** / lb &nbsp;&nbsp; Irony SS **$0.10** / lb
+
+Three things first-time stainless sellers miss:
+
+1. **"Clean" vs. "irony" is a much bigger gap than on the copper board.** Clean 304 means non-magnetic, no carbon-steel attachments, no brass or copper fittings, no paint. Irony 304 — meaning 304 with steel legs, brackets, hinges, or motor mounts — drops to roughly **a quarter of the clean price**. Stripping the carbon-steel feet off a stainless tank can be the highest-paying hour of work in a stainless load.
+2. **Posted prices are weekly averages, not daily.** Stainless yards typically don't update their boards as often as copper yards because the underlying nickel signal is noisier. The number on the board today might lag the LME nickel print by a week. If nickel just spiked, ask the buyer if they've adjusted yet — many will hold the posted price for several days while they confirm their downstream contracts.
+3. **The grader's call is final, and stainless graders are stricter than copper graders.** A piece of "304" with a magnetic spot (often near a weld where the alloy structure shifted) can get reclassified to 400-series for the whole piece. Bring a magnet to the yard and pre-test pieces if you have any doubt.
+
+For the broader scrap-pricing context, our [scrap metal prices near you](/local-guide/near-me/scrap-metal-prices-near-me) page is the right starting point for triangulating your local market, and the [scrap yards directory](/local-guide/near-me/scrap-yards-near-me) helps you find two or three to call before driving.
+
+## Selling stainless: prep, magnet test, and getting paid right
+
+A short checklist of what experienced stainless scrappers do without thinking:
+
+- **Magnet-test every piece before you load.** Bring a small magnet (a fridge magnet works). Non-magnetic goes in the 304/316 pile; magnetic goes in the 400-series pile. Mixing them costs you 50%+ of the load value.
+- **Strip carbon-steel attachments.** Tank legs, brackets, hinges, motor mounts, handles — anything ferrous will reclassify the parent piece to "irony" stainless. If a 30-second cut with an angle grinder gets a $0.34/lb tank out of a $0.10/lb classification, that's $24 saved per 100 lb. Our [scrap preparation guide](/selling-guide/preparation) walks through the breakeven math on prep time vs. payout improvement.
+- **Separate 316 if you can confirm it.** Brewery and marine equipment is often tagged or stamped. If you have a PMI gun or a stainless test kit, mark and bag 316 separately. The 50–100% premium over 304 is real, but only if the yard can verify.
+- **Don't mix stainless with carbon steel in the same load.** Even if the carbon steel is clearly separate, some yards will downgrade everything to "mixed steel" or charge a re-sorting fee. Two trips is worth more than one mixed trip. For broader contrast on how carbon and stainless steel are graded differently at yards, see our [scrap steel recycling guide](/recycling-guide/metal-recycling/recycle-scrap-steel).
+- **Bring photo ID and expect a check over $100–$500.** Same as any scrap transaction — most US states require ID for any sale, and most yards cap cash at a few hundred dollars per visit. Plan for an ACH or check on a 500-lb stainless load.
+- **Watch the scale.** Reputable yards welcome the question. For a load worth $200+, a 1% scale error is real money. Confirm gross/tare on truck-scale weighings.
+
+Our [scrap pricing literacy guide](/selling-guide/pricing) covers the cash-and-tax considerations more broadly, and if you're moving enough volume to consider a recurring buyer relationship, the [OmniSource buyer profile](/industry-guide/vendors/omnisource) is representative of the larger US industrial chains. For pickup-vs-drive decisions on heavier loads (large brewery tanks, restaurant equipment runs), our [scrap metal removal logistics page](/selling-guide/logistics/scrap-metal-removal) walks through when calling for pickup actually pays.
+
+## Per-unit conversions — pound, kilo, ton
+
+US scrap stainless is universally quoted per pound. Here are the conversions for international readers and anyone doing volume-tier math:
+
+| Unit | Conversion to pound | At a $0.40/lb 304 reference |
+|---|---|---:|
+| 1 pound (lb) | 1.000 lb | $0.40 |
+| 1 kilogram (kg) | 2.2046 lb | $0.88 |
+| 1 short ton (US, 2,000 lb) | 2,000 lb | $800 |
+| 1 metric tonne (1,000 kg) | 2,204.6 lb | $882 |
+| 1 hundredweight (cwt, 100 lb) | 100 lb | $40 |
+
+Substitute the going clean-304 price at your local yard for the example $0.40 to get current values. A typical restaurant kitchen strip-out is 800–2,000 lb of mixed 304 — call it $250–$800 of payout depending on how cleanly it's sorted.
+
+## Frequently asked questions
+
+<FaqItem q="How much is stainless steel scrap worth per pound?">
+
+Clean, non-magnetic 304 stainless typically pays **$0.30 to $0.55 per pound** at US scrap yards, depending on the LME nickel price and your local market. 316 (marine grade, more nickel + molybdenum) pays roughly **1.5× to 2× the 304 number** — often $0.55 to $1.00/lb. Magnetic stainless (400-series, 410, 430) pays a quarter to a third of the 304 price. Always call two or three yards; stainless pricing is less standardized than copper or aluminum.
+
+</FaqItem>
+
+<FaqItem q="Is 304 or 316 stainless worth more?">
+
+316 is worth more. It contains roughly 10–14% nickel plus 2–3% molybdenum (an additional expensive alloying element), versus 8% nickel in 304. Yards typically pay 50–100% more per pound for clean, sorted 316 than for 304 — but only if you can prove it. Unmarked stainless defaults to 304 pricing. A PMI gun or a $20 stainless test kit is worth bringing to any 316-suspected load.
+
+</FaqItem>
+
+<FaqItem q="How can I tell stainless steel from regular steel?">
+
+Use a magnet. **304 and 316 stainless are non-magnetic** — a magnet won't stick. Carbon steel is strongly magnetic. **400-series stainless (430, 410) IS magnetic** but it's still stainless — just lower-value. The magnet test alone won't separate 304 from 316; for that you need a chemical test kit or a PMI gun. A stainless test kit costs about $20 and indicates molybdenum content (the 316 marker) via color change.
+
+</FaqItem>
+
+<FaqItem q="Why does my yard pay so much less than the LME nickel price suggests?">
+
+The yard takes the nickel-content value of the stainless (LME nickel × ~8% for 304), then subtracts roughly 30–45% for yard margin, transport to a stainless mill, melting losses, and the discount that scrap (vs. fresh feedstock) carries with mills. They also factor in chromium credit, but chromium is much cheaper than nickel. The math typically lands a clean-304 payout at **35–55% of the implied nickel-equivalent value**. None of this is unreasonable; it's how the stainless supply chain actually pays for itself. For broader macro context, our [trade and pricing reference](/industry-guide/trade-and-pricing) walks through the discount-stack patterns across metals.
+
+</FaqItem>
+
+<FaqItem q="Should I sell stainless now or wait for nickel to recover?">
+
+Look at LME nickel and the chart above for direction. If nickel is in a clear uptrend over the past 30 days, stainless yard prices will follow — holding may be worth it. If nickel is collapsing (as in mid-2022 post-squeeze, or any future supply glut), yards may stop quoting firm prices for a few days and lowball when they resume. Stainless doesn't spoil and doesn't take much floor space per dollar of value, so holding for a recovery is rarely costly. Don't try to time the bottom; aim for "good enough" and unload when nickel is roughly fair to its 90-day average.
+
+</FaqItem>
+
+## Related stainless and metal pricing pages
+
+For the broader pricing landscape, our other pricing pillars cover [copper prices](/copper-price), [aluminum prices](/aluminum-price), [brass prices](/brass-price), [live gold pricing](/gold-price), and [silver pricing](/silver-price). The [scrap metal recycling overview](/recycling-guide/metal-recycling/scrap-metal-recycling) has the broader recycling context, and the [carbon-vs-stainless steel recycling page](/recycling-guide/metal-recycling/recycle-scrap-steel) is worth a look if your load straddles both. For finding the right yard locally, [metal recyclers near you](/local-guide/near-me/metal-recyclers-near-me) and [scrap yards near you](/local-guide/near-me/scrap-yards-near-me) are the two directories most useful for stainless sellers — large enough yards to handle alloy verification and to pay 316 premiums when warranted.
+
+The stainless ticker above is currently a stub; the live nickel data underlying real-world stainless pricing is published daily by the [LME](https://www.lme.com/Metals/Non-ferrous/LME-Nickel), and industry-side context lives at the [Nickel Institute](https://nickelinstitute.org/) and the [Specialty Steel Industry of North America](https://www.ssina.com/). For an actual transaction, your local yard's quote — which prices off live LME nickel under the hood — is the only number that matters.

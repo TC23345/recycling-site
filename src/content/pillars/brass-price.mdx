@@ -1,38 +1,138 @@
-import PriceTicker from "@/components/PriceTicker";
+import FaqItem from "@/components/FaqItem";
 
-## Live brass scrap price
+If you came here looking for the **brass price** in a hurry, the live ticker and 30-day chart at the top of this page have the number — derived from copper futures with a brass-to-copper ratio applied, then scrap-discounted to roughly what a US yard would pay for yellow brass. Everything below is for when you have a few more minutes and want to know *why* the number is what it is, and what your bucket of fittings, faucets, or shell casings is actually worth before you load the truck.
 
-<PriceTicker metal="brass" />
+This page is written for **scrap sellers, not commodity traders**. There's no futures contract for brass — you can't short it, you can't hedge it, and that's actually the first interesting thing about it. You're here because the box of plumbing tear-outs, the bin of decorative hardware, or the bucket of spent shells is worth real money, and you want to walk into a yard knowing what fair looks like.
 
-Brass isn't a directly-traded commodity — it's an alloy of copper (≈65%) and zinc (≈35%) by mass. The price above is **derived from live copper futures** with a typical brass-to-copper ratio applied. Yards quote brass with their own grade and contamination discounts on top.
+## Today's brass price at a glance
 
-## Brass grade ladder
+Brass isn't a directly-traded commodity. There is no "brass futures contract" the way there is for [copper](/copper-price), aluminum, or zinc. Instead, brass is an **alloy** — roughly 62–67% copper and 33–38% zinc by mass for the most common yellow-brass formulation, with a smaller percentage of trace metals like lead or tin in plumbing-grade alloys.
 
-| Grade | Description | Typical notes |
-| --- | --- | --- |
-| Yellow brass | Most common; plumbing fittings, decorative hardware | Reference grade |
-| Red brass | Higher copper content, valves, marine fittings | Pays slightly more than yellow |
-| Plumbing brass | Mixed brass with possible solder/chrome | Discounted for cleanup cost |
-| Brass shells | Spent ammunition casings | Often a separate counter at the yard |
-| Dirty brass | Contaminated with steel or other metal | Discounted heavily |
+The ticker above derives a brass price from live copper futures using a typical Cu/Zn mass-blend ratio of roughly 0.62. We're transparent about this because most pages quoting a "brass price" online either pull from a regional yard's posted board or quote a single industrial buyer. Both are valid, but neither tells you the underlying math. If copper reads $4.20/lb on the COMEX tape, the derived brass spot lands near $2.60/lb — and your local yard will pay somewhere in the $1.90–$2.70/lb range for clean yellow brass after their grade and contamination discounts.
+
+The gap between that derived spot and what a yard pays you is the entire reason this page exists. For the broader [scrap metal pricing reference](/scrap-guide/yards/scrap-metal-prices), our cross-metal page tracks the same patterns across copper, aluminum, and steel.
+
+## Spot vs. yard payout — the brass discount stack
+
+Because brass tracks copper, the macro forces moving brass prices are almost entirely [the macro forces moving copper](/copper-price). When COMEX copper rips 5% in a week, your yard's posted brass board moves a couple of days later — not perfectly, not as fast, but in the same direction. The yard then layers its own discounts on top.
+
+Yard payout = (copper spot × brass alloy ratio) − (yard margin) − (grade discount) − (contamination deduction).
+
+A worked example helps:
+
+| Scenario | Copper spot | Brass alloy ratio | Brass derived | Yard payout factor | Per-lb to seller |
+|---|---:|---:|---:|---:|---:|
+| Yellow brass, clean | $4.20 | 0.62× | $2.60 | 0.78–0.85× | $2.03–$2.21 |
+| Red brass, clean | $4.20 | 0.80× | $3.36 | 0.80–0.88× | $2.69–$2.96 |
+| Plumbing brass (mixed, with solder) | $4.20 | 0.62× | $2.60 | 0.55–0.70× | $1.43–$1.82 |
+| Dirty brass (steel-attached, chrome-plated) | $4.20 | 0.62× | $2.60 | 0.30–0.45× | $0.78–$1.17 |
+
+Numbers above are typical industry ranges — your local market will run tighter or looser. The big lesson: yellow brass typically pays **62–80% of copper spot**, and red brass closer to **75–85%**, depending on cleanliness and the yard's appetite for the grade that day. For deeper grade-by-grade context, our [copper and wire scrap-grading guide](/scrap-guide/grades/copper-and-wire) covers the closely-related copper ladder that brass derives from.
+
+## Brass grade ladder — yellow, red, plumbing, shells, dirty
+
+Almost every US yard quotes the same four-or-five tiers. The difference between adjacent tiers is real money, and unlike copper, **a magnet won't help you sort** — neither yellow nor red brass is magnetic. Sorting is by weight, color, and origin.
+
+| Grade | What it is | How to identify | Typical payout (% of copper spot) |
+|---|---|---|---:|
+| Red brass | High-copper alloy (Cu/Zn ~85/15), valves, marine fittings, older plumbing fittings | Reddish-pink tint, heavier feel for the volume, no chrome plating | 75–85% |
+| Yellow brass | The common alloy (Cu/Zn ~67/33), faucets, hardware, fittings, decorative pieces | Bright golden yellow, lighter than red brass for the same volume | 60–72% |
+| Plumbing / mixed brass | Yellow brass with attached solder, packing, gaskets, chrome plating, or steel cores | Same color as yellow brass but with visible non-brass attachments | 45–60% |
+| Brass shells | Spent ammunition casings (rifle, pistol, shotgun primer cups) | Cylindrical or cup-shaped; live primers must be removed | 55–70% (separate counter) |
+| Dirty / irony brass | Brass with significant steel content, heavy paint, or unknown alloy | Magnet pulls partially, or steel core visible | 25–40% |
+
+A few things worth calling out that the typical yard board glosses over:
+
+- **The 62% factor is not arbitrary.** A 67/33 yellow-brass alloy is, by mass, 67% copper and 33% zinc. Copper trades around 4–5× the price of zinc on the LME, so the value-weighted blend lands close to (0.67 × 1.00 + 0.33 × 0.20) ≈ 0.74 of copper. Yards then haircut another 10–15 points for processing, which lands real-world yellow-brass payouts near 62% of copper spot. Red brass with 85% copper content sits closer to 80% of copper, before haircuts.
+- **Chrome plating drops a tier.** Chrome-plated brass faucets need to be stripped before reuse, and many yards bump them down to plumbing-brass tier on inspection. If you can pop the chrome cap off with a hammer, you'll get yellow-brass pricing instead.
+- **Dezincification is a real concern at the yard.** Old plumbing fittings exposed to corrosive water can lose their zinc content, leaving a porous copper-rich shell. Yards know about this and will sometimes downgrade visibly-pitted plumbing brass to dirty-brass tier. Not always — it depends on the grader and whether they care that day.
+- **Brass shells are regulated.** Many yards will refuse spent shells without verification that primers are removed, and some require photo ID or a federal firearms-license check for higher volumes. Call ahead. The [Copper Development Association alloy reference](https://www.copper.org/) is the institutional reference if you want the alloy compositions and applications written up properly.
 
 ## What moves brass prices
 
-Brass tracks copper closely because copper is the majority of the alloy by mass and value. Secondary drivers:
+The honest answer: copper moves brass prices, and almost nothing else does meaningfully on a week-to-week basis. Brass isn't traded as a standalone commodity, so there's no "brass demand" reading on a Bloomberg terminal — only the underlying inputs. Four drivers do most of the work:
 
-- **Zinc spot** — small but real impact on the alloy economics
-- **Plumbing demand** — construction cycles drive brass fitting volumes
-- **Recycling supply** — brass is highly recyclable; abundant supply caps pricing
-- **Specialty applications** — marine, ammunition, decorative arts each have their own demand cycle
+- **Copper** is roughly two-thirds of the alloy by mass and four-fifths by value. When copper rips on China stimulus or Chilean supply disruptions, brass follows within a few days. Watch the [LME copper page](https://www.lme.com/Metals/Non-ferrous/LME-Copper) and the COMEX continuous front-month — that's your leading indicator.
+- **Zinc** is the secondary input. Zinc prices are far more volatile than copper but matter less to the brass price because zinc is the smaller share of the alloy and trades at roughly one-fifth of copper per pound. The [LME zinc page](https://www.lme.com/Metals/Non-ferrous/LME-Zinc) tracks the global benchmark; in a normal year, zinc moves the brass price by 1–3 percentage points and gets ignored by sellers entirely. In a year where zinc has its own supply crisis (rare), it matters more.
+- **Plumbing and construction demand** sets the structural floor. A construction slowdown reduces demand for new brass valves and fittings, and the secondary scrap market reflects that within a quarter. A construction boom does the opposite. This is slower than the copper-price linkage but more enduring.
+- **No financialization buffer.** Because brass isn't traded on a futures exchange, there's no speculative-positioning effect cushioning or amplifying scrap moves. What you see on the yard board is closer to fundamental supply and demand than what you see for copper, where ETF flows and futures positioning routinely add or subtract a few percent. For broader context on how scrap-metal prices propagate through the supply chain, our [trade-and-pricing market context](/industry-guide/trade-and-pricing) walks through the macro structure.
 
-## Selling tips
+## How to read a yard's brass price sheet
 
-- **Strip steel** from brass items — fittings often have steel inserts that contaminate the load
-- **Separate red from yellow** if your yard pays differently for each
-- **Keep shells separate** — many yards have a dedicated buying station with documentation requirements
+Most US scrap yards post brass prices below copper on the same chalkboard or LCD inside the office, updated daily or twice daily. A typical board reads:
 
-## Related
+> Yellow Brass **$2.10** / lb &nbsp;&nbsp; Red Brass **$2.85** / lb &nbsp;&nbsp; Plumbing Brass **$1.65** / lb &nbsp;&nbsp; Brass Shells **$1.95** / lb
 
-- [Copper Price](/copper-price) — drives most of brass pricing
-- [Aluminum Price](/aluminum-price)
-- [Stainless Steel Price](/stainless-steel-price)
+Three things first-time brass sellers miss when they read these boards:
+
+1. **Yellow brass is the default tier.** If you bring in a mixed bucket and don't sort, the entire load gets graded at yellow brass even if half of it was red brass. That's a 20–30% payout haircut on the red-brass portion. A five-minute pre-sort by color (red has a distinct pinkish tint vs. yellow's gold) is some of the highest-paying time in scrapping. The [scrap preparation guide](/selling-guide/preparation) covers the breakeven on sorting time.
+2. **Plumbing brass is the catch-all downgrade.** If your yellow brass has any solder lines, packing washers, chrome plating, or rubber seats still attached, the grader has discretion to call it plumbing brass. That's a 25–35% drop. If you have a hacksaw or a torch and twenty minutes, separating the brass body from the chrome cap or solder joint usually pays. The [logistics-and-removal page](/selling-guide/logistics/scrap-metal-removal) covers when calling for pickup makes more sense than driving in.
+3. **The board posts a ceiling, not a floor.** Posted prices assume clean, sorted, identifiable material. The grader's call on inspection is what you actually get paid. Don't argue — sort cleanly upfront and the grader will quote at or near the board.
+
+For a regional sanity check on what your local yards are quoting, [start with our scrap-yards directory](/local-guide/near-me/scrap-yards-near-me) and call two or three before driving. For a broader comparable view, our [scrap-metal-prices-near-you reference](/local-guide/near-me/scrap-metal-prices-near-me) tracks regional patterns across grades.
+
+## Selling brass scrap — prep, weigh-in, and getting paid right
+
+A short checklist that captures what experienced scrappers do without thinking when they have a brass-heavy load:
+
+- **Pre-sort red vs. yellow before you drive.** Red brass has a distinctly pinker, copper-leaning tint and a noticeably heavier feel for the same volume (the higher copper content adds density). Yellow is bright golden. Once you train your eye, sorting is fast. If you can't tell, set those pieces aside in a "ask the grader" pile rather than mixing them in.
+- **Strip chrome and solder when the math works.** A chrome-plated faucet body weighs 1–3 lb. Separating the chrome (downgrades to scrap-iron tier) from the brass body can reclassify the brass portion from plumbing-brass at 55% to yellow-brass at 70% of copper spot. On a 10-lb load of fixtures, that's a real $20–$40 swing. The line is whether your time is worth the recovery.
+- **Remove primers from spent shells.** Many yards require this. Live primers are a safety hazard at the shred line. A primer-removal tool from any reloading supplier handles this in seconds per case.
+- **Bring photo ID.** Most US states require yards to record the seller's ID for nonferrous transactions over a low threshold ($25–$50 in many states). Brass is nonferrous. ID rules apply.
+- **Watch the scale.** Reputable yards welcome verification. For a 30-lb bucket of mixed brass, a half-pound miscalibration is real money. Ask which scale is being used.
+- **Check whether the yard separates shells.** Some major buyers maintain a dedicated shell-buying counter with separate paperwork; others lump shells into yellow brass. The shell counter often pays better. Our [OmniSource buyer profile](/industry-guide/vendors/omnisource) is a representative profile of one of the larger US-based industrial chains; the same patterns apply at most major buyers and many independents.
+
+For the rest of the seller-side pricing literacy — taxes, payment thresholds, and what reputable yards expect from a first-time seller — our [scrap pricing literacy guide](/selling-guide/pricing) is the deeper read. If you're moving enough volume that you're considering specifically what copper-leaf grades pay, our [copper scrap price detail](/copper-price/copper-scrap-price) and [copper per pound](/copper-price/copper-per-pound) leaves cover the cousin metal that drives brass economics.
+
+## Per-unit conversions — pound, ounce, gram, kilo, ton
+
+US scrap yards quote brass per pound. International readers and anyone coming from a precious-metals background will want the conversions:
+
+| Unit | Conversion to pound | At a $2.60/lb derived spot reference |
+|---|---|---:|
+| 1 pound (lb) | 1.000 lb | $2.60 |
+| 1 ounce (avoirdupois, oz) | 0.0625 lb | $0.16 |
+| 1 gram (g) | 0.0022 lb | $0.0057 |
+| 1 kilogram (kg) | 2.2046 lb | $5.73 |
+| 1 short ton (US, 2,000 lb) | 2,000 lb | $5,200 |
+| 1 metric tonne (1,000 kg) | 2,204.6 lb | $5,732 |
+
+Substitute the live ticker number above for the example $2.60 to get current values. Note that brass is priced per *avoirdupois* pound, not troy ounce — troy units are the precious-metals world. If you came here from [gold pricing](/gold-price) or [silver pricing](/silver-price), the unit convention is different.
+
+## Frequently asked questions
+
+<FaqItem q="Is brass scrap worth much?">
+
+Yes, brass is one of the better-paying common scrap metals. Clean yellow brass typically pays $1.90–$2.70 per pound at a US yard, depending on the underlying copper price and your region. Red brass pays roughly 20–30% more because of its higher copper content. Compared to aluminum (often $0.30–$0.80/lb) or steel (pennies per pound), brass is meaningfully cash-positive even in modest volumes.
+
+</FaqItem>
+
+<FaqItem q="Why is brass priced lower than copper if it contains copper?">
+
+Brass is roughly two-thirds copper and one-third zinc by mass, and zinc trades at about one-fifth the price of copper on the LME. The blended raw-material value of yellow brass lands around 70–75% of copper spot, and yards then haircut another 10–15 percentage points for processing — leaving real-world yellow-brass payouts near 62% of copper. Red brass with 85% copper content runs closer to 80% of copper. Brass is never going to match copper because it isn't copper, but it tracks copper closely.
+
+</FaqItem>
+
+<FaqItem q="What's the difference between yellow brass and red brass?">
+
+Composition. Yellow brass is roughly 67% copper and 33% zinc, used in faucets, decorative hardware, and most modern plumbing fittings. Red brass is roughly 85% copper and 15% zinc (plus small amounts of tin and lead), used in valves, marine fittings, and older plumbing. Red brass has a distinctly pinker tint and feels heavier in the hand for the same volume because copper is denser than zinc. At the yard, red brass pays meaningfully more — sort it separately if you have it.
+
+</FaqItem>
+
+<FaqItem q="Is now a good time to sell brass scrap?">
+
+Look at the 30-day chart at the top of this page, and look at copper's 30-day chart on our [copper-price page](/copper-price). If copper is up 8% or more over the past month, the macro tape is favorable for brass too — and your pile just appreciated. If copper is flat or down, holding rarely costs much (brass doesn't spoil). Don't try to time the bottom; aim for "good enough" and move the load.
+
+</FaqItem>
+
+<FaqItem q="Can I sell brass shell casings at a regular scrap yard?">
+
+Sometimes yes, sometimes no. Many yards accept spent shells but require primers to be removed (a safety requirement at the shred line). Some require photo ID and paperwork above a volume threshold. Larger metro yards often have a dedicated shell-buying counter that pays better than the yellow-brass tier. Smaller rural yards may simply refuse them. Call ahead before driving in with a bulk load.
+
+</FaqItem>
+
+## Related brass and metal pricing pages
+
+For the cousin metal that drives most of brass economics, our [copper price pillar](/copper-price) is the deeper read on the underlying market — when copper moves, brass moves with it. If you're shopping multiple metals, the other pricing pillars cover [aluminum prices](/aluminum-price), [stainless-steel prices](/stainless-steel-price), and the precious metals via [live gold pricing](/gold-price) and [silver pricing](/silver-price). For local-market sanity-checking, [scrap metal prices near you](/local-guide/near-me/scrap-metal-prices-near-me) helps you see what your regional yards are quoting today, and the [scrap-yards-near-me directory](/local-guide/near-me/scrap-yards-near-me) is the fastest way to find buyers for a quick three-quote sweep.
+
+Live exchange data on the page above is sourced from Metals.dev (or Yahoo Finance as a fallback), with brass derived from the COMEX `HG=F` continuous copper contract using a 0.62 alloy ratio. For the official global reference, the [LME copper page](https://www.lme.com/Metals/Non-ferrous/LME-Copper) and [LME zinc page](https://www.lme.com/Metals/Non-ferrous/LME-Zinc) publish the daily inputs that feed every brass price quoted on this site or any other.

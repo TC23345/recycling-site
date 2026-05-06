@@ -143,6 +143,173 @@ async function fetchMetalsDev(): Promise<MetalsDevFetchResult | null> {
   }
 }
 
+// ── Metals.dev timeseries — historical daily data for charts + trend insight
+// Endpoint: /v1/timeseries?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
+// Caveat from research doc: timeseries returns USD/toz regardless of `unit`
+// param. We convert client-side to USD/lb here so chart points share units
+// with the live spot pipeline.
+
+const TOZ_PER_LB = 14.583_333_333; // 1 lb / 1 toz = 453.59237 g / 31.1034768 g
+
+const TimeseriesSuccessSchema = z.object({
+  status: z.literal("success"),
+  currency: z.string(),
+  unit: z.string(),
+  start_date: z.string(),
+  end_date: z.string(),
+  rates: z.record(
+    z.string(),
+    z.object({
+      metals: z.record(z.string(), z.number()),
+      currencies: z.record(z.string(), z.number()).optional(),
+    }),
+  ),
+});
+
+const TimeseriesResponseSchema = z.discriminatedUnion("status", [
+  TimeseriesSuccessSchema,
+  MetalsDevFailureSchema,
+]);
+
+export interface TimeseriesPoint {
+  date: string; // YYYY-MM-DD
+  copper?: number; // USD/lb after scrap discount
+  aluminum?: number; // USD/lb after scrap discount
+  brass?: number; // derived: copper × 0.62
+}
+
+export type TimeseriesArray = TimeseriesPoint[];
+
+function isoDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+// Convert a raw API price to USD/lb based on the response's `unit` field.
+// Industrial metals can come back as USD/toz on /timeseries even when
+// other endpoints respect `unit=lb`. Defensive on both sides.
+function toUsdPerLb(raw: number, unit: string): number {
+  if (unit === "lb") return raw;
+  if (unit === "toz") return raw * TOZ_PER_LB;
+  // Fallback: assume per-pound. Caller's job to verify if values look wrong.
+  return raw;
+}
+
+export async function fetchMetalsDevTimeseries(
+  days = 30,
+): Promise<TimeseriesArray | null> {
+  const apiKey = process.env.METALS_DEV_API_KEY;
+  if (!apiKey) return null;
+
+  const end = new Date();
+  const start = new Date();
+  // /timeseries enforces a 30-day max range. Clamp.
+  const span = Math.min(Math.max(days, 1), 30);
+  start.setUTCDate(start.getUTCDate() - (span - 1));
+
+  try {
+    const url =
+      `https://api.metals.dev/v1/timeseries` +
+      `?api_key=${encodeURIComponent(apiKey)}` +
+      `&start_date=${isoDate(start)}` +
+      `&end_date=${isoDate(end)}`;
+    const res = await fetch(url, {
+      headers: { Accept: "application/json" },
+      // Historical data only changes once per day; cache 24h.
+      next: { revalidate: 86_400 },
+    });
+    if (!res.ok) return null;
+    const json: unknown = await res.json();
+    const parsed = TimeseriesResponseSchema.safeParse(json);
+    if (!parsed.success || parsed.data.status === "failure") return null;
+
+    const success = parsed.data; // narrowed to the success branch
+    const unit = success.unit; // "toz" or "lb"
+    const dates = Object.keys(success.rates).sort(); // ascending
+    const points: TimeseriesPoint[] = dates.map((date) => {
+      const day = success.rates[date];
+      const m = day.metals;
+      const copperRaw = m.copper ?? m.lme_copper;
+      const aluminumRaw = m.aluminum ?? m.lme_aluminum;
+
+      const copperLb =
+        typeof copperRaw === "number" && Number.isFinite(copperRaw) && copperRaw > 0
+          ? toUsdPerLb(copperRaw, unit) * SCRAP_DISCOUNT.copper
+          : undefined;
+      const aluminumLb =
+        typeof aluminumRaw === "number" &&
+        Number.isFinite(aluminumRaw) &&
+        aluminumRaw > 0
+          ? toUsdPerLb(aluminumRaw, unit) * SCRAP_DISCOUNT.aluminum
+          : undefined;
+      const brassLb = copperLb !== undefined ? copperLb * 0.62 : undefined;
+
+      return {
+        date,
+        copper: copperLb !== undefined ? roundTo(copperLb, 4) : undefined,
+        aluminum: aluminumLb !== undefined ? roundTo(aluminumLb, 4) : undefined,
+        brass: brassLb !== undefined ? roundTo(brassLb, 4) : undefined,
+      };
+    });
+
+    return points.length > 0 ? points : null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Trend insight — editorial string from a timeseries window ────────────
+// Computes the kind of phrase that goes above the live price: "Copper is
+// +5.4% this week, near a 30-day high." Pure function over an array of
+// points; no API calls, no I/O.
+
+export interface TrendStats {
+  current: number;
+  weekAgo?: number;
+  monthAgo?: number;
+  weekChangePct: number;
+  monthChangePct: number;
+  high30d: number;
+  low30d: number;
+  /** True when current is within 1.5% of the 30-day high */
+  nearHigh: boolean;
+  /** True when current is within 1.5% of the 30-day low */
+  nearLow: boolean;
+}
+
+export function computeTrend(
+  points: TimeseriesArray,
+  metal: "copper" | "aluminum" | "brass",
+): TrendStats | null {
+  // Most-recent value first non-null walking back from the end.
+  const values = points
+    .map((p) => p[metal])
+    .filter((n): n is number => typeof n === "number");
+  if (values.length === 0) return null;
+
+  const current = values[values.length - 1];
+  const monthAgo = values[0];
+  const weekIdx = Math.max(0, values.length - 8); // ~7 days back
+  const weekAgo = values[weekIdx];
+
+  const high30d = Math.max(...values);
+  const low30d = Math.min(...values);
+
+  const pct = (a: number, b: number) => (b > 0 ? ((a - b) / b) * 100 : 0);
+  const tolerance = 0.015;
+
+  return {
+    current,
+    weekAgo,
+    monthAgo,
+    weekChangePct: roundTo(pct(current, weekAgo), 2),
+    monthChangePct: roundTo(pct(current, monthAgo), 2),
+    high30d,
+    low30d,
+    nearHigh: high30d > 0 && (high30d - current) / high30d <= tolerance,
+    nearLow: low30d > 0 && (current - low30d) / low30d <= tolerance,
+  };
+}
+
 // ── Stub baselines + deterministic jitter ────────────────────────────────
 // Used when Yahoo is unreachable or returns unparseable data. The jitter
 // makes prices appear "live" so the UI animation has something to react to;

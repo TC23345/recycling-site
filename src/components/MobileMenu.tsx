@@ -1,24 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { GuideDefinition } from "@/lib/manifest";
 
 interface MobileMenuProps {
   guides: GuideDefinition[];
-  /** Server-rendered price badge nodes (one per metal). */
-  priceBadges: ReactNode;
 }
 
 /**
  * Hamburger trigger + slide-in dialog panel for mobile (<md) viewports.
- *
  * Hidden at `md:` and above — desktop nav handles those breakpoints separately.
- * The panel renders pre-resolved server components (PriceBadges) passed via
- * `priceBadges` so we don't need to bridge the server/client boundary inside.
  */
-export default function MobileMenu({ guides, priceBadges }: MobileMenuProps) {
+export default function MobileMenu({ guides }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const headingId = useId();
@@ -143,13 +138,6 @@ export default function MobileMenu({ guides, priceBadges }: MobileMenuProps) {
         </div>
 
         <div className="flex flex-col gap-6 px-5 py-5">
-          <section aria-label="Live prices">
-            <h3 className="mb-2 font-display text-xs font-semibold uppercase tracking-widest text-steel-500">
-              Live prices
-            </h3>
-            <div className="grid grid-cols-2 gap-2">{priceBadges}</div>
-          </section>
-
           <section aria-label="Guides">
             <h3 className="mb-2 font-display text-xs font-semibold uppercase tracking-widest text-steel-500">
               Guides

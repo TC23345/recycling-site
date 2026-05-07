@@ -106,4 +106,4 @@ Connect the repo at [vercel.com/new](https://vercel.com/new) — Next.js is auto
 | `METALS_DEV_API_KEY` | Live + historical pricing for all 6 metals; falls through to Yahoo without it | `src/lib/prices.ts` |
 | `NEXT_PUBLIC_SITE_URL` | Production base URL for canonical / sitemap / OG tags | `src/lib/manifest.ts` |
 
-Set both in Vercel project env vars when wiring a real domain. The site behaves correctly without either set — pricing falls through to Yahoo + stub, and `SITE.baseUrl` defaults to a placeholder.
+Set both in Vercel project env vars when wiring a real domain. The site behaves correctly without either set — pricing falls through to Yahoo + stub, and `SITE.baseUrl` defaults to `https://www.whatsmyscrapworth.com` (the production canonical of record; matches Vercel's www-as-primary recommendation, with apex 308-redirecting to it).

@@ -1,44 +1,16 @@
 import Link from "next/link";
-import { Suspense } from "react";
-import PriceBadge from "@/components/PriceBadge";
 import ThemeToggle from "@/components/ThemeToggle";
 import MobileMenu from "@/components/MobileMenu";
 import { guidesAll, SITE } from "@/lib/manifest";
 
-function PriceBadgeSkeleton() {
-  return (
-    <span className="inline-flex h-8 w-32 animate-pulse rounded-md border border-steel-200 bg-steel-100" />
-  );
-}
-
 export default function Nav() {
   const guides = guidesAll();
-
-  // Pre-render the price badges once on the server. We render them into both
-  // surfaces (desktop nav + mobile panel) so the async server components don't
-  // need to cross the client boundary inside <MobileMenu>.
-  const priceBadges = (
-    <>
-      <Suspense fallback={<PriceBadgeSkeleton />}>
-        <PriceBadge metal="copper" />
-      </Suspense>
-      <Suspense fallback={<PriceBadgeSkeleton />}>
-        <PriceBadge metal="aluminum" />
-      </Suspense>
-      <Suspense fallback={<PriceBadgeSkeleton />}>
-        <PriceBadge metal="brass" />
-      </Suspense>
-      <Suspense fallback={<PriceBadgeSkeleton />}>
-        <PriceBadge metal="steel-stainless" />
-      </Suspense>
-    </>
-  );
 
   return (
     <header className="sticky top-0 z-40 border-b border-steel-200 bg-steel-50/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-3 md:gap-6">
-          <MobileMenu guides={guides} priceBadges={priceBadges} />
+          <MobileMenu guides={guides} />
 
           <Link
             href="/"
@@ -86,19 +58,7 @@ export default function Nav() {
           </Link>
         </div>
 
-        {/* Desktop-only price row */}
-        <nav
-          aria-label="Live prices"
-          className="hidden items-center gap-2 md:flex md:flex-wrap"
-        >
-          {priceBadges}
-          <ThemeToggle />
-        </nav>
-
-        {/* Mobile-only: theme toggle on the right (hamburger lives on the left) */}
-        <div className="md:hidden">
-          <ThemeToggle />
-        </div>
+        <ThemeToggle />
       </div>
     </header>
   );

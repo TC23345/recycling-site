@@ -75,7 +75,7 @@ async function fetchYahoo(symbol: string): Promise<YahooFetchResult | null> {
       headers: {
         // Yahoo's edge sometimes 403s requests without a UA
         "User-Agent":
-          "Mozilla/5.0 (compatible; recycling-site/1.0; +https://recycling-site.example)",
+          "Mozilla/5.0 (compatible; whatsmyscrapworth/1.0; +https://www.whatsmyscrapworth.com)",
         Accept: "application/json",
       },
       next: { revalidate: 60 },
@@ -349,7 +349,7 @@ async function fetchYahooHistorical(
     const res = await fetch(url, {
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; recycling-site/1.0; +https://recycling-site.example)",
+          "Mozilla/5.0 (compatible; whatsmyscrapworth/1.0; +https://www.whatsmyscrapworth.com)",
         Accept: "application/json",
       },
       next: { revalidate: 86_400 },

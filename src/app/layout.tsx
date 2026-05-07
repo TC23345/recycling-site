@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Footer />
         <JsonLd data={[siteJsonLd, orgJsonLd]} />
+        <SpeedInsights />
       </body>
     </html>
   );

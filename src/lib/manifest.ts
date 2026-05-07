@@ -97,7 +97,7 @@ export const SITE = {
   shortName: "Scrap & Recycle",
   description:
     "Comprehensive scrap metal pricing, recycling guides, vendor profiles, and yard directories — built for sellers, scrappers, and recycling pros.",
-  baseUrl: "https://recycling-site.example",
+  baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://whatsmyscrapworth.com",
   publishedAt: "2026-05-05",
 } as const;
 

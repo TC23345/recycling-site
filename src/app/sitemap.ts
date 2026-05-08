@@ -6,6 +6,8 @@ import {
   GUIDE_LEAVES,
   HOME,
   LEAVES,
+  NEWS_CATEGORIES,
+  NEWS_HUB,
   SITE,
 } from "@/lib/manifest";
 
@@ -29,10 +31,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.9,
     })),
+    {
+      url: `${SITE.baseUrl}${NEWS_HUB.href}`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "daily" as const,
+      priority: 0.9,
+    },
     ...CATEGORIES.map((c) => ({
       url: `${SITE.baseUrl}${c.href}`,
       lastModified: HOME.publishedAt,
       changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...NEWS_CATEGORIES.map((n) => ({
+      url: `${SITE.baseUrl}${n.href}`,
+      lastModified: HOME.publishedAt,
+      changeFrequency: "daily" as const,
       priority: 0.8,
     })),
     ...LEAVES.map((p) => ({

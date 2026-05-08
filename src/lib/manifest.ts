@@ -880,3 +880,101 @@ export function findGuideLeaf(
 export function allGuideLeafSlugs(guide: GuideSlug, category: string): { slug: string }[] {
   return leavesByCategory(guide, category).map((l) => ({ slug: l.slug }));
 }
+
+// ── News hub & categories (parallel to GUIDES, presented separately in nav) ──
+// News is structurally similar to a guide silo: one hub at /news, six category
+// pages under it. Article leaves arrive later — for now categories show their
+// brief and an empty-state message.
+
+export interface NewsHubDefinition {
+  slug: "news";
+  title: string;
+  shortTitle: string;
+  description: string;
+  href: string;
+}
+
+export interface NewsCategoryDefinition {
+  parent: "news";
+  slug: string;
+  title: string;
+  shortTitle: string;
+  description: string;
+  href: string;
+}
+
+export const NEWS_HUB: NewsHubDefinition = {
+  slug: "news",
+  title: "Scrap Metal & Recycling News",
+  shortTitle: "News",
+  description:
+    "Market commentary, regulatory updates, mills and buyers, tariffs, sustainability reporting, and equipment news — the moving parts of the scrap and recycling trade.",
+  href: "/news",
+};
+
+export const NEWS_CATEGORIES: NewsCategoryDefinition[] = [
+  {
+    parent: "news",
+    slug: "market-commentary",
+    title: "Market Commentary",
+    shortTitle: "Market",
+    description:
+      "Daily and weekly read on price moves across copper, aluminum, ferrous, and the precious metals — what's driving the tape and what to watch next.",
+    href: "/news/market-commentary",
+  },
+  {
+    parent: "news",
+    slug: "mills-and-buyers",
+    title: "Mills & Buyers",
+    shortTitle: "Mills & Buyers",
+    description:
+      "M&A, capacity changes, and announcements from the major scrap consumers and downstream mills that move per-pound pricing at the local yard.",
+    href: "/news/mills-and-buyers",
+  },
+  {
+    parent: "news",
+    slug: "regulation",
+    title: "Regulation & Policy",
+    shortTitle: "Regulation",
+    description:
+      "Federal and state rule changes that shape how scrap is bought, sold, and transported — from metal-theft ID requirements to EPA emissions guidance.",
+    href: "/news/regulation",
+  },
+  {
+    parent: "news",
+    slug: "tariffs-and-trade",
+    title: "Tariffs & Trade",
+    shortTitle: "Tariffs",
+    description:
+      "Section 232, China duties, USMCA, and the export landscape that determines who pays what for scrap headed out of U.S. ports.",
+    href: "/news/tariffs-and-trade",
+  },
+  {
+    parent: "news",
+    slug: "sustainability",
+    title: "Sustainability & ESG",
+    shortTitle: "Sustainability",
+    description:
+      "Recycling rates, circular-economy reporting, and the corporate-sustainability moves reshaping demand for recycled metal feedstock.",
+    href: "/news/sustainability",
+  },
+  {
+    parent: "news",
+    slug: "tech-and-equipment",
+    title: "Tech & Equipment",
+    shortTitle: "Tech",
+    description:
+      "Sorting tech, AI-vision sortation, X-ray fluorescence, balers, shredders — the equipment side of the scrap chain and what's actually new.",
+    href: "/news/tech-and-equipment",
+  },
+];
+
+export function newsCategoriesAll(): NewsCategoryDefinition[] {
+  return NEWS_CATEGORIES;
+}
+
+export function getNewsCategory(slug: string): NewsCategoryDefinition {
+  const c = NEWS_CATEGORIES.find((n) => n.slug === slug);
+  if (!c) throw new Error(`Unknown news category slug: ${slug}`);
+  return c;
+}

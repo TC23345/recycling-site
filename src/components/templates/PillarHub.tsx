@@ -12,6 +12,7 @@ import {
   type ClusterSlug,
   type GuideDefinition,
   type GuideLeaf,
+  type NewsCategoryDefinition,
   type PageEntry,
 } from "@/lib/manifest";
 
@@ -31,6 +32,10 @@ interface PillarHubProps {
   childGuides?: GuideDefinition[];
   /** Category-hub child cards (guide leaves). */
   childGuideLeaves?: GuideLeaf[];
+  /** News-hub child cards (parallel to childCategories but for /news). */
+  childNewsCategories?: NewsCategoryDefinition[];
+  /** Empty-state copy shown on a category hub when no child leaves exist yet. */
+  emptyStateMessage?: string;
   intro: ReactNode;
   crumbs?: Crumb[];
   /** Optional content rendered between breadcrumbs and the intro article.
@@ -49,6 +54,8 @@ export default function PillarHub({
   childCategories,
   childGuides,
   childGuideLeaves,
+  childNewsCategories,
+  emptyStateMessage,
   intro,
   crumbs,
   headerExtras,
@@ -59,6 +66,7 @@ export default function PillarHub({
   const categoryCards: CategoryDefinition[] = childCategories ?? [];
   const guideCards: GuideDefinition[] = childGuides ?? [];
   const guideLeafCards: GuideLeaf[] = childGuideLeaves ?? [];
+  const newsCategoryCards: NewsCategoryDefinition[] = childNewsCategories ?? [];
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -187,6 +195,36 @@ export default function PillarHub({
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+
+        {newsCategoryCards.length > 0 && (
+          <section className="mt-12">
+            <h2 className="font-display text-2xl font-semibold text-navy-900">Categories</h2>
+            <ul className="mt-6 grid gap-5 sm:grid-cols-2">
+              {newsCategoryCards.map((c) => (
+                <li key={`news-${c.slug}`}>
+                  <Link
+                    href={c.href}
+                    className="block h-full rounded-card border border-steel-200 bg-white p-6 shadow-steel transition-[colors,box-shadow] duration-200 hover:border-rust-300 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100"
+                  >
+                    <p className="font-display text-lg font-semibold text-navy-900">{c.title}</p>
+                    <p className="mt-2 text-pretty text-sm leading-relaxed text-steel-600">{c.description}</p>
+                    <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-rust-600">
+                      Explore →
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {emptyStateMessage && (
+          <section className="mt-12">
+            <div className="rounded-card border border-dashed border-steel-300 bg-steel-50 p-6 text-sm leading-relaxed text-steel-600 dark:bg-steel-100">
+              {emptyStateMessage}
+            </div>
           </section>
         )}
       </div>

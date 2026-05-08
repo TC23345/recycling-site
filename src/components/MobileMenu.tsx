@@ -3,17 +3,18 @@
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { GuideDefinition } from "@/lib/manifest";
+import { NEWS_HUB, type GuideDefinition, type NewsCategoryDefinition } from "@/lib/manifest";
 
 interface MobileMenuProps {
   guides: GuideDefinition[];
+  news: NewsCategoryDefinition[];
 }
 
 /**
  * Hamburger trigger + slide-in dialog panel for mobile (<md) viewports.
  * Hidden at `md:` and above — desktop nav handles those breakpoints separately.
  */
-export default function MobileMenu({ guides }: MobileMenuProps) {
+export default function MobileMenu({ guides, news }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const headingId = useId();
@@ -156,6 +157,40 @@ export default function MobileMenu({ guides }: MobileMenuProps) {
                     <span className="mt-0.5 block text-xs text-steel-500">
                       {g.description}
                     </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section aria-label="News">
+            <h3 className="mb-2 font-display text-xs font-semibold uppercase tracking-widest text-steel-500">
+              News
+            </h3>
+            <ul className="flex flex-col gap-1">
+              <li>
+                <Link
+                  href={NEWS_HUB.href}
+                  onClick={close}
+                  className="block rounded-md bg-white px-4 py-3 text-sm transition hover:bg-steel-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100 dark:hover:bg-steel-200"
+                >
+                  <span className="block font-display font-semibold text-navy-900">
+                    All news
+                  </span>
+                  <span className="mt-0.5 block text-xs text-steel-500">{NEWS_HUB.description}</span>
+                </Link>
+              </li>
+              {news.map((n) => (
+                <li key={n.slug}>
+                  <Link
+                    href={n.href}
+                    onClick={close}
+                    className="block rounded-md bg-white px-4 py-3 text-sm transition hover:bg-steel-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rust-500 dark:bg-steel-100 dark:hover:bg-steel-200"
+                  >
+                    <span className="block font-display font-semibold text-navy-900">
+                      {n.shortTitle}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-steel-500">{n.description}</span>
                   </Link>
                 </li>
               ))}

@@ -5,9 +5,9 @@ import JsonLd from "@/components/JsonLd";
 import PrivacyBody from "@/content/static/privacy.mdx";
 import { SITE } from "@/lib/manifest";
 
-const TITLE = "Privacy policy";
+const TITLE = "Privacy Policy";
 const DESCRIPTION =
-  "What this site collects, what it doesn't, and how third-party services like Vercel and Yahoo Finance fit in.";
+  "How Whats My Scrap Worth? handles information when you visit.";
 
 export const metadata: Metadata = {
   title: TITLE,

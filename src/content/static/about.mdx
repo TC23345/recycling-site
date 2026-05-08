@@ -13,31 +13,9 @@ Live pricing for the metals most readers actually deal with (copper, aluminum, b
 - **Jewelry, coin, and bullion sellers** — what a refiner or coin shop will actually pay vs. spot
 - **Journalists, analysts, and procurement teams** — a current read on the trade
 
-## How the live pricing works
+## How the pricing works
 
-Live pricing is fetched server-side and runs through a deterministic source chain so the provenance of every number is visible.
-
-- **Copper** — primary source is [Metals.dev](https://metals.dev) when an API key is configured (LME-stamped spot, USD/lb directly). Falls back to Yahoo Finance's public chart endpoint for the COMEX `HG=F` futures contract.
-- **Aluminum** — primary source is Metals.dev (USD/lb directly). Falls back to Yahoo Finance's `ALI=F` contract, converted from USD/metric-ton to USD/lb.
-- **Brass** — derived from live copper × ~0.62, reflecting typical Cu/Zn alloy mass weighting. Inherits whichever provider was used for copper.
-- **Stainless and prepared steel** — currently stub-priced. No free public ticker maps cleanly to scrap stainless; a dedicated nickel feed will replace the stub once the integration is justified.
-- **Gold and silver** — primary source is Metals.dev (USD/troy-ounce, LBMA-fixed for gold).
-
-Every payload is validated with [Zod](https://zod.dev). If the upstream shape ever changes — or Metals.dev hits a quota or auth error — the affected metal silently falls through to the next source in the chain (Metals.dev → Yahoo → deterministic-jitter stub). The active source is tagged on each snapshot (`source: "metals-dev" | "yahoo" | "derived" | "stub"`) so provenance is visible at all times.
-
-### Discount factors
-
-The numbers shown here are **scrap payouts**, not exchange spot. Standard discount factors map COMEX/LME spot into what a typical yard would pay:
-
-- **Copper:** spot × 0.92
-- **Aluminum:** spot × 0.70
-
-Local yards quote tighter or wider depending on grade, region, and how full their inventory is. Treat these numbers as a baseline, not a quote.
-
-### Refresh cadence
-
-- Server-side fetches are edge-cached for ~60 seconds.
-- The browser polls the `/api/prices` route every ~30 seconds and flashes any value that changed.
+Live pricing is sourced from public market data and refreshes roughly every minute. Standard scrap discounts are applied so the numbers reflect what a typical yard would pay, not the raw exchange spot. Local yards quote tighter or wider depending on grade, region, and how full their inventory is — treat these numbers as a baseline, not a quote.
 
 All prices are **indicative** — they are not buy or sell quotes, and Whats My Scrap Worth? does not transact in metal.
 

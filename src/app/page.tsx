@@ -36,7 +36,7 @@ export default function HomePage() {
   return (
     <>
       <PageHero
-        eyebrow="Whats my scrap worth?"
+        eyebrow="Live pricing & guides"
         title={HOME.title}
         description={HOME.description}
       />

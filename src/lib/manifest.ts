@@ -93,10 +93,10 @@ export interface GuideLeaf {
 }
 
 export const SITE = {
-  name: "Scrap Metal & Recycling Guide",
-  shortName: "Scrap & Recycle",
+  name: "Whats My Scrap Worth?",
+  shortName: "Whats My Scrap Worth?",
   description:
-    "Comprehensive scrap metal pricing, recycling guides, vendor profiles, and yard directories — built for sellers, scrappers, and recycling pros.",
+    "Live scrap metal prices, recycling guides, and clear answers about what your metal is actually worth — for anyone moving copper, aluminum, brass, steel, gold, or silver.",
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.whatsmyscrapworth.com",
   publishedAt: "2026-05-05",
 } as const;

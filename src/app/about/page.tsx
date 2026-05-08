@@ -5,9 +5,9 @@ import JsonLd from "@/components/JsonLd";
 import AboutBody from "@/content/static/about.mdx";
 import { SITE } from "@/lib/manifest";
 
-const TITLE = "About this site";
+const TITLE = "About Whats My Scrap Worth?";
 const DESCRIPTION =
-  "A content-first authority site for scrap metal pricing, recycling guidance, and yard directories — built for sellers, scrappers, and recycling pros.";
+  "A community resource for live scrap metal pricing, recycling guides, and clear answers about what your metal is actually worth — for households, scrappers, contractors, yard operators, and anyone in between.";
 
 export const metadata: Metadata = {
   title: TITLE,

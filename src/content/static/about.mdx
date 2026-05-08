@@ -1,48 +1,30 @@
-## What this site is
+## What this is
 
-A content-first authority site for the scrap-metal and recycling niche. We track live commodity pricing for the metals most sellers actually move, profile the major buyers, walk through the practical mechanics of grading and prepping each metal, and help readers find reputable yards in their area.
+Whats My Scrap Worth? is a community resource for anyone who wants a clear answer about scrap metal pricing, recycling, and what their material is actually worth. Whether you're a household with a garage cleanout, a contractor pulling a tear-down, a yard operator setting daily prices, or someone selling a coin collection — the aim is an honest read on the trade without a sales pitch attached.
 
-It's built for **sellers, scrappers, yard operators, and recycling-center customers** — anyone who wants to know what their material is worth before they hit the scale, and who buys from them after.
+Live pricing for the metals most readers actually deal with (copper, aluminum, brass, stainless, gold, silver) sits alongside plain-English guides on grading, recycling, where it all goes, and what to expect at a yard. The goal is to demystify a market that has historically rewarded insiders.
 
-## How the live pricing works
+## Who it's for
 
-Live pricing on this site is fetched server-side and runs through a deterministic data chain so you can see exactly where every number comes from.
+- **Households** — garage cleanouts, estate sales, the inherited box of "junk metal" from grandpa's shop
+- **Scrappers and small operators** — daily benchmarks, grade reference, prep tips
+- **Contractors and demolition crews** — rebar, copper wire, HVAC, structural steel
+- **Yard operators and buyers** — a published baseline to point sellers to
+- **Jewelry, coin, and bullion sellers** — what a refiner or coin shop will actually pay vs. spot
+- **Journalists, analysts, and procurement teams** — a current read on the trade
 
-- **Copper** — primary source is [Metals.dev](https://metals.dev) when an API key is configured (LME-stamped spot, USD/lb directly). Falls back to Yahoo Finance's public chart endpoint for the COMEX `HG=F` futures contract.
-- **Aluminum** — primary source is Metals.dev (USD/lb directly). Falls back to Yahoo Finance's `ALI=F` contract, converted from USD/metric-ton to USD/lb.
-- **Brass** — derived from live copper × ~0.62, reflecting typical Cu/Zn alloy mass weighting. Inherits whichever provider was used for copper.
-- **Stainless steel and prepared steel** — currently stub-priced. No free public ticker maps cleanly to scrap stainless; we'll wire Metals.dev's nickel feed (or upgrade to a dedicated stainless source) once it's justified.
+## How the pricing works
 
-Every payload is validated with [Zod](https://zod.dev). If the upstream shape ever changes — or Metals.dev hits a quota or auth error — the affected metal silently falls through to the next source in the chain (Metals.dev → Yahoo → deterministic-jitter stub). The active source is tagged on each snapshot (`source: "metals-dev" | "yahoo" | "derived" | "stub"`) so provenance is visible in DevTools and in the per-metal UI badges.
+Live pricing is sourced from public market data and refreshes roughly every minute. Standard scrap discounts are applied so the numbers reflect what a typical yard would pay, not the raw exchange spot. Local yards quote tighter or wider depending on grade, region, and how full their inventory is — treat these numbers as a baseline, not a quote.
 
-### Discount factors
+All prices are **indicative** — they are not buy or sell quotes, and Whats My Scrap Worth? does not transact in metal.
 
-The numbers shown on this site are **scrap payouts**, not exchange spot. We apply standard discount factors to map COMEX spot into what a typical yard would pay:
+## What this is not
 
-- **Copper:** spot × 0.92
-- **Aluminum:** spot × 0.70
+Whats My Scrap Worth? is **not a buyer**. Not a yard, broker, or refiner. Not affiliated with OmniSource, Sims, Schnitzer/Radius, SA Recycling, Cohen, Weissman's, or any other recycler. Vendor profiles on this site are informational write-ups, not endorsements or partnerships.
 
-Local yards quote tighter or wider depending on grade, region, and how full their inventory is. Treat our numbers as a baseline, not a quote.
-
-### Refresh cadence
-
-- Server-side fetches are edge-cached for ~60 seconds.
-- The browser polls the `/api/prices` route every ~30 seconds and flashes any value that changed.
-
-All prices are **indicative** — they are not buy or sell quotes, and we do not transact in metal.
-
-## What this site is NOT
-
-We are **not a buyer**. We are not a yard. We are not affiliated with OmniSource, Weissman's, Schnitzer, SA Recycling, Sims Metal, or any other recycler. Vendor profiles on this site are informational write-ups, not endorsements or partnerships.
-
-We do not collect material, issue payouts, broker shipments, or accept consignments. If a page on this site looks like a vendor we cover, that's a profile, not us.
-
-## Sources & disclaimers
-
-- **Pricing data:** [Metals.dev](https://metals.dev) `/v1/latest` (primary, when API key is set) and Yahoo Finance public chart endpoint (`HG=F`, `ALI=F`) as fallback. No warranty of accuracy. Yahoo can change or remove its public endpoints at any time; Metals.dev's free tier is rate-limited so we cache aggressively.
-- **Editorial:** written and maintained in-house. We update pages as the underlying market or grading conventions change.
-- **Always confirm with your local yard.** Live numbers on this page are reference points. Before you load a truck, call ahead — yards quote net of grade, contamination, and current inventory.
+No material is collected. No payouts issued. No shipments brokered. If a page profiles a vendor, that's editorial coverage — not the brand operating in the trade.
 
 ## Contact
 
-For corrections or feedback, contact [TBD]. We do not collect emails on this site, run a newsletter, or operate user accounts.
+For corrections, factual disputes, or feedback, the contact form is on the way. No emails are collected, no newsletter is run, and no user accounts exist on this site.
